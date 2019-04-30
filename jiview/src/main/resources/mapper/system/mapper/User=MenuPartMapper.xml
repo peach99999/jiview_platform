@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smaller.jiview.platform.system.mapper.User=MenuPartMapper" >
+  <resultMap id="BaseResultMap" type="com.smaller.jiview.platform.system.model.User=MenuPart" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="authorize_id" property="authorizeId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="menu_id" property="menuId" jdbcType="BIGINT" />
+    <result column="part_id" property="partId" jdbcType="VARCHAR" />
+    <result column="part_auth_type" property="partAuthType" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    authorize_id, user_id, menu_id, part_id, part_auth_type, create_time, create_user_id
+  </sql>
+</mapper>
