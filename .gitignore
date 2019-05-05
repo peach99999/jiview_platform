@@ -1,0 +1,11 @@
+*.idea
+*.iml
+
+jiview/target
+jiview/*/target
+
+jiview/core/src/main/java/com/smaller/jiview/core/pojo/model/*.java
+jiview/core/src/main/java/com/smaller/jiview/core/dao/mapper
+
+jiview/core/docs
+jiview/.history

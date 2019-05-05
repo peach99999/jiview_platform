@@ -1,0 +1,24 @@
+debug: true
+logging:
+  config: classpath:config/logback-dev.xml
+spring:
+  datasource:
+    druid:
+      primary:
+        url: jdbc:mysql://119.57.73.147:3306/jiview_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&zeroDateTimeBehavior=convertToNull
+        username: evaluation
+        password: lwq@mysql_Eval_123456
+      read:
+        url: jdbc:mysql://119.57.73.147:3306/jiview_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&zeroDateTimeBehavior=convertToNull
+        username: evaluation
+        password: lwq@mysql_Eval_123456
+#  redis:
+#    database: 0
+#    host: 119.57.73.147
+#    password: 123456
+#    port: 6379
+  redis:
+    database: 0
+    host: 119.57.73.147
+    password: 123456
+    port: 6379

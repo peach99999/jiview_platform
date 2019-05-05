@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <property name="LOG_HOME" value="/log"/>
+    <property name="FILE_NAME" value="api"/>
+
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} |-%-5level [%thread] %c [%L] -| %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <appender name="infoRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <!--日志内容格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>[%date{yyyy-MM-dd HH:mm:ss}] [%-5level] [%logger:%line] --%mdc{client} %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!--滚动策略，按天输出日志-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--设置文件保存路径，timeBasedFileNamingAndTriggeringPolicy标签时，这里的%i要加上，不然会导致运行报错-->
+            <fileNamePattern>${LOG_HOME}/%d{yyyyMMdd}/${FILE_NAME}-debug.%d{yyyyMMdd}-%i.log.zip</fileNamePattern>
+            <!-- 配置日志文件不能超过XXXM，若超过XXXM，日志文件会以索引0开始，命名日志文件，例如info.2018-12-21-0.log -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>256MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文件保留天数-->
+            <maxHistory>36500</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="errorRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <!--日志内容格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>[%date{yyyy-MM-dd HH:mm:ss}] [%-5level] [%logger:%line] --%mdc{client} %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!--滚动策略，按天输出日志-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--设置文件保存路径，timeBasedFileNamingAndTriggeringPolicy标签时，这里的%i要加上，不然会导致运行报错-->
+            <fileNamePattern>${LOG_HOME}/%d{yyyyMMdd}/${FILE_NAME}-error.%d{yyyyMMdd}-%i.log.zip</fileNamePattern>
+            <!-- 配置日志文件不能超过XXXM，若超过XXXM，日志文件会以索引0开始，命名日志文件，例如info.2018-12-21-0.log -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>256MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文件保留天数-->
+            <maxHistory>36500</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="consoleLog" />
+        <appender-ref ref="infoRollingFile" />
+        <appender-ref ref="errorRollingFile" />
+    </root>
+
+    <logger name="io.swagger.models.parameters.AbstractSerializableParameter" additivity="false" level="error"/>
+    <logger name="com.smaller.jiview.core.dao" level="debug"/>
+    <logger name="com.smaller.jiview.admin.dao" level="debug"/>
+</configuration>

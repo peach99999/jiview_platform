@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!--<properties resource="mybatis-generator-config.properties"/>-->
+    <context id="DB2Tables" targetRuntime="MyBatis3" defaultModelType="flat">
+        <plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+            <property name="searchString" value="[e|E]xample$"/>
+            <property name="replaceString" value="Criteria"/>
+        </plugin>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        <commentGenerator>
+            <!-- 是否禁止显示日期 true：是 ： false:否 -->
+            <property name="suppressDate" value="false" />
+            <!-- 是否去除自动生成的所有注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true" />
+            <!-- 是否添加字段注释 true:是 false：否 -->
+            <property name="addRemarkComments" value="false" />
+        </commentGenerator>
+        <jdbcConnection driverClass="${jdbcDriver}"
+                        connectionURL="${jdbcUrl}" userId="${jdbcUserName}" password="${jdbcPassword}">
+            <property name="useInformationSchema" value="true"/>
+            <property name="remarks" value="true"/>
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <!-- generate Model -->
+        <javaModelGenerator targetPackage="${targetModelPackage}"
+                            targetProject="${targetJavaProject}">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <!-- 自动生成xml -->
+        <sqlMapGenerator targetPackage="${targetMapperPackage}"
+                         targetProject="${targetResourceProject}">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!-- 自动生成mapper接口, 可以是 ANNOTATEDMAPPER(注解), XMLMAPPER(xml), MIXEDMAPPER -->
+        <javaClientGenerator type="ANNOTATEDMAPPER" targetPackage="${targetMapperPackage}"
+                             targetProject="${targetJavaProject}">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+        <table tableName="sys_user" >
+            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
+            <generatedKey column="user_id" sqlStatement="Mysql" identity="true"></generatedKey>
+        </table>
+
+        <table tableName="sys_menu" >
+            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
+            <generatedKey column="menu_id" sqlStatement="Mysql" identity="true"></generatedKey>
+        </table>
+
+        <table tableName="sys_dept" >
+            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
+            <generatedKey column="dept_id" sqlStatement="Mysql" identity="true"></generatedKey>
+        </table>
+
+        <table tableName="sys_role" >
+            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
+            <generatedKey column="role_id" sqlStatement="Mysql" identity="true"></generatedKey>
+        </table>
+
+        <table tableName="sys_role_menu" >
+            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
+            <generatedKey column="authorize_id" sqlStatement="Mysql" identity="true"></generatedKey>
+        </table>
+
+        <table tableName="sys_user_role" >
+            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
+            <generatedKey column="authorize_id" sqlStatement="Mysql" identity="true"></generatedKey>
+        </table>
+
+        <table tableName="sys_user_menu_map" >
+            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
+            <generatedKey column="authorize_id" sqlStatement="Mysql" identity="true"></generatedKey>
+        </table>
+
+        <table tableName="sys_menu_part" >
+            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
+            <generatedKey column="part_id" sqlStatement="Mysql" identity="true"></generatedKey>
+        </table>
+
+        <table tableName="sys_role_menu_part" >
+            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
+            <generatedKey column="authorize_id" sqlStatement="Mysql" identity="true"></generatedKey>
+        </table>
+
+        <table tableName="sys_user_menu_part" >
+            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
+            <generatedKey column="authorize_id" sqlStatement="Mysql" identity="true"></generatedKey>
+        </table>
+    </context>
+</generatorConfiguration>
