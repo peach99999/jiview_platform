@@ -34,6 +34,7 @@ public class LoginController {
     @ApiOperation(value = "后台管理登录", httpMethod = "POST")
     @PostMapping(value = "")
     public ResultBO<UserForReturnDTO> loginAdmin(@RequestBody LoginParam loginParam) {
+
         return loginService.login(loginParam, httpServletRequest);
     }
 
