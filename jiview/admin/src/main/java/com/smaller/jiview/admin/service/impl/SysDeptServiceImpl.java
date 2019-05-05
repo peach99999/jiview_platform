@@ -3,10 +3,13 @@ package com.smaller.jiview.admin.service.impl;
 import com.smaller.jiview.admin.dao.query.SysDeptQuery;
 import com.smaller.jiview.admin.pojo.param.SysDeptListParam;
 import com.smaller.jiview.admin.pojo.param.SysDeptRemoveParam;
+import com.smaller.jiview.admin.pojo.param.SysDeptSaveOrUpdateParam;
 import com.smaller.jiview.admin.service.SysDeptService;
 import com.smaller.jiview.core.dao.mapper.SysDeptMapper;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
+import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
 import com.smaller.jiview.core.pojo.model.SysDept;
+import com.smaller.jiview.core.util.BeanUtil;
 import com.smaller.jiview.core.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +53,24 @@ public class SysDeptServiceImpl implements SysDeptService {
         for (Long deptId : sysDeptRemoveParam.getDeptIdList()) {
             sysDeptMapper.deleteByPrimaryKey(deptId);
         }
+        return result;
+    }
+
+    @Override
+    public ResultBO saveOrUpdateSysDept(SysDeptSaveOrUpdateParam sysDeptSaveOrUpdateParam) {
+        ResultBO<SysDept> result = new ResultBO<>();
+        LoginUserDTO loginUserDTO = sysDeptSaveOrUpdateParam.getLoginUserDTO();
+
+        SysDept sysDept = new SysDept();
+        BeanUtil.springCopy(sysDeptSaveOrUpdateParam, sysDept);
+
+        if (sysDeptSaveOrUpdateParam.getDeptId() != null) {
+            sysDeptMapper.updateByPrimaryKeySelective(sysDept);
+        } else {
+            sysDept.setCreateUserId(loginUserDTO.getLoginUserPkid());
+            sysDeptMapper.insertSelective(sysDept);
+        }
+        result.setRow(sysDept);
         return result;
     }
 }
