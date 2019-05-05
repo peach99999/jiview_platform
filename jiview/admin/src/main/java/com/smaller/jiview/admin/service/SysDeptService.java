@@ -45,4 +45,11 @@ public interface SysDeptService {
      */
     ResultBO saveOrUpdateSysDept(SysDeptSaveOrUpdateParam sysDeptSaveOrUpdateParam);
 
+    /**
+     * 新增部门查询供选择部门下拉列表
+     *
+     * @return ResultBo
+     */
+    ResultBO listDept();
+
 }

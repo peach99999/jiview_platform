@@ -73,4 +73,11 @@ public class SysDeptServiceImpl implements SysDeptService {
         result.setRow(sysDept);
         return result;
     }
+
+    @Override
+    public ResultBO listDept() {
+        ResultBO<SysDept> result = new ResultBO<>();
+        result.setRows(sysDeptQuery.listDept());
+        return result;
+    }
 }

@@ -8,6 +8,9 @@
     </sql>
     <sql id="list_where">
         where 1 = 1
+        <if test="parentId != null and parentId != ''" >
+            AND parent_id = #{parentId}
+        </if>
     </sql>
     <select id="list" resultType="com.smaller.jiview.core.pojo.model.SysDept">
        SELECT
@@ -21,7 +24,7 @@
         create_user_id
         FROM sys_dept
         <include refid="list_where"/>
-        ORDER BY dept_id
+        ORDER BY dept_id,sortno
         <include refid="common_limit" />
     </select>
     <select id="count" resultType="java.lang.Long">
@@ -29,5 +32,13 @@
         COUNT(*)
         FROM sys_dept
         <include refid="list_where"/>
+    </select>
+
+    <select id="listDept" resultType="com.smaller.jiview.core.pojo.model.SysDept">
+        SELECT
+        dept_id,
+        parent_id,
+        dept_name
+        FROM sys_dept
     </select>
 </mapper>

@@ -35,12 +35,15 @@ public class SysDeptController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", value = "页码", dataType = "int", paramType = "query", required = false),
             @ApiImplicitParam(name = "pageSize", value = "页容量", dataType = "int", paramType = "query", required = false),
+            @ApiImplicitParam(name = "parentId", value = "父部门id", dataType = "long", paramType = "query", required = false),
     })
     public ResultBO<SysDept> list(
             @RequestParam(required = false) Integer pageNo,
-            @RequestParam(required = false) Integer pageSize
+            @RequestParam(required = false) Integer pageSize,
+            @RequestParam(required = false) Long parentId
     ) {
         SysDeptListParam sysDeptListParam = new SysDeptListParam();
+        sysDeptListParam.setParentId(parentId);
         sysDeptListParam.setPageNo(pageNo);
         sysDeptListParam.setPageSize(pageSize);
         return sysDeptService.list(sysDeptListParam);
@@ -50,13 +53,13 @@ public class SysDeptController {
 
     /**
      * @Description:按条件查找角色
-     * @author licm
-     * @date 2018-11-10
+     * @author xiagf
+     * @date 2019-05-05
      */
     @ApiOperation(value = "获取部门详情", httpMethod = "GET")
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/{deptId}", method = RequestMethod.GET)
+    @GetMapping(value = "/{deptId}")
     public ResultBO<SysDept> get(
             @ApiParam(value = "deptId", required = true) @PathVariable Long deptId
     ) {
@@ -65,12 +68,12 @@ public class SysDeptController {
     }
 
     /**
-     * @Description: 批量删除角色
-     * @author licm
-     * @date 2018-11-09
+     * @Description: 批量删除部门
+     * @author xiagf
+     * @date 2019-05-05
      */
-    @ApiOperation(value = "批量删除角色", httpMethod = "POST")
-    @RequestMapping(value = "/remove", method = RequestMethod.POST)
+    @ApiOperation(value = "批量删除部门", httpMethod = "POST")
+    @PostMapping(value = "/remove")
     public ResultBO remove(
             @RequestBody SysDeptRemoveParam sysDeptRemoveParam
             ) {
@@ -82,8 +85,8 @@ public class SysDeptController {
 
     /**
      * @Description:新增部门
-     * @author xuyq
-     * @date 2019-03-01
+     * @author xiagf
+     * @date 2019-05-05
      */
     @ApiOperation(value = "新增部门", httpMethod = "POST")
     @PostMapping(value = "/save-or-update")
@@ -93,5 +96,17 @@ public class SysDeptController {
         sysDeptSaveOrUpdateParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
 
         return sysDeptService.saveOrUpdateSysDept(sysDeptSaveOrUpdateParam);
+    }
+
+    /**
+     * @Description:新增部门供选择下拉部门列表
+     * @author xiagf
+     * @date 2019-05-05
+     */
+    @ApiOperation(value = "新增部门供选择下拉部门列表", httpMethod = "GET")
+    @GetMapping(value = "/dept-list")
+    public ResultBO deptList(
+    ) {
+        return sysDeptService.listDept();
     }
 }

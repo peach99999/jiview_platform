@@ -16,5 +16,7 @@ public interface SysDeptQuery {
 
     List<SysDept> list(SysDeptListParam sysDeptListParam);
 
+    List<SysDept> listDept();
+
     Long count(SysDeptListParam sysDeptListParam);
 }
