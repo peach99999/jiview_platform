@@ -22,3 +22,12 @@ spring:
     host: 119.57.73.147
     password: 123456
     port: 6379
+jwt:
+  issuer: platform_admin_issuer                 # 该JWT的签发者
+  audience: platform_admin_audience             # 该JWT的验证者
+  expiresInMinute: 600                        # 该JWT的有效分钟数
+  signKey: NvLVyY}rf4ZmXLZ?]w@sq.63AuJmUNqU   # 签名key
+server:
+  port: 8288
+  servlet:
+    context-path: /
