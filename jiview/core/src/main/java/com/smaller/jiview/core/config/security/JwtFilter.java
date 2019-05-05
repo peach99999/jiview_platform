@@ -1,5 +1,6 @@
 package com.smaller.jiview.core.config.security;
 
+import com.smaller.jiview.core.constant.Constants;
 import com.smaller.jiview.core.properties.JwtProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +59,8 @@ public class JwtFilter extends OncePerRequestFilter {
                         && jwtHelper.validateToken(authToken, userDetails)) {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(
-                            request));
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    request.setAttribute(Constants.JWT_USER_KEY, userDetails);
                     logger.info("authenticated user " + username + ", setting security context");
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }

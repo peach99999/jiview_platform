@@ -4,6 +4,7 @@ package com.smaller.jiview.admin.service;
 import com.smaller.jiview.admin.pojo.param.LoginParam;
 import com.smaller.jiview.admin.pojo.param.ResetPwdParam;
 import com.smaller.jiview.admin.pojo.param.SysDeptListParam;
+import com.smaller.jiview.admin.pojo.param.SysDeptRemoveParam;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
 import com.smaller.jiview.core.pojo.model.SysDept;
 
@@ -23,5 +24,20 @@ public interface SysDeptService {
      * @return
      */
     ResultBO<SysDept> list(SysDeptListParam sysDeptListParam);
+
+    /**
+     * 部门详情
+     * @param deptId
+     * @return
+     */
+    ResultBO get(Long deptId);
+
+    /**
+     * 批量删除部门信息
+     *
+     * @param sysDeptRemoveParam
+     * @return ResultBo
+     */
+    ResultBO remove(SysDeptRemoveParam sysDeptRemoveParam);
 
 }

@@ -129,6 +129,7 @@ public class JwtHelper {
 
         loginUserDTO.setLoginUserPkid(Long.parseLong(jwtUser.getId()));
         loginUserDTO.setLoginUserName(jwtUser.getUsername());
+        loginUserDTO.setUserType(jwtUser.getUserType());
         loginUserDTO.setIp(HttpUtil.getClientRealIP(request));
         loginUserDTO.setRequestUri(request.getRequestURI());
 

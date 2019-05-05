@@ -14,31 +14,14 @@ public final class JwtUserFactory {
     public static JwtUser create(SysUser SysUser) {
         return new JwtUser(
                 String.valueOf(SysUser.getUserId()),
-                SysUser.getMobile(),
+                SysUser.getAccount(),
                 null,
                 SysUser.getMobile(),
+                SysUser.getUserType(),
                 null,
                 null
         );
     }
 
-//    public static JwtUser create(OrgUser orgUser) {
-//        return new JwtUser(
-//                String.valueOf(orgUser.getPkid()),
-//                orgUser.getUserMobile(),
-//                null,
-//                orgUser.getUserMobile(),
-//                orgUser.getUserUuid(),
-//                orgUser.getSupplierPkid(),
-//                null,
-//                null
-//        );
-//    }
-
-    private static List<GrantedAuthority> mapToGrantedAuthorities(List<String> authorities) {
-        return authorities.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-    }
 }
 
