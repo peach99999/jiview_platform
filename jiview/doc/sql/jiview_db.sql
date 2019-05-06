@@ -150,7 +150,7 @@ CREATE TABLE `sys_user` (
   `locked` bit(1) DEFAULT b'0' COMMENT '锁定标志(1:锁定;0:激活)',
   `remark` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '备注',
   `user_type` tinyint(4) DEFAULT NULL COMMENT '人员类型(1:业务人员;2:管理员;3:系统内置人员;)',
-  `enabled` bit(1) DEFAULT b'0' COMMENT '启用状态(1:起用;0:不启用)',
+  `enabled` bit(1) DEFAULT b'0' COMMENT '启用状态(1:启用;0:不启用)',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   `create_user_id` bigint(20) DEFAULT NULL COMMENT '创建人ID',
   PRIMARY KEY (`user_id`)
