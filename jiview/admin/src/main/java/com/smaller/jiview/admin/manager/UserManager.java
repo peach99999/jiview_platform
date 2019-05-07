@@ -1,7 +1,7 @@
 package com.smaller.jiview.admin.manager;
 
 
-import com.smaller.jiview.core.pojo.model.SysUser;
+import com.smaller.jiview.admin.platform.system.model.SysUser;
 
 /**
  * Created by xiagf on 2019/03/01

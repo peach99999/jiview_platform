@@ -1,11 +1,11 @@
 package com.smaller.jiview.admin.service;
 
 
-import com.smaller.jiview.admin.pojo.param.*;
+import com.smaller.jiview.admin.platform.system.model.SysDept;
+import com.smaller.jiview.admin.pojo.param.SysDeptListParam;
+import com.smaller.jiview.admin.pojo.param.SysDeptRemoveParam;
+import com.smaller.jiview.admin.pojo.param.SysDeptSaveOrUpdateParam;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
-import com.smaller.jiview.core.pojo.model.SysDept;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 后台管理登录Service

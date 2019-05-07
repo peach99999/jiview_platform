@@ -1,9 +1,8 @@
 package com.smaller.jiview.admin.config.security;
 
 import com.smaller.jiview.admin.manager.UserManager;
+import com.smaller.jiview.admin.platform.system.model.SysUser;
 import com.smaller.jiview.core.config.security.JwtUser;
-import com.smaller.jiview.core.config.security.JwtUserFactory;
-import com.smaller.jiview.core.pojo.model.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -96,6 +96,7 @@
             <artifactId>mybatis-typehandlers-jsr310</artifactId>
             <version>1.0.2</version>
         </dependency>
+
         <!-- Swagger API文档 -->
         <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
         <dependency>
@@ -360,7 +361,7 @@
                             </includes>
                         </fileset>
                         <fileset>
-                            <directory>${basedir}/src/main/java/com/envision/sairen/core/dao/mapper</directory>
+                            <directory>${basedir}/src/main/java/com/smaller/jivew/core/dao/mapper</directory>
                             <followSymlinks>false</followSymlinks>
                             <useDefaultExcludes>true</useDefaultExcludes>
                             <includes>
@@ -368,7 +369,7 @@
                             </includes>
                         </fileset>
                         <fileset>
-                            <directory>${basedir}/src/main/java/com/envision/sairen/core/pojo/model</directory>
+                            <directory>${basedir}/src/main/java/com/smaller/jivew/core/pojo/model</directory>
                             <followSymlinks>false</followSymlinks>
                             <useDefaultExcludes>true</useDefaultExcludes>
                             <includes>

@@ -82,7 +82,7 @@ CREATE TABLE `sys_menu_part` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
-  `rolet_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+  `role_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
   `role_name` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '角色名称',
   `dept_id` bigint(20) DEFAULT NULL COMMENT '部门ID',
   `roletype` tinyint(4) DEFAULT '0' COMMENT '角色类型(1:业务角色;2:管理角色 ;3:系统内置角色)',

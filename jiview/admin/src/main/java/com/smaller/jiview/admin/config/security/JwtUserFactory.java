@@ -1,11 +1,8 @@
-package com.smaller.jiview.core.config.security;
+package com.smaller.jiview.admin.config.security;
 
-import com.smaller.jiview.core.pojo.model.SysUser;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.smaller.jiview.admin.platform.system.model.SysUser;
+import com.smaller.jiview.core.config.security.JwtUser;
 
 public final class JwtUserFactory {
     private JwtUserFactory() {

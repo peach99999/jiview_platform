@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smaller.jiview.admin.platform.system.mapper.SysMenuMapper">
+  <resultMap id="BaseResultMap" type="com.smaller.jiview.admin.platform.system.model.SysMenu">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <result column="menu_id" jdbcType="BIGINT" property="menuId" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+    <result column="iconcls" jdbcType="VARCHAR" property="iconcls" />
+    <result column="expanded" jdbcType="BIT" property="expanded" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="leaf" jdbcType="BIT" property="leaf" />
+    <result column="sortno" jdbcType="INTEGER" property="sortno" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+  </resultMap>
+</mapper>

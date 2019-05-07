@@ -53,6 +53,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 // 本例中，我们还是通过Spring Security的 @UserDetailsService 进行了数据查询
                 // 但简单验证的话，你可以采用直接验证token是否合法来避免昂贵的数据查询
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+//                UserDetails userDetails = null;
 
                 if (userDetails != null
                         && StringUtils.isNotEmpty(authToken)

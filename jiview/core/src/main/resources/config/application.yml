@@ -15,6 +15,7 @@ spring:
   aop:
     auto: true
   datasource:
+    initialize=false:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       primary:  #主库数据源
@@ -108,3 +109,7 @@ spring:
       max-file-size: 10000MB
       max-request-size: 10000MB
       resolve-lazily: true
+mapper:
+  mappers: tk.mybatis.mapper.common.Mapper,tk.mybatis.mapper.common.special.InsertListMapper
+  not-empty: false
+  identity: mysql

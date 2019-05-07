@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smaller.jiview.admin.platform.system.mapper.SysRoleMapper">
+  <resultMap id="BaseResultMap" type="com.smaller.jiview.admin.platform.system.model.SysRole">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <result column="role_id" jdbcType="BIGINT" property="roleId" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
+    <result column="roletype" jdbcType="TINYINT" property="roletype" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="locked" jdbcType="BIT" property="locked" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+  </resultMap>
+</mapper>

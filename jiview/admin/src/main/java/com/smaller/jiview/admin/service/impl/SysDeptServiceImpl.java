@@ -1,14 +1,13 @@
 package com.smaller.jiview.admin.service.impl;
 
-import com.smaller.jiview.admin.dao.query.SysDeptQuery;
+import com.smaller.jiview.admin.platform.system.mapper.SysDeptMapper;
+import com.smaller.jiview.admin.platform.system.model.SysDept;
 import com.smaller.jiview.admin.pojo.param.SysDeptListParam;
 import com.smaller.jiview.admin.pojo.param.SysDeptRemoveParam;
 import com.smaller.jiview.admin.pojo.param.SysDeptSaveOrUpdateParam;
 import com.smaller.jiview.admin.service.SysDeptService;
-import com.smaller.jiview.core.dao.mapper.SysDeptMapper;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
 import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
-import com.smaller.jiview.core.pojo.model.SysDept;
 import com.smaller.jiview.core.util.BeanUtil;
 import com.smaller.jiview.core.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +15,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SysDeptServiceImpl implements SysDeptService {
-
-    @Autowired
-    private SysDeptQuery sysDeptQuery;
 
     @Autowired
     private SysDeptMapper sysDeptMapper;
@@ -30,10 +26,10 @@ public class SysDeptServiceImpl implements SysDeptService {
         // 设置分页参数
         sysDeptListParam.setStartRow(CommonUtil.calcStartRow(sysDeptListParam));
         // 查询部门数量
-        result.setCount(sysDeptQuery.count(sysDeptListParam));
+        result.setCount(sysDeptMapper.count(sysDeptListParam));
         if (result.getCount() > 0) {
             // 查询部门列表
-            result.setRows(sysDeptQuery.list(sysDeptListParam));
+            result.setRows(sysDeptMapper.list(sysDeptListParam));
         }
         return result;
     }
@@ -41,7 +37,9 @@ public class SysDeptServiceImpl implements SysDeptService {
     @Override
     public ResultBO<SysDept> get(Long deptId) {
         ResultBO<SysDept> result = new ResultBO<>();
-        result.setRow(sysDeptMapper.selectByPrimaryKey(deptId));
+        SysDept sysDept = new SysDept();
+        sysDept.setDeptId(deptId);
+        result.setRow(sysDeptMapper.selectByPrimaryKey(sysDept));
         return result;
     }
 
@@ -51,7 +49,9 @@ public class SysDeptServiceImpl implements SysDeptService {
 
         // 循环删除指定角色
         for (Long deptId : sysDeptRemoveParam.getDeptIdList()) {
-            sysDeptMapper.deleteByPrimaryKey(deptId);
+            SysDept sysDept = new SysDept();
+            sysDept.setDeptId(deptId);
+            sysDeptMapper.deleteByPrimaryKey(sysDept);
         }
         return result;
     }
@@ -77,7 +77,7 @@ public class SysDeptServiceImpl implements SysDeptService {
     @Override
     public ResultBO listDept() {
         ResultBO<SysDept> result = new ResultBO<>();
-        result.setRows(sysDeptQuery.listDept());
+        result.setRows(sysDeptMapper.listDept());
         return result;
     }
 }

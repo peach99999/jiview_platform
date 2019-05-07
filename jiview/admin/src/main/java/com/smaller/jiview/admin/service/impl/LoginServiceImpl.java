@@ -1,21 +1,21 @@
 package com.smaller.jiview.admin.service.impl;
 
 import com.smaller.jiview.admin.manager.UserManager;
+import com.smaller.jiview.admin.platform.system.mapper.SysUserMapper;
+import com.smaller.jiview.admin.platform.system.model.SysUser;
 import com.smaller.jiview.admin.pojo.param.LoginParam;
 import com.smaller.jiview.admin.pojo.param.ResetPwdParam;
 import com.smaller.jiview.admin.service.LoginService;
 import com.smaller.jiview.core.config.security.JwtHelper;
-import com.smaller.jiview.core.dao.mapper.SysUserMapper;
 import com.smaller.jiview.core.exception.BizException;
 import com.smaller.jiview.core.message.AdminMessage;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
 import com.smaller.jiview.core.pojo.dto.JwtDTO;
 import com.smaller.jiview.core.pojo.dto.UserForReturnDTO;
-import com.smaller.jiview.core.pojo.model.SysUser;
-import com.smaller.jiview.core.pojo.model.SysUserCriteria;
 import com.smaller.jiview.core.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -85,10 +85,9 @@ public class LoginServiceImpl implements LoginService {
             throw new BizException(AdminMessage.NO_SUCH_USER);
         }
 
-        SysUserCriteria orgUserCriteria = new SysUserCriteria();
-        orgUserCriteria.createCriteria()
-                .andAccountEqualTo(orgUser.getAccount());
-        bo.setOpResult(sysUserMapper.updateByExampleSelective(orgUser, orgUserCriteria));
+        Example example = new Example(SysUser.class);
+        example.createCriteria().andEqualTo("account",orgUser.getAccount());
+        bo.setOpResult(sysUserMapper.updateByExampleSelective(orgUser, example));
 
         return bo;
     }

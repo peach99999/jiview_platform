@@ -65,5 +65,5 @@
 
     <logger name="io.swagger.models.parameters.AbstractSerializableParameter" additivity="false" level="error"/>
     <logger name="com.smaller.jiview.core.dao" level="debug"/>
-    <logger name="com.smaller.jiview.admin.dao" level="debug"/>
+    <logger name="com.smaller.jiview.admin.platform.system" level="debug"/>
 </configuration>

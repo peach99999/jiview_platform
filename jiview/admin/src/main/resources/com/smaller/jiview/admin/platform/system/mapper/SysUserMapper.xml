@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smaller.jiview.admin.platform.system.mapper.SysUserMapper">
+  <resultMap id="BaseResultMap" type="com.smaller.jiview.admin.platform.system.model.SysUser">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
+    <result column="locked" jdbcType="BIT" property="locked" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="user_type" jdbcType="TINYINT" property="userType" />
+    <result column="enabled" jdbcType="BIT" property="enabled" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+  </resultMap>
+</mapper>
