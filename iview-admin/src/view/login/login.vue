@@ -7,8 +7,8 @@
     <div class="login-con">
       <Card icon="log-in" title="欢迎登录" :bordered="false">
         <div class="form-con">
-          <login-form @on-success-valid="handleSubmit"></login-form>
-          <p class="login-tip">输入任意用户名和密码即可</p>
+          <login-form @on-success-valid="handleSubmit" :loading="loading"></login-form>
+          <!--<p class="login-tip">输入任意用户名和密码即可</p>-->
         </div>
       </Card>
     </div>
@@ -19,21 +19,33 @@
 import LoginForm from '_c/login-form'
 import { mapActions } from 'vuex'
 export default {
+  data () {
+    return {
+      loading:false
+    };
+  },
   components: {
     LoginForm
   },
   methods: {
     ...mapActions([
       'handleLogin',
-      'getUserInfo'
+//      'getUserInfo'
     ]),
     handleSubmit ({ userName, password }) {
+      this.loading = true;
       this.handleLogin({ userName, password }).then(res => {
-        this.getUserInfo().then(res => {
-          this.$router.push({
+        this.loading = false;
+        this.$router.push({
             name: this.$config.homeName
-          })
         })
+        console.log('router',this.$router)
+//        this.getUserInfo().then(res => {
+//          this.loading = false;
+//          this.$router.push({
+//            name: this.$config.homeName
+//          })
+//        })
       })
     }
   }
