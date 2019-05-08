@@ -20,6 +20,9 @@
     <if test="deptId != null and deptId != ''">
       AND parent_id = #{deptId}
     </if>
+    <if test="deptName != null and deptName != ''">
+      AND dept_name LIKE CONCAT('%',#{deptName},'%')
+    </if>
   </sql>
   <select id="list" resultType="com.smaller.jiview.admin.platform.system.model.SysDept">
       SELECT

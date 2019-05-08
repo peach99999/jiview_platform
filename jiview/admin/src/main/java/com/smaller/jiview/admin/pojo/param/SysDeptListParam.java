@@ -14,4 +14,7 @@ public class SysDeptListParam extends BaseListParam {
 
     @ApiModelProperty("部门id")
     private Long deptId;
+
+    @ApiModelProperty("部门名称")
+    private String deptName;
 }

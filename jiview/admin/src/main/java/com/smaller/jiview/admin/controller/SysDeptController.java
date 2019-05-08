@@ -36,14 +36,17 @@ public class SysDeptController {
             @ApiImplicitParam(name = "pageNo", value = "页码", dataType = "int", paramType = "query", required = false),
             @ApiImplicitParam(name = "pageSize", value = "页容量", dataType = "int", paramType = "query", required = false),
             @ApiImplicitParam(name = "deptId", value = "部门id", dataType = "long", paramType = "query", required = false),
+            @ApiImplicitParam(name = "deptName", value = "部门名称", dataType = "string", paramType = "query", required = false),
     })
     public ResultBO<SysDept> list(
             @RequestParam(required = false) Integer pageNo,
             @RequestParam(required = false) Integer pageSize,
-            @RequestParam(required = false) Long deptId
+            @RequestParam(required = false) Long deptId,
+            @RequestParam(required = false) String deptName
     ) {
         SysDeptListParam sysDeptListParam = new SysDeptListParam();
         sysDeptListParam.setDeptId(deptId);
+        sysDeptListParam.setDeptName(deptName);
         sysDeptListParam.setPageNo(pageNo);
         sysDeptListParam.setPageSize(pageSize);
         return sysDeptService.list(sysDeptListParam);
