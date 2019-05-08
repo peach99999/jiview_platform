@@ -50,6 +50,26 @@ export default [
       }
     ]
   },
+  {
+    path: '/organizationalManagement',
+    name: 'organizationalManagement',
+    component: Main,
+    meta: {
+      hideInBread: true,
+      // hideInMenu: true
+    },
+    children: [
+      {
+        path: 'organizationalManagement',
+        name: 'organizationalManagement',
+        meta: {
+          // icon: 'md-notifications',
+          title: '组织机构管理'
+        },
+        component: () => import('@/pages/organizationalManagement/organizationalManagement.vue')
+      }
+    ]
+  },
   // {
   //   path: '',
   //   name: 'doc',
@@ -84,7 +104,7 @@ export default [
     component: Main,
     meta: {
       hideInBread: true,
-      hideInMenu: true
+      // hideInMenu: true
     },
     children: [
       {
@@ -104,7 +124,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '组件',
-      hideInMenu: true
+      // hideInMenu: true
     },
     component: Main,
     children: [
@@ -224,7 +244,7 @@ export default [
     meta: {
       icon: 'md-cloud-upload',
       title: '数据上传',
-      hideInMenu: true
+      // hideInMenu: true
     },
     component: Main,
     children: [
@@ -254,7 +274,7 @@ export default [
     meta: {
       icon: 'ios-stats',
       title: 'EXCEL导入导出',
-      hideInMenu: true
+      // hideInMenu: true
     },
     component: Main,
     children: [
@@ -283,7 +303,7 @@ export default [
     name: 'tools_methods',
     meta: {
       hideInBread: true,
-      hideInMenu: true
+      // hideInMenu: true
     },
     component: Main,
     children: [
@@ -304,7 +324,7 @@ export default [
     name: 'i18n',
     meta: {
       hideInBread: true,
-      hideInMenu: true
+      // hideInMenu: true
     },
     component: Main,
     children: [
@@ -324,7 +344,7 @@ export default [
     name: 'error_store',
     meta: {
       hideInBread: true,
-      hideInMenu: true
+      // hideInMenu: true
     },
     component: Main,
     children: [
@@ -344,7 +364,7 @@ export default [
     name: 'error_logger',
     meta: {
       hideInBread: true,
-      hideInMenu: true
+      // hideInMenu: true
     },
     component: Main,
     children: [
@@ -364,7 +384,7 @@ export default [
     name: 'directive',
     meta: {
       hideInBread: true,
-      hideInMenu: true
+      // hideInMenu: true
     },
     component: Main,
     children: [
@@ -385,7 +405,7 @@ export default [
     meta: {
       icon: 'md-menu',
       title: '多级菜单',
-      hideInMenu: true
+      // hideInMenu: true
     },
     component: Main,
     children: [

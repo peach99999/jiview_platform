@@ -17,12 +17,15 @@ class HttpRequest {
     this.baseUrl = baseUrl
     this.queue = {}
   }
-  getInsideConfig () {
+  getInsideConfig (url) {
     const config = {
       baseURL: this.baseUrl,
       headers: {
         //
       }
+    }
+    if(url!== 'login'){
+      config.headers['Authorization'] = store.state.user.token
     }
     return config
   }
