@@ -9,30 +9,53 @@
         </Col>
         <Col span="16">
           <div>
-            <Button>新增</Button>
+            <Button @click="addSelectedInfo">新增</Button>
             <Button>修改</Button>
-            <Button>删除</Button>
+            <Button @click="deleteSelectedInfo">删除</Button>
             <Input v-model="searchValue" placeholder="请输入部门名称"  @on-change="searchValueChange"/>
             <Button @click="searchDepartmentInfo">查询</Button>
             <Button @click="refreshDepartmentInfo">刷新</Button>
           </div>
           <div>
-            <Table :columns="column" :data="tableData"></Table>
+            <Table ref="selection" :columns="column" :data="tableData" @on-selection-change="handleSelectChange"></Table>
             <Page :current="filter.pageNo" @on-change="pageNoChange" @on-page-size-change="pageSizeChange" :total="total" show-elevator show-sizer show-total/>
           </div>
         </Col>
       </Row>
+      <Modal v-model="modelVisible" width="560">
+        <Form ref="formValidate" :model="formValidate" :rules="ruleValidate"  :label-width="80">
+          <FormItem label="部门名称" prop="deptName">
+            <Input v-model="formValidate.deptName" ></Input>
+          </FormItem>
+          <FormItem label="上级部门" prop="deptId">
+            <Select v-model="formValidate.deptId" clearable >
+              <Option v-for="item in selectDeptList" :value="item.deptName" :key="item.deptId">{{ item.deptName }}</Option>
+            </Select>
+          </FormItem>
+          <FormItem label="排序号">
+            <Input v-model="formValidate.sortno" ></Input>
+          </FormItem>
+          <FormItem label="备注">
+            <Input v-model="formValidate.remark" ></Input>
+          </FormItem>
+        </Form>
+      </Modal>
     </Card>
   </div>
 </template>
 <script>
-import { getDepartmentList } from '@/api/organizationalManagement';
+import { getDepartmentList,deleteDepartmentList,getSelectDepartmentList } from '@/api/organizationalManagement';
 export default {
   data () {
     return {
       loading:false, //树型结构列表 loading
       departmentList:[], //树型结构列表 展示全部部门
       column:[
+        {
+          type: 'selection',
+          width: 60,
+          align: 'center'
+        },
         {
           title:'部门名称',
           key:'deptName'
@@ -56,7 +79,24 @@ export default {
         pageSize:10
       },
       total:0,
-      searchValue:''
+      searchValue:'',
+      deleteSeletionList:[],
+      modelVisible:false,
+      formValidate: {
+        deptName: '',
+        deptId: '',
+        sortno: '',
+        remark: '',
+      },
+      ruleValidate: {
+        deptName: [
+          { required: true, message: '部门名称不能为空', trigger: 'blur' }
+        ],
+        deptId: [
+          { required: true, message: '上级部门不能为空', trigger: 'change' }
+        ]
+      },
+      selectDeptList:[]
     }
   },
   mounted () {
@@ -64,13 +104,13 @@ export default {
   },
   methods: {
     //获取部门列表信息
-    getDepartmentList(param){
+    getDepartmentList(param,flag){
       const self = this;
       self.loading = true;
       getDepartmentList(param).then(res => {
         let list = [...res.data.rows] || [];
         self.loading = false;
-        if(!param){
+        if(!param || flag){
           self.handleDepartmentList(list);
         }
         self.tableData = list;
@@ -180,7 +220,7 @@ export default {
       self.getDepartmentList(param);
     },
     //刷新按钮
-    refreshDepartmentInfo(){
+    refreshDepartmentInfo(flag){
       const self = this;
       self.filter.pageNo = 1;
       self.filter.pageSize = 10;
@@ -190,7 +230,44 @@ export default {
         pageSize: self.filter.pageSize,
         deptName: self.searchValue,
       }
-      self.getDepartmentList(param);
+      self.getDepartmentList(param,flag);
+    },
+    handleSelectChange(seletion){
+      const self = this;
+      self.deleteSeletionList = [];
+      for(let i = 0; i < seletion.length; i++){
+        self.deleteSeletionList.push(seletion[i].deptId)
+      }
+      console.log('self.deleteSeletionList:',self.deleteSeletionList)
+    },
+    deleteSelectedInfo(){
+      const self = this;
+      self.loading = true;
+      const param = {
+        deptIdList:self.deleteSeletionList
+      }
+      console.log('param',param)
+      deleteDepartmentList(param).then(res => {
+        self.refreshDepartmentInfo(true);
+        self.loading = false;
+      }).catch(err => {
+        console.log('err', err);
+        self.loading = false;
+      });
+    },
+    addSelectedInfo(){
+      const self = this;
+      self.modelVisible = true;
+      self.getSelectDepartmentList();
+    },
+    //新增（修改）弹出框 获取上级部门下拉框
+    getSelectDepartmentList(){
+      const self = this;
+      getSelectDepartmentList().then(res => {
+        self.selectDeptList = res.data.rows || [];
+      }).catch(err => {
+        console.log('err', err);
+      });
     }
   }
 }
