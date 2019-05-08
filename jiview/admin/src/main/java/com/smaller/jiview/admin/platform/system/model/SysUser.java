@@ -9,9 +9,10 @@ public class SysUser implements Serializable {
     /**
      * 用户ID
      */
-    @Column(name = "user_id")
+    @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
     /**
      * 用户名
@@ -88,19 +89,19 @@ public class SysUser implements Serializable {
     /**
      * 获取用户ID
      *
-     * @return user_id - 用户ID
+     * @return id - 用户ID
      */
-    public Long getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 
     /**
      * 设置用户ID
      *
-     * @param userId 用户ID
+     * @param id 用户ID
      */
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /**
@@ -343,7 +344,7 @@ public class SysUser implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", userId=").append(userId);
+        sb.append(", id=").append(id);
         sb.append(", userName=").append(userName);
         sb.append(", account=").append(account);
         sb.append(", password=").append(password);

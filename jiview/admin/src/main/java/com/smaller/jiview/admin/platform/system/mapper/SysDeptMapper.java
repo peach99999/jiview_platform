@@ -12,5 +12,4 @@ public interface SysDeptMapper extends Mapper<SysDept>, MySqlMapper<SysDept> {
 
     List<SysDept> listDept();
 
-    Long count(SysDeptListParam sysDeptListParam);
 }

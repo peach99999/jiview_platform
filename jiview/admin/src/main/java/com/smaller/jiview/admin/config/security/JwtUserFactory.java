@@ -10,7 +10,7 @@ public final class JwtUserFactory {
 
     public static JwtUser create(SysUser SysUser) {
         return new JwtUser(
-                String.valueOf(SysUser.getUserId()),
+                String.valueOf(SysUser.getId()),
                 SysUser.getAccount(),
                 null,
                 SysUser.getMobile(),

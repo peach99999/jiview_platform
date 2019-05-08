@@ -9,6 +9,7 @@ public class SysRoleMenuPart implements Serializable {
     /**
      * 权限ID
      */
+    @Id
     @Column(name = "authorize_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long authorizeId;

@@ -31,3 +31,7 @@ server:
   port: 8288
   servlet:
     context-path: /
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true

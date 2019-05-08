@@ -38,7 +38,7 @@ public class LoginServiceImpl implements LoginService {
         String userPwd = loginParam.getUserPwd();
 
         SysUser SysUser = userManager.getForAdminLogin(userLogin, userPwd);
-        Long userId = SysUser.getUserId();
+        Long userId = SysUser.getId();
 
         UserForReturnDTO userForReturnDTO = new UserForReturnDTO();
         JwtDTO jwtDTO = new JwtDTO();

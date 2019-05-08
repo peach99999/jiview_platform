@@ -12,6 +12,6 @@ import lombok.Data;
 @ApiModel("部门参数")
 public class SysDeptListParam extends BaseListParam {
 
-    @ApiModelProperty("父部门id")
-    private Long parentId;
+    @ApiModelProperty("部门id")
+    private Long deptId;
 }

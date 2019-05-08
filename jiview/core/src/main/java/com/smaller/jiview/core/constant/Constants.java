@@ -20,4 +20,10 @@ public class Constants {
      * url路径处理分隔符
      */
     public static final String URL_PATH_SEPARATOR = "/";
+
+    /**
+     * 分页参数：0-PAGE_NO, 10-PAGE_SIZE
+     */
+    public static final Integer PAGE_NO = 0;
+    public static final Integer PAGE_SIZE = 10;
 }

@@ -1,5 +1,6 @@
 package com.smaller.jiview.core;
 
+import com.github.pagehelper.PageHelper;
 import com.smaller.jiview.core.config.web.FQCNBeanNameGenerator;
 import com.smaller.jiview.core.config.web.MKRequestMappingHandlerMapping;
 import org.springframework.boot.SpringApplication;
@@ -12,6 +13,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import tk.mybatis.spring.annotation.MapperScan;
+
+import java.util.Properties;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, MultipartAutoConfiguration.class})
 @ComponentScan(basePackages = "com.smaller.*", nameGenerator = FQCNBeanNameGenerator.class)
@@ -35,5 +38,18 @@ public class Application extends SpringBootServletInitializer {
                 return new MKRequestMappingHandlerMapping();
             }
         };
+    }
+
+    //配置mybatis的分页插件pageHelper
+    @Bean
+    public PageHelper pageHelper() {
+        PageHelper pageHelper = new PageHelper();
+        Properties properties = new Properties();
+        properties.setProperty("offsetAsPageNum", "true");
+        properties.setProperty("rowBoundsWithCount", "true");
+        properties.setProperty("reasonable", "true");
+        properties.setProperty("dialect", "mysql");    //配置mysql数据库的方言
+        pageHelper.setProperties(properties);
+        return pageHelper;
     }
 }

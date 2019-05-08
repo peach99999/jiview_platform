@@ -9,6 +9,7 @@ public class MenuPart implements Serializable {
     /**
      * 部件ID
      */
+    @Id
     @Column(name = "part_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long partId;

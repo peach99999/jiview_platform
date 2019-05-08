@@ -9,6 +9,7 @@ public class SysRole implements Serializable {
     /**
      * 角色ID
      */
+    @Id
     @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roleId;

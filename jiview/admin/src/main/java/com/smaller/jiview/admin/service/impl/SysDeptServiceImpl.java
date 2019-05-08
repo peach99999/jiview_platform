@@ -1,5 +1,8 @@
 package com.smaller.jiview.admin.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.smaller.jiview.admin.manager.PagerHelpManager;
 import com.smaller.jiview.admin.platform.system.mapper.SysDeptMapper;
 import com.smaller.jiview.admin.platform.system.model.SysDept;
 import com.smaller.jiview.admin.pojo.param.SysDeptListParam;
@@ -13,25 +16,28 @@ import com.smaller.jiview.core.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SysDeptServiceImpl implements SysDeptService {
 
     @Autowired
     private SysDeptMapper sysDeptMapper;
 
+    @Autowired
+    private PagerHelpManager pagerHelpManager;
+
     @Override
     public ResultBO<SysDept> list(SysDeptListParam sysDeptListParam) {
-        ResultBO<SysDept> result = new ResultBO<>();
-
-        // 设置分页参数
-        sysDeptListParam.setStartRow(CommonUtil.calcStartRow(sysDeptListParam));
-        // 查询部门数量
-        result.setCount(sysDeptMapper.count(sysDeptListParam));
-        if (result.getCount() > 0) {
-            // 查询部门列表
-            result.setRows(sysDeptMapper.list(sysDeptListParam));
+        if (sysDeptListParam.getPageSize() != null && sysDeptListParam.getPageSize() != null) {
+            PageHelper.startPage(sysDeptListParam.getPageNo(), sysDeptListParam.getPageSize());
+        }else{
+            pagerHelpManager.setStartPage();
         }
+        List<SysDept> deptList = sysDeptMapper.list(sysDeptListParam);
+        ResultBO<SysDept> result = new ResultBO<>(deptList);
         return result;
+
     }
 
     @Override

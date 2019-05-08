@@ -9,6 +9,7 @@ public class SysMenu implements Serializable {
     /**
      * 菜单ID
      */
+    @Id
     @Column(name = "menu_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long menuId;
