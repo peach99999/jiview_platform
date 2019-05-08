@@ -24,3 +24,18 @@ export const getSelectDepartmentList = () => {
     method: 'get'
   });
 };
+//新增（修改）部门信息
+export const addDepartmentList = (params) => {
+  return axios.request({
+    url: constData.API_BEGIN_POINT + '/sys-dept/save-or-update',
+    method: 'post',
+    data: params
+  });
+};
+//获取部门信息详情
+export const getDepartmentDetail = (deptId) => {
+  return axios.request({
+    url: constData.API_BEGIN_POINT + '/sys-dept/'+deptId,
+    method: 'get'
+  });
+};
