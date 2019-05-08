@@ -12,9 +12,9 @@
             <Button>新增</Button>
             <Button>修改</Button>
             <Button>删除</Button>
-            <Input />
-            <Button>查询</Button>
-            <Button>刷新</Button>
+            <Input v-model="searchValue" placeholder="请输入部门名称"  @on-change="searchValueChange"/>
+            <Button @click="searchDepartmentInfo">查询</Button>
+            <Button @click="refreshDepartmentInfo">刷新</Button>
           </div>
           <div>
             <Table :columns="column" :data="tableData"></Table>
@@ -55,7 +55,8 @@ export default {
         pageNo:1,
         pageSize:10
       },
-      total:0
+      total:0,
+      searchValue:''
     }
   },
   mounted () {
@@ -81,14 +82,27 @@ export default {
     },
     // 页码变化
     pageNoChange (val) {
-      this.filter.pageNo = val;
-      this.getDepartmentList(this.filter);
+      const self = this;
+      self.filter.pageNo = val;
+      self.filter.pageSize = 10;
+      const param = {
+        pageNo: self.filter.pageNo,
+        pageSize: self.filter.pageSize,
+        deptName: self.searchValue || '',
+      }
+      self.getDepartmentList(param);
     },
     // 每页条数变化
     pageSizeChange (val) {
-      this.filter.pageNo = 1;
-      this.filter.pageSize = val;
-      this.getDepartmentList(this.filter);
+      const self = this;
+      self.filter.pageNo = 1;
+      self.filter.pageSize = val
+      const param = {
+        pageNo: self.filter.pageNo,
+        pageSize: self.filter.pageSize,
+        deptName: self.searchValue || '',
+      }
+      self.getDepartmentList(param);
     },
     //将获得数据转换成树型结构数据
     handleDepartmentList(list){
@@ -140,10 +154,41 @@ export default {
     clickTreeNodeChange(e){
       console.log('e',e)
       const self = this;
+      self.filter.pageNo = 1;
+      self.filter.pageSize = 10;
       const param = {
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
         deptId: e[0].deptId,
+      }
+      self.getDepartmentList(param);
+    },
+    //搜索框数据变化
+    searchValueChange (val){
+      console.log('searchValue:',this.searchValue)
+    },
+    //搜索按钮
+    searchDepartmentInfo(){
+      const self = this;
+      self.filter.pageNo = 1;
+      self.filter.pageSize = 10;
+      const param = {
+        pageNo: self.filter.pageNo,
+        pageSize: self.filter.pageSize,
+        deptName: self.searchValue,
+      }
+      self.getDepartmentList(param);
+    },
+    //刷新按钮
+    refreshDepartmentInfo(){
+      const self = this;
+      self.filter.pageNo = 1;
+      self.filter.pageSize = 10;
+      self.searchValue = ''
+      const param = {
+        pageNo: self.filter.pageNo,
+        pageSize: self.filter.pageSize,
+        deptName: self.searchValue,
       }
       self.getDepartmentList(param);
     }
