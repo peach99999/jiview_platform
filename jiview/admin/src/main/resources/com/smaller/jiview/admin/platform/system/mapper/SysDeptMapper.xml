@@ -24,7 +24,7 @@
       AND dept_name LIKE CONCAT('%',#{deptName},'%')
     </if>
   </sql>
-  <select id="list" resultType="com.smaller.jiview.admin.platform.system.model.SysDept">
+  <select id="listSysUser" resultType="com.smaller.jiview.admin.platform.system.model.SysDept">
       SELECT
       dept_id,
       parent_id,

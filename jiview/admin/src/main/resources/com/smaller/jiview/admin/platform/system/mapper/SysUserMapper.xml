@@ -5,7 +5,7 @@
     <!--
       WARNING - @mbggenerated
     -->
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="user_id" jdbcType="BIGINT" property="id" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="account" jdbcType="VARCHAR" property="account" />
     <result column="password" jdbcType="VARCHAR" property="password" />
@@ -20,4 +20,43 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
   </resultMap>
+
+  <sql id="list_where">
+    where 1 = 1
+    <if test="deptId != null and deptId != ''">
+      AND su.dept_id = #{deptId}
+    </if>
+    <if test="userName != null and userName != ''">
+      AND su.user_name LIKE CONCAT('%',#{userName},'%')
+    </if>
+    <if test="account != null and account != ''">
+      AND su.account LIKE CONCAT('%',#{account},'%')
+    </if>
+  </sql>
+
+  <sql id="list_from">
+      FROM sys_user su
+	  join sys_dept sd
+	  ON su.dept_id = sd.dept_id
+  </sql>
+
+  <select id="list" resultType="com.smaller.jiview.admin.pojo.model.ext.SysUserExt">
+    SELECT
+    su.id,
+    su.user_name,
+    su.account,
+    su.mobile,
+    su.email,
+    su.sex,
+    su.dept_id,
+    su.locked,
+    su.remark,
+    su.user_type,
+    su.enabled,
+    su.create_time,
+    sd.dept_name as deptName
+    <include refid="list_from"/>
+    <include refid="list_where" />
+    ORDER BY id
+  </select>
 </mapper>

@@ -21,5 +21,10 @@ public class UrlConstants {
      */
     public static final String ADMIN_SYS_DEPT_PREFIX = "/sys-dept";
 
+    /**
+     * Admin账户管理
+     */
+    public static final String ADMIN_SYS_USER_PREFIX = "/sys-user";
+
 
 }

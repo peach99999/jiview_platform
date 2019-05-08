@@ -10,6 +10,6 @@ import com.smaller.jiview.admin.platform.system.model.SysUser;
 public interface PagerHelpManager {
 
 
-    PageHelper setStartPage();
+    void setStartPage(Integer pageNo, Integer pageSize);
 
 }

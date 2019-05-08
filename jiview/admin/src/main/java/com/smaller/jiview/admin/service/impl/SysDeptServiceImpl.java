@@ -29,12 +29,8 @@ public class SysDeptServiceImpl implements SysDeptService {
 
     @Override
     public ResultBO<SysDept> list(SysDeptListParam sysDeptListParam) {
-        if (sysDeptListParam.getPageSize() != null && sysDeptListParam.getPageSize() != null) {
-            PageHelper.startPage(sysDeptListParam.getPageNo(), sysDeptListParam.getPageSize());
-        }else{
-            pagerHelpManager.setStartPage();
-        }
-        List<SysDept> deptList = sysDeptMapper.list(sysDeptListParam);
+        pagerHelpManager.setStartPage(sysDeptListParam.getPageNo(), sysDeptListParam.getPageSize());
+        List<SysDept> deptList = sysDeptMapper.listSysUser(sysDeptListParam);
         ResultBO<SysDept> result = new ResultBO<>(deptList);
         return result;
 

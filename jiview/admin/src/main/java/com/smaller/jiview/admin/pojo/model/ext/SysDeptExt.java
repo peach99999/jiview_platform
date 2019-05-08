@@ -12,12 +12,8 @@ import lombok.Data;
  * @date 2019-05-07
  */
 @Data
-@ApiModel("部门")
+@ApiModel("部门查询参数")
 public class SysDeptExt extends SysDept {
     @ApiModelProperty("用户名称")
     private String userName;
-
-    @ApiModelProperty("用户账户")
-    private String account;
-
 }

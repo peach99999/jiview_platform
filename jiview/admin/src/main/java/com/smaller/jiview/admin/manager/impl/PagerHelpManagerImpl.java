@@ -24,10 +24,13 @@ import java.util.List;
 @Service
 public class PagerHelpManagerImpl implements PagerHelpManager {
 
+
     @Override
-    public PageHelper setStartPage() {
-        PageHelper pageHelper = new PageHelper();
-        PageHelper.startPage(Constants.PAGE_NO, Constants.PAGE_SIZE);
-        return pageHelper;
+    public void setStartPage(Integer pageNo, Integer pageSize) {
+        if (pageNo != null && pageSize != null) {
+            PageHelper.startPage(pageNo, pageSize);
+        } else {
+            PageHelper.startPage(Constants.PAGE_NO, Constants.PAGE_SIZE);
+        }
     }
 }
