@@ -12,13 +12,19 @@
         <Col span="16">
         <div class="layout-table-list">
           <Card>
+            <div>
+              <Input v-model="searchValue" placeholder="请输入部门名称" class="table-search-input"  @on-change="searchValueChange"/>
+            </div>
+            <div class="search-button-group">
+              <Button @click="searchDepartmentInfo" type="success">查询</Button>
+              <Button @click="refreshDepartmentInfo" type="info">重置</Button>
+            </div>
+          </Card>
+          <Card>
             <div class="table-button-group">
               <Button @click="addSelectedInfo" type="primary">新增</Button>
               <Button @click="changeSelectedInfo" type="warning">修改</Button>
               <Button @click="deleteSelectedInfo" type="error">删除</Button>
-              <Input v-model="searchValue" placeholder="请输入部门名称" class="table-search-input"  @on-change="searchValueChange"/>
-              <Button @click="searchDepartmentInfo" type="success">查询</Button>
-              <Button @click="refreshDepartmentInfo" type="info">刷新</Button>
             </div>
             <div>
               <Table ref="selection" :columns="column" :data="tableData" @on-selection-change="handleSelectChange"></Table>
@@ -29,7 +35,7 @@
         </Col>
       </Row>
       <Modal v-model="modelVisible" width="560">
-        <Form ref="formValidate" :model="formValidate" :rules="ruleValidate"  :label-width="80">
+        <Form ref="formValidate" :model="formValidate" :rules="ruleValidate"  :label-width="80" class="form-modal">
           <FormItem label="部门名称" prop="deptName">
             <Input type="text" v-model.trim="formValidate.deptName" ></Input>
           </FormItem>
@@ -79,7 +85,7 @@ export default {
         },
         {
           title: '上级部门',
-          key: 'deptName'
+          key: 'parentDeptName'
         },
         {
           title: '排序号',
@@ -117,7 +123,8 @@ export default {
         ]
       },
       selectDeptList: [],
-      deleteModal: false
+      deleteModal: false,
+      nodeDeptId: ''
     }
   },
   mounted () {
@@ -214,6 +221,7 @@ export default {
     clickTreeNodeChange (e) {
       console.log('e', e)
       const self = this
+      self.nodeDeptId = e[0].deptId
       self.filter.pageNo = 1
       self.filter.pageSize = 10
       const param = {
@@ -245,6 +253,7 @@ export default {
       self.filter.pageNo = 1
       self.filter.pageSize = 10
       self.searchValue = ''
+      self.nodeDeptId = ''
       const param = {
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
@@ -345,9 +354,12 @@ export default {
     // 新增弹框
     addSelectedInfo () {
       const self = this
-      self.modelVisible = true
       self.$refs['formValidate'].resetFields()
+      if (self.nodeDeptId) {
+        self.formValidate.parentId = self.nodeDeptId
+      }
       self.getSelectDepartmentList()
+      self.modelVisible = true
     },
     // 新增（修改）弹出框 获取上级部门下拉框
     getSelectDepartmentList () {
@@ -378,7 +390,7 @@ export default {
       const param = {
         deptName: self.formValidate.deptName,
         leaf: true,
-        parentId: self.formValidate.deptId,
+        parentId: self.formValidate.parentId,
         remark: self.formValidate.remark,
         sortno: self.formValidate.sortno
       }
@@ -440,14 +452,19 @@ export default {
     margin: 20px 0 0 50px
   }
   .table-search-input{
-    width: 200px;
-    margin-left: 310px;
-    margin-right: 2px;
+    width: 300px;
   }
   .table-button-group Button{
     margin: 10px 5px 10px 0;
   }
   .table-page{
     margin-top: 20px;
+  }
+  .form-modal{
+    margin-top: 40px;
+  }
+  .search-button-group Button{
+    margin-top: 10px;
+    margin-right: 5px;
   }
 </style>

@@ -43,5 +43,6 @@ export default {
   org_tree_page: 'Org Tree',
   drag_drawer_page: 'Draggable Drawer',
   tree_select_page: 'Tree Selector',
-  organizationalManagement: 'Organizational Management'
+  organizationalManagement: 'Organizational Management',
+  management: 'System Management'
 }

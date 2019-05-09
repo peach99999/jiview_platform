@@ -43,5 +43,6 @@ export default {
   org_tree_page: '组织结构树',
   drag_drawer_page: '可拖动抽屉',
   tree_select_page: '树状下拉选择器',
-  organizationalManagement: '组织机构管理'
+  organizationalManagement: '组织机构管理',
+  management: '系统管理'
 }
