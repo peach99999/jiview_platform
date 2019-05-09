@@ -21,7 +21,7 @@ public class SysDeptManagerImpl implements SysDeptManager {
     @Override
     public List<SysDeptExt> listDeptParentName(List<SysDeptExt> list) {
         for (SysDeptExt sysDeptExt : list) {
-            if (sysDeptExt.getParentId() != 0) {
+            if (sysDeptExt.getParentId() != null && sysDeptExt.getParentId() != 0) {
                 SysDept sysDept = sysDeptMapper.selectByPrimaryKey(sysDeptExt.getParentId());
                 if (sysDept != null) {
                     sysDeptExt.setParentDeptName(sysDept.getDeptName());

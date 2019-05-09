@@ -18,7 +18,7 @@
   <sql id="list_where">
     where 1 = 1
     <if test="deptId != null and deptId != ''">
-      AND parent_id = #{deptId}
+      AND parent_id = #{deptId} or dept_id = #{deptId}
     </if>
     <if test="deptName != null and deptName != ''">
       AND dept_name LIKE CONCAT('%',#{deptName},'%')
