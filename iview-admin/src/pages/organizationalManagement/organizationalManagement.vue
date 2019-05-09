@@ -31,7 +31,7 @@
       <Modal v-model="modelVisible" width="560">
         <Form ref="formValidate" :model="formValidate" :rules="ruleValidate"  :label-width="80">
           <FormItem label="部门名称" prop="deptName">
-            <Input v-model.trim="formValidate.deptName" ></Input>
+            <Input type="text" v-model.trim="formValidate.deptName" ></Input>
           </FormItem>
           <FormItem label="上级部门" prop="parentId">
             <Select v-model="formValidate.parentId" clearable >
@@ -100,7 +100,11 @@ export default {
       deleteSeletionList: [],
       selectedList: [],
       modelVisible: false,
-      formValidate: {},
+      formValidate: {
+        deptName: '',
+        parentId: '',
+        sortno: ''
+      },
       ruleValidate: {
         deptName: [
           { required: true, message: '部门名称不能为空', trigger: 'blur' }
