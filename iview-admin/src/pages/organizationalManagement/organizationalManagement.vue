@@ -47,7 +47,7 @@
           <FormItem label="排序号" prop="sortno">
             <Input v-model.trim="formValidate.sortno" ></Input>
           </FormItem>
-          <FormItem label="备注">
+          <FormItem label="备注"  prop="remark">
             <Input v-model.trim="formValidate.remark" ></Input>
           </FormItem>
         </Form>
@@ -120,6 +120,9 @@ export default {
         ],
         sortno: [
           { required: true, message: '排序号不能为空', trigger: 'blur' }
+        ],
+        remark: [
+          { required: false, trigger: 'blur' }
         ]
       },
       selectDeptList: [],
