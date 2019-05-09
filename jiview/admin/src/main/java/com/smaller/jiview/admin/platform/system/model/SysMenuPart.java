@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "sys_menu_part")
-public class MenuPart implements Serializable {
+public class SysMenuPart implements Serializable {
     /**
      * 部件ID
      */

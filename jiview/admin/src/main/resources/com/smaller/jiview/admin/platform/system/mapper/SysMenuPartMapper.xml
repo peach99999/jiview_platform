@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smaller.jiview.admin.platform.system.mapper.SysMenuPartMapper" >
+  <resultMap id="BaseResultMap" type="com.smaller.jiview.admin.platform.system.model.SysMenuPart" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <result column="part_id" property="partId" jdbcType="BIGINT" />
+    <result column="menu_id" property="menuId" jdbcType="BIGINT" />
+    <result column="cmp_id" property="cmpId" jdbcType="VARCHAR" />
+    <result column="cmp_type" property="cmpType" jdbcType="TINYINT" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="BIGINT" />
+  </resultMap>
+</mapper>

@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * RoleSaveOrUpdateParam
@@ -23,7 +23,7 @@ public class SysDeptSaveOrUpdateParam extends BaseParam {
     @ApiModelProperty("父部门ID")
     private Long parentId;
 
-    @NotBlank(message = "组织角色名不能为空")
+    @NotNull(message = "组织角色名不能为空")
     @ApiModelProperty("部门名称")
     private String deptName;
 

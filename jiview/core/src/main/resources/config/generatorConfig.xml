@@ -107,7 +107,7 @@
             <!--<generatedKey column="authorize_id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="sys_menu_part" domainObjectName="MenuPart" enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--<table tableName="sys_menu_part" domainObjectName="SysMenuPart" enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
             <!--<property value="false" name="useActualColumnNames"/>-->
             <!--&lt;!&ndash; 指定主键列，insert后可取到id值，identity表示是自增列&ndash;&gt;-->

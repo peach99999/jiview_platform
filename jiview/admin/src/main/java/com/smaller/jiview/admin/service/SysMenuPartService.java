@@ -13,4 +13,6 @@ import com.smaller.jiview.core.pojo.bo.ResultBO;
 public interface SysMenuPartService {
 
     ResultBO menuPartSaveOrupdate(SysMenuPartSaveOrupdateParam sysMenuPartSaveOrupdateParam);
+
+    ResultBO get(Long menuId);
 }

@@ -6,7 +6,7 @@ import com.smaller.jiview.admin.pojo.model.ext.SysDeptExt;
 import java.util.List;
 
 /**
- * Created by xiagf on 2019/03/01
+ * Created by xiagf on 2019/05/09
  */
 public interface SysDeptManager {
 
