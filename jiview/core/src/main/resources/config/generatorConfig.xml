@@ -47,78 +47,85 @@
         </javaClientGenerator>
 
 
-        <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
-        <table tableName="sys_user" domainObjectName="SysUser" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property value="false" name="useActualColumnNames"/>
-            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
-            <generatedKey column="user_id" sqlStatement="MySql" identity="true"/>
+        <table tableName="test" domainObjectName="test" enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        <property value="false" name="useActualColumnNames"/>
+        <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
+        <generatedKey column="user_id" sqlStatement="MySql" identity="true"/>
         </table>
 
-
-        <table tableName="sys_menu" domainObjectName="SysMenu" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property value="false" name="useActualColumnNames"/>
-            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
-            <generatedKey column="menu_id" sqlStatement="MySql" identity="true"/>
-        </table>
-
-        <table tableName="sys_dept" domainObjectName="SysDept" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property value="false" name="useActualColumnNames"/>
-            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
-            <generatedKey column="dept_id" sqlStatement="MySql" identity="true"/>
-        </table>
-
-        <table tableName="sys_role" domainObjectName="SysRole" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property value="false" name="useActualColumnNames"/>
-            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
-            <generatedKey column="role_id" sqlStatement="MySql" identity="true"/>
-        </table>
-
-        <table tableName="sys_role_menu" domainObjectName="SysRoleMenu" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property value="false" name="useActualColumnNames"/>
-            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
-            <generatedKey column="authorize_id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--&lt;!&ndash; 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名&ndash;&gt;-->
+        <!--<table tableName="sys_user" domainObjectName="SysUser" enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property value="false" name="useActualColumnNames"/>-->
+            <!--&lt;!&ndash; 指定主键列，insert后可取到id值，identity表示是自增列&ndash;&gt;-->
+            <!--<generatedKey column="user_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
 
-        <table tableName="sys_user_role" domainObjectName="SysUserRole" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property value="false" name="useActualColumnNames"/>
-            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
-            <generatedKey column="authorize_id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="sys_menu" domainObjectName="SysMenu" enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property value="false" name="useActualColumnNames"/>-->
+            <!--&lt;!&ndash; 指定主键列，insert后可取到id值，identity表示是自增列&ndash;&gt;-->
+            <!--<generatedKey column="menu_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="sys_dept" domainObjectName="SysDept" enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property value="false" name="useActualColumnNames"/>-->
+            <!--&lt;!&ndash; 指定主键列，insert后可取到id值，identity表示是自增列&ndash;&gt;-->
+            <!--<generatedKey column="dept_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="sys_role" domainObjectName="SysRole" enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property value="false" name="useActualColumnNames"/>-->
+            <!--&lt;!&ndash; 指定主键列，insert后可取到id值，identity表示是自增列&ndash;&gt;-->
+            <!--<generatedKey column="role_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="sys_role_menu" domainObjectName="SysRoleMenu" enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property value="false" name="useActualColumnNames"/>-->
+            <!--&lt;!&ndash; 指定主键列，insert后可取到id值，identity表示是自增列&ndash;&gt;-->
+            <!--<generatedKey column="authorize_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
 
-        <table tableName="sys_user_menu_map" domainObjectName="SysUserMenuMap" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property value="false" name="useActualColumnNames"/>
-            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
-            <generatedKey column="authorize_id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="sys_user_role" domainObjectName="SysUserRole" enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property value="false" name="useActualColumnNames"/>-->
+            <!--&lt;!&ndash; 指定主键列，insert后可取到id值，identity表示是自增列&ndash;&gt;-->
+            <!--<generatedKey column="authorize_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
-        <table tableName="sys_menu_part" domainObjectName="MenuPart" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property value="false" name="useActualColumnNames"/>
-            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
-            <generatedKey column="part_id" sqlStatement="MySql" identity="true"/>
-        </table>
 
-        <table tableName="sys_role_menu_part" domainObjectName="SysRoleMenuPart" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property value="false" name="useActualColumnNames"/>
-            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
-            <generatedKey column="authorize_id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="sys_user_menu_map" domainObjectName="SysUserMenuMap" enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property value="false" name="useActualColumnNames"/>-->
+            <!--&lt;!&ndash; 指定主键列，insert后可取到id值，identity表示是自增列&ndash;&gt;-->
+            <!--<generatedKey column="authorize_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
-        <table tableName="sys_user_menu_part" domainObjectName="SysUserMenuPart" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property value="false" name="useActualColumnNames"/>
-            <!-- 指定主键列，insert后可取到id值，identity表示是自增列-->
-            <generatedKey column="authorize_id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="sys_menu_part" domainObjectName="MenuPart" enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property value="false" name="useActualColumnNames"/>-->
+            <!--&lt;!&ndash; 指定主键列，insert后可取到id值，identity表示是自增列&ndash;&gt;-->
+            <!--<generatedKey column="part_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="sys_role_menu_part" domainObjectName="SysRoleMenuPart" enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property value="false" name="useActualColumnNames"/>-->
+            <!--&lt;!&ndash; 指定主键列，insert后可取到id值，identity表示是自增列&ndash;&gt;-->
+            <!--<generatedKey column="authorize_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="sys_user_menu_part" domainObjectName="SysUserMenuPart" enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property value="false" name="useActualColumnNames"/>-->
+            <!--&lt;!&ndash; 指定主键列，insert后可取到id值，identity表示是自增列&ndash;&gt;-->
+            <!--<generatedKey column="authorize_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
     </context>
 </generatorConfiguration>
