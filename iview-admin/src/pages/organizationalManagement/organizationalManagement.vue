@@ -22,23 +22,27 @@
           </div>
         </Col>
       </Row>
-      <Modal v-model="modelVisible" width="560"  @on-ok="addDepartmentInfo">
+      <Modal v-model="modelVisible" width="560">
         <Form ref="formValidate" :model="formValidate" :rules="ruleValidate"  :label-width="80">
           <FormItem label="部门名称" prop="deptName">
-            <Input v-model="formValidate.deptName" ></Input>
+            <Input v-model.trim="formValidate.deptName" ></Input>
           </FormItem>
-          <FormItem label="上级部门" prop="deptId">
-            <Select v-model="formValidate.deptId" clearable >
+          <FormItem label="上级部门" prop="parentId">
+            <Select v-model="formValidate.parentId" clearable >
               <Option v-for="item in selectDeptList" :value="item.deptId" :key="item.deptId">{{ item.deptName }}</Option>
             </Select>
           </FormItem>
           <FormItem label="排序号" prop="sortno">
-            <Input v-model="formValidate.sortno" ></Input>
+            <Input v-model.trim="formValidate.sortno" ></Input>
           </FormItem>
           <FormItem label="备注">
-            <Input v-model="formValidate.remark" ></Input>
+            <Input v-model.trim="formValidate.remark" ></Input>
           </FormItem>
         </Form>
+        <div slot="footer">
+          <Button type="text" size="large" @click="modelVisible=false">取消</Button>
+          <Button type="primary" size="large" @click="addOrChangeDepartmentInfoBtn">确定</Button>
+        </div>
       </Modal>
     </Card>
   </div>
@@ -90,13 +94,13 @@ export default {
       },
       ruleValidate: {
         deptName: [
-          { required: true, message: '部门名称不能为空', trigger: 'blur' }
+          { required: true, message: '部门名称不能为空', trigger: 'blur'}
         ],
-        deptId: [
-          { required: true, message: '上级部门不能为空', trigger: 'change',type:'number' }
+        parentId: [
+          { required: true, message: '上级部门不能为空', trigger: 'change',type:'number'}
         ],
         sortno: [
-          { required: true, message: '排序号不能为空', trigger: 'blur' }
+          { required: true, message: '排序号不能为空', trigger: 'blur'}
         ]
       },
       selectDeptList:[]
@@ -280,13 +284,14 @@ export default {
       addDepartmentList(param).then(res => {
         self.refreshDepartmentInfo(true);
         self.loading = false;
+        self.modelVisible = false;
       }).catch(err => {
         console.log('err', err);
         self.loading = false;
       });
     },
-    //新增确定
-    addDepartmentInfo(){
+    //新增（修改）确定
+    addOrChangeDepartmentInfoBtn(){
       const self = this;
       const param = {
         deptName: self.formValidate.deptName,
@@ -295,7 +300,17 @@ export default {
         remark: self.formValidate.remark,
         sortno: self.formValidate.sortno,
       }
-      self.addOrChangeDepartmentInfo(param);
+      if(self.deleteSeletionList[0]){
+        param.deptId = self.deleteSeletionList[0];
+      }
+      // 验证数据来源后调用接口
+      self.$refs['formValidate'].validate((valid) => {
+        console.log('valid',valid)
+        console.log('self',self)
+        if (valid) {
+          self.addOrChangeDepartmentInfo(param);
+        }
+      });
     },
     //修改弹框
     changeSelectedInfo(){
@@ -313,13 +328,23 @@ export default {
         });
       }
       if(self.deleteSeletionList.length === 1){
-        self.modelVisible = true;
         self.getSelectDepartmentList();
+        self.getDepartmentInfoDetail(self.deleteSeletionList[0]);
       }
     },
     //获取部门详情
-    getDepartmentInfoDetail(){
-
+    getDepartmentInfoDetail(id){
+      const self = this;
+      getDepartmentDetail(id).then(res => {
+        let data = res.data.row || {}
+        self.formValidate.deptName = data.deptName;
+        self.formValidate.parentId = data.parentId;
+        self.formValidate.sortno = String(data.sortno);
+        self.formValidate.remark = data.remark;
+        self.modelVisible = true;
+      }).catch(err => {
+        console.log('err', err);
+      });
     }
   }
 }
