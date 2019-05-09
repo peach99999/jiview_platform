@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by xiagf on 2019/05/09.
  */
@@ -14,9 +16,11 @@ public class MenuSaveParam extends BaseParam {
     @ApiModelProperty("父菜单pkid")
     private Long parentId;
 
-    @ApiModelProperty("标题")
+    @NotNull(message = "菜单名称不能为空")
+    @ApiModelProperty("菜单名称")
     private String menuName;
 
+    @NotNull(message = "路由url不能为空")
     @ApiModelProperty("路由")
     private String url;
 

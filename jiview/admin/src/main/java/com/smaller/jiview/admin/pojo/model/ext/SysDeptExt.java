@@ -16,4 +16,7 @@ import lombok.Data;
 public class SysDeptExt extends SysDept {
     @ApiModelProperty("用户名称")
     private String userName;
+
+    @ApiModelProperty("父部门名称")
+    private String parentDeptName;
 }

@@ -31,5 +31,10 @@ public class UrlConstants {
      */
     public static final String ADMIN_SYS_MENU_PREFIX = "/sys-menu";
 
+    /**
+     * Admin菜单部件管理
+     */
+    public static final String ADMIN_SYS_MENU_PART_PREFIX = "/sys-menu-part";
+
 
 }

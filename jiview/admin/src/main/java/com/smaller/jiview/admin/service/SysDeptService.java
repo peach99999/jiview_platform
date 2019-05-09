@@ -2,6 +2,7 @@ package com.smaller.jiview.admin.service;
 
 
 import com.smaller.jiview.admin.platform.system.model.SysDept;
+import com.smaller.jiview.admin.pojo.model.ext.SysDeptExt;
 import com.smaller.jiview.admin.pojo.param.SysDeptListParam;
 import com.smaller.jiview.admin.pojo.param.SysDeptRemoveParam;
 import com.smaller.jiview.admin.pojo.param.SysDeptSaveOrUpdateParam;
@@ -20,7 +21,7 @@ public interface SysDeptService {
      * @param sysDeptListParam
      * @return
      */
-    ResultBO<SysDept> list(SysDeptListParam sysDeptListParam);
+    ResultBO<SysDeptExt> list(SysDeptListParam sysDeptListParam);
 
     /**
      * 部门详情

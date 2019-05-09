@@ -1,6 +1,7 @@
 package com.smaller.jiview.admin.controller;
 
 import com.smaller.jiview.admin.platform.system.model.SysDept;
+import com.smaller.jiview.admin.pojo.model.ext.SysDeptExt;
 import com.smaller.jiview.admin.pojo.param.SysDeptListParam;
 import com.smaller.jiview.admin.pojo.param.SysDeptRemoveParam;
 import com.smaller.jiview.admin.pojo.param.SysDeptSaveOrUpdateParam;
@@ -38,7 +39,7 @@ public class SysDeptController {
             @ApiImplicitParam(name = "deptId", value = "部门id", dataType = "long", paramType = "query", required = false),
             @ApiImplicitParam(name = "deptName", value = "部门名称", dataType = "string", paramType = "query", required = false),
     })
-    public ResultBO<SysDept> list(
+    public ResultBO<SysDeptExt> list(
             @RequestParam(required = false) Integer pageNo,
             @RequestParam(required = false) Integer pageSize,
             @RequestParam(required = false) Long deptId,

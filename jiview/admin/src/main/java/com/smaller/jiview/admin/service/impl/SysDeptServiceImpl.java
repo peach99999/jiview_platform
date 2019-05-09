@@ -3,8 +3,10 @@ package com.smaller.jiview.admin.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.smaller.jiview.admin.manager.PagerHelpManager;
+import com.smaller.jiview.admin.manager.SysDeptManager;
 import com.smaller.jiview.admin.platform.system.mapper.SysDeptMapper;
 import com.smaller.jiview.admin.platform.system.model.SysDept;
+import com.smaller.jiview.admin.pojo.model.ext.SysDeptExt;
 import com.smaller.jiview.admin.pojo.param.SysDeptListParam;
 import com.smaller.jiview.admin.pojo.param.SysDeptRemoveParam;
 import com.smaller.jiview.admin.pojo.param.SysDeptSaveOrUpdateParam;
@@ -16,6 +18,7 @@ import com.smaller.jiview.core.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.FormatFlagsConversionMismatchException;
 import java.util.List;
 
 @Service
@@ -27,11 +30,15 @@ public class SysDeptServiceImpl implements SysDeptService {
     @Autowired
     private PagerHelpManager pagerHelpManager;
 
+    @Autowired
+    private SysDeptManager sysDeptManager;
+
     @Override
-    public ResultBO<SysDept> list(SysDeptListParam sysDeptListParam) {
+    public ResultBO<SysDeptExt> list(SysDeptListParam sysDeptListParam) {
         pagerHelpManager.setStartPage(sysDeptListParam.getPageNo(), sysDeptListParam.getPageSize());
-        List<SysDept> deptList = sysDeptMapper.listSysUser(sysDeptListParam);
-        ResultBO<SysDept> result = new ResultBO<>(deptList);
+        List<SysDeptExt> deptList = sysDeptMapper.listSysUser(sysDeptListParam);
+        sysDeptManager.listDeptParentName(deptList);
+        ResultBO<SysDeptExt> result = new ResultBO<>(deptList);
         return result;
 
     }
