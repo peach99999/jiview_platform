@@ -1,8 +1,6 @@
 package com.smaller.jiview.admin.controller;
 
-import com.smaller.jiview.admin.pojo.param.ResetPwdParam;
 import com.smaller.jiview.admin.pojo.param.SysMenuPartSaveOrupdateParam;
-import com.smaller.jiview.admin.service.LoginService;
 import com.smaller.jiview.admin.service.SysMenuPartService;
 import com.smaller.jiview.core.constant.UrlConstants;
 import com.smaller.jiview.core.pojo.bo.ResultBO;

@@ -1,7 +1,5 @@
 package com.smaller.jiview.admin.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.smaller.jiview.admin.manager.PagerHelpManager;
 import com.smaller.jiview.admin.manager.SysDeptManager;
 import com.smaller.jiview.admin.platform.system.mapper.SysDeptMapper;
@@ -14,11 +12,9 @@ import com.smaller.jiview.admin.service.SysDeptService;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
 import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
 import com.smaller.jiview.core.util.BeanUtil;
-import com.smaller.jiview.core.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.FormatFlagsConversionMismatchException;
 import java.util.List;
 
 @Service

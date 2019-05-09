@@ -4,7 +4,6 @@ import com.smaller.jiview.admin.manager.SysDeptManager;
 import com.smaller.jiview.admin.platform.system.mapper.SysDeptMapper;
 import com.smaller.jiview.admin.platform.system.model.SysDept;
 import com.smaller.jiview.admin.pojo.model.ext.SysDeptExt;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
