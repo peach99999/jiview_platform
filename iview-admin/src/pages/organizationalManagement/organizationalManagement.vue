@@ -44,307 +44,378 @@
           <Button type="primary" size="large" @click="addOrChangeDepartmentInfoBtn">确定</Button>
         </div>
       </Modal>
+      <Modal
+        v-model="deleteModal"
+        title="提示"
+        @on-ok="deleteModalOk"
+        @on-cancel="deleteModalCancel">
+        <p>删除部门将会同时删除其下属部门，确认删除吗？</p>
+      </Modal>
     </Card>
   </div>
 </template>
 <script>
-import { getDepartmentList,deleteDepartmentList,getSelectDepartmentList,addDepartmentList,getDepartmentDetail } from '@/api/organizationalManagement';
+import { getDepartmentList, deleteDepartmentList, getSelectDepartmentList, addDepartmentList, getDepartmentDetail } from '@/api/organizationalManagement'
 export default {
   data () {
     return {
-      loading:false, //树型结构列表 loading
-      departmentList:[], //树型结构列表 展示全部部门
-      column:[
+      loading: false, // 树型结构列表 loading
+      departmentList: [], // 树型结构列表 展示全部部门
+      column: [
         {
           type: 'selection',
           width: 60,
           align: 'center'
         },
         {
-          title:'部门名称',
-          key:'deptName'
+          title: '部门名称',
+          key: 'deptName'
         },
         {
-          title:'上级部门',
-          key:'deptName'
+          title: '上级部门',
+          key: 'deptName'
         },
         {
-          title:'排序号',
-          key:'sortno'
+          title: '排序号',
+          key: 'sortno'
         },
         {
-          title:'备注 ',
-          key:'remark'
+          title: '备注 ',
+          key: 'remark'
         }
       ],
-      tableData:[],
-      filter:{
-        pageNo:1,
-        pageSize:10
+      tableData: [],
+      filter: {
+        pageNo: 1,
+        pageSize: 10
       },
-      total:0,
-      searchValue:'',
-      deleteSeletionList:[],
-      modelVisible:false,
-      formValidate: {
-//        deptName: '',
-//        deptId: '',
-//        sortno: '',
-//        remark: '',
-      },
+      total: 0,
+      searchValue: '',
+      deleteSeletionList: [],
+      selectedList: [],
+      modelVisible: false,
+      formValidate: {},
       ruleValidate: {
         deptName: [
-          { required: true, message: '部门名称不能为空', trigger: 'blur'}
+          { required: true, message: '部门名称不能为空', trigger: 'blur' }
         ],
         parentId: [
-          { required: true, message: '上级部门不能为空', trigger: 'change',type:'number'}
+          { required: true, message: '上级部门不能为空', trigger: 'change', type: 'number' }
         ],
         sortno: [
-          { required: true, message: '排序号不能为空', trigger: 'blur'}
+          { required: true, message: '排序号不能为空', trigger: 'blur' }
         ]
       },
-      selectDeptList:[]
+      selectDeptList: [],
+      deleteModal: false
     }
   },
   mounted () {
-    this.getDepartmentList();
+    this.getDepartmentList()
   },
   methods: {
-    //获取部门列表信息
-    getDepartmentList(param,flag){
-      const self = this;
-      self.loading = true;
+    // 获取部门列表信息
+    getDepartmentList (param, flag) {
+      const self = this
+      self.loading = true
       getDepartmentList(param).then(res => {
-        let list = [...res.data.rows] || [];
-        self.loading = false;
-        if(!param || flag){
-          self.handleDepartmentList(list);
+        let list = [...res.data.rows] || []
+        self.loading = false
+        if (!param || flag) {
+          self.handleDepartmentList(list)
         }
-        self.tableData = list;
-        self.total = res.data.count;
+        self.tableData = list
+        self.total = res.data.count
       }).catch(err => {
-        console.log('err', err);
-        self.loading = false;
-      });
+        console.log('err', err)
+        self.loading = false
+      })
     },
     // 页码变化
     pageNoChange (val) {
-      const self = this;
-      self.filter.pageNo = val;
-      self.filter.pageSize = 10;
+      const self = this
+      self.filter.pageNo = val
+      self.filter.pageSize = 10
       const param = {
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
-        deptName: self.searchValue || '',
+        deptName: self.searchValue || ''
       }
-      self.getDepartmentList(param);
+      self.getDepartmentList(param)
     },
     // 每页条数变化
     pageSizeChange (val) {
-      const self = this;
-      self.filter.pageNo = 1;
+      const self = this
+      self.filter.pageNo = 1
       self.filter.pageSize = val
       const param = {
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
-        deptName: self.searchValue || '',
+        deptName: self.searchValue || ''
       }
-      self.getDepartmentList(param);
+      self.getDepartmentList(param)
     },
-    //将获得数据转换成树型结构数据
-    handleDepartmentList(list){
-      let listTmp = [...list];
-      let treeData = [];
-      for(let i = 0; i < listTmp.length; i++){
-        if(!listTmp[i].parentId){
+    // 将获得数据转换成树型结构数据
+    handleDepartmentList (list) {
+      let listTmp = [...list]
+      let treeData = []
+      for (let i = 0; i < listTmp.length; i++) {
+        if (!listTmp[i].parentId) {
           let obj = {
-            title:listTmp[i].deptName,
-            expand:true,
-            deptId:listTmp[i].deptId,
-            children:[]
+            title: listTmp[i].deptName,
+            expand: true,
+            deptId: listTmp[i].deptId,
+            children: []
           }
-          treeData.push(obj);
-          listTmp.splice(i, 1);
-          i--;
+          treeData.push(obj)
+          listTmp.splice(i, 1)
+          i--
         }
       }
-      this.departmentList = this.handleTreeData(listTmp,treeData);
-      //list:需要转换的数组（平铺型数组）  treeData:目标转换的数组（树型数组）
+      this.departmentList = this.handleTreeData(listTmp, treeData)
+      // list:需要转换的数组（平铺型数组）  treeData:目标转换的数组（树型数组）
     },
-    handleTreeData(list,treeData){
-      //list:需要转换的数组（平铺型数组）  treeData:目标转换的数组（树型数组）
-      let treeTmpList = list;
-      let treeTmpData = treeData;
-      if(treeTmpList.length !==0){
-        for(let i = 0; i<treeTmpData.length; i++){
-          for(let j = 0; j<treeTmpList.length; j++){
-            if(treeTmpData[i].deptId === treeTmpList[j].parentId){
+    handleTreeData (list, treeData) {
+      // list:需要转换的数组（平铺型数组）  treeData:目标转换的数组（树型数组）
+      let treeTmpList = list
+      let treeTmpData = treeData
+      if (treeTmpList.length !== 0) {
+        for (let i = 0; i < treeTmpData.length; i++) {
+          for (let j = 0; j < treeTmpList.length; j++) {
+            if (treeTmpData[i].deptId === treeTmpList[j].parentId) {
               let obj = {
-                title:treeTmpList[j].deptName,
-                expand:true,
-                deptId:treeTmpList[j].deptId,
-                parentId:treeTmpList[j].parentId,
-                children:[]
+                title: treeTmpList[j].deptName,
+                expand: true,
+                deptId: treeTmpList[j].deptId,
+                parentId: treeTmpList[j].parentId,
+                children: []
               }
-              treeTmpData[i].children.push(obj);
-              treeTmpList.splice(j, 1);
-              j--;
+              treeTmpData[i].children.push(obj)
+              treeTmpList.splice(j, 1)
+              j--
             }
           }
-          this.handleTreeData(treeTmpList,treeTmpData[i].children);
+          this.handleTreeData(treeTmpList, treeTmpData[i].children)
         }
-
       }
-      return treeTmpData;
+      return treeTmpData
     },
-    //点击树节点（部门）触发事件
-    clickTreeNodeChange(e){
-      console.log('e',e)
-      const self = this;
-      self.filter.pageNo = 1;
-      self.filter.pageSize = 10;
+    // 点击树节点（部门）触发事件
+    clickTreeNodeChange (e) {
+      console.log('e', e)
+      const self = this
+      self.filter.pageNo = 1
+      self.filter.pageSize = 10
       const param = {
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
-        deptId: e[0].deptId,
+        deptId: e[0].deptId
       }
-      self.getDepartmentList(param);
+      self.getDepartmentList(param)
     },
-    //搜索框数据变化
-    searchValueChange (val){
-      console.log('searchValue:',this.searchValue)
+    // 搜索框数据变化
+    searchValueChange (val) {
+      console.log('searchValue:', this.searchValue)
     },
-    //搜索按钮
-    searchDepartmentInfo(){
-      const self = this;
-      self.filter.pageNo = 1;
-      self.filter.pageSize = 10;
+    // 搜索按钮
+    searchDepartmentInfo () {
+      const self = this
+      self.filter.pageNo = 1
+      self.filter.pageSize = 10
       const param = {
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
-        deptName: self.searchValue,
+        deptName: self.searchValue
       }
-      self.getDepartmentList(param);
+      self.getDepartmentList(param)
     },
-    //刷新按钮
-    refreshDepartmentInfo(flag){
-      const self = this;
-      self.filter.pageNo = 1;
-      self.filter.pageSize = 10;
+    // 刷新按钮
+    refreshDepartmentInfo (flag) {
+      const self = this
+      self.filter.pageNo = 1
+      self.filter.pageSize = 10
       self.searchValue = ''
       const param = {
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
-        deptName: self.searchValue,
+        deptName: self.searchValue
       }
-      self.getDepartmentList(param,flag);
+      self.getDepartmentList(param, flag)
     },
-    handleSelectChange(seletion){
-      const self = this;
-      self.deleteSeletionList = [];
-      for(let i = 0; i < seletion.length; i++){
-        self.deleteSeletionList.push(seletion[i].deptId)
+    handleSelectChange (seletion) {
+      const self = this
+      self.selectedList = []
+      for (let i = 0; i < seletion.length; i++) {
+        self.selectedList.push(seletion[i].deptId)
       }
-      console.log('self.deleteSeletionList:',self.deleteSeletionList)
     },
-    deleteSelectedInfo(){
-      const self = this;
-      self.loading = true;
+    // 判断删除部门是否有子部门
+    deleteSelectedInfo () {
+      const self = this
+      self.loading = true
+      self.deleteSeletionList = []
+      self.handleDeleteInfoList(self.selectedList)
+      if (self.deleteSeletionList && self.deleteSeletionList.length > self.selectedList.length) {
+        self.deleteModal = true
+      }
+      if (self.deleteSeletionList && self.deleteSeletionList.length === self.selectedList.length) {
+        self.deleteEnsureSelectedInfo()
+      }
+    },
+    // 确认删除
+    deleteModalOk () {
+      const self = this
+      self.deleteEnsureSelectedInfo()
+    },
+    deleteModalCancel () {
+      const self = this
+      self.deleteModal = false
+    },
+    // 调用删除部门Api
+    deleteEnsureSelectedInfo () {
+      const self = this
       const param = {
-        deptIdList:self.deleteSeletionList
+        deptIdList: self.deleteSeletionList
       }
       deleteDepartmentList(param).then(res => {
-        self.refreshDepartmentInfo(true);
-        self.loading = false;
+        self.refreshDepartmentInfo(true)
+        self.loading = false
+        self.deleteModal = false
       }).catch(err => {
-        console.log('err', err);
-        self.loading = false;
-      });
+        console.log('err', err)
+        self.loading = false
+      })
     },
-    //新增弹框
-    addSelectedInfo(){
-      const self = this;
-      self.modelVisible = true;
-      self.getSelectDepartmentList();
+    // 查找删除部门下的子部门
+    handleDeleteInfoList (list) { // list为列表选中数据
+      const self = this
+      // self.departmentList 树型数据结构
+      for (let node of list.values()) {
+        self.traverseTree(self.departmentList[0], node)
+      }
     },
-    //新增（修改）弹出框 获取上级部门下拉框
-    getSelectDepartmentList(){
-      const self = this;
+    // 遍历一棵树
+    traverseTree (treeList, selectNode) {
+      const self = this
+      const treeListValue = treeList
+      const selectNodeValue = selectNode
+      if (selectNodeValue === treeListValue.deptId) {
+        self.traverseTreeNode(treeList)
+      }
+      if (selectNodeValue !== treeListValue.deptId) {
+        if (treeListValue.children) {
+          treeListValue.children.forEach(item => {
+            self.traverseTree(item, selectNode)
+          })
+        }
+      }
+    },
+    // 遍历一个树节点的子节点
+    traverseTreeNode (treeList) {
+      const self = this
+      let flag = false
+      console.log('treeList', treeList)
+      if (treeList && treeList.deptId) {
+        console.log('treeList.deptId', treeList.deptId)
+        for (let value of self.deleteSeletionList) {
+          if (value === treeList.deptId) {
+            flag = true
+          }
+        }
+        if (!flag) {
+          self.deleteSeletionList.push(treeList.deptId)
+        }
+        if (treeList.children) {
+          treeList.children.forEach(item => {
+            self.traverseTreeNode(item)
+          })
+        }
+      }
+    },
+    // 新增弹框
+    addSelectedInfo () {
+      const self = this
+      self.modelVisible = true
+      self.getSelectDepartmentList()
+    },
+    // 新增（修改）弹出框 获取上级部门下拉框
+    getSelectDepartmentList () {
+      const self = this
       getSelectDepartmentList().then(res => {
-        self.selectDeptList = res.data.rows || [];
+        self.selectDeptList = res.data.rows || []
       }).catch(err => {
-        console.log('err', err);
-      });
+        console.log('err', err)
+      })
     },
-    //新增（修改）部门信息
-    addOrChangeDepartmentInfo(param){
-      const self = this;
-      self.loading = true;
-      console.log('param',param)
+    // 新增（修改）部门信息
+    addOrChangeDepartmentInfo (param) {
+      const self = this
+      self.loading = true
+      console.log('param', param)
       addDepartmentList(param).then(res => {
-        self.refreshDepartmentInfo(true);
-        self.loading = false;
-        self.modelVisible = false;
+        self.refreshDepartmentInfo(true)
+        self.loading = false
+        self.modelVisible = false
       }).catch(err => {
-        console.log('err', err);
-        self.loading = false;
-      });
+        console.log('err', err)
+        self.loading = false
+      })
     },
-    //新增（修改）确定
-    addOrChangeDepartmentInfoBtn(){
-      const self = this;
+    // 新增（修改）确定
+    addOrChangeDepartmentInfoBtn () {
+      const self = this
       const param = {
         deptName: self.formValidate.deptName,
         leaf: true,
         parentId: self.formValidate.deptId,
         remark: self.formValidate.remark,
-        sortno: self.formValidate.sortno,
+        sortno: self.formValidate.sortno
       }
-      if(self.deleteSeletionList[0]){
-        param.deptId = self.deleteSeletionList[0];
+      if (self.selectedList[0]) {
+        param.deptId = self.selectedList[0]
       }
       // 验证数据来源后调用接口
       self.$refs['formValidate'].validate((valid) => {
-        console.log('valid',valid)
-        console.log('self',self)
+        console.log('valid', valid)
+        console.log('self', self)
         if (valid) {
-          self.addOrChangeDepartmentInfo(param);
+          self.addOrChangeDepartmentInfo(param)
         }
-      });
+      })
     },
-    //修改弹框
-    changeSelectedInfo(){
-      const self = this;
-      if(self.deleteSeletionList.length === 0){
+    // 修改弹框
+    changeSelectedInfo () {
+      const self = this
+      if (self.selectedList.length === 0) {
         this.$Notice.warning({
           title: '提示',
-          desc:  '请选择一个部门 '
-        });
+          desc: '请选择一个部门 '
+        })
       }
-      if(self.deleteSeletionList.length > 1){
+      if (self.selectedList.length > 1) {
         this.$Notice.warning({
           title: '提示',
-          desc:  '只能选择选择一个部门 '
-        });
+          desc: '只能选择选择一个部门 '
+        })
       }
-      if(self.deleteSeletionList.length === 1){
-        self.getSelectDepartmentList();
-        self.getDepartmentInfoDetail(self.deleteSeletionList[0]);
+      if (self.selectedList.length === 1) {
+        self.getSelectDepartmentList()
+        self.getDepartmentInfoDetail(self.selectedList[0])
       }
     },
-    //获取部门详情
-    getDepartmentInfoDetail(id){
-      const self = this;
+    // 获取部门详情
+    getDepartmentInfoDetail (id) {
+      const self = this
       getDepartmentDetail(id).then(res => {
         let data = res.data.row || {}
-        self.formValidate.deptName = data.deptName;
-        self.formValidate.parentId = data.parentId;
-        self.formValidate.sortno = String(data.sortno);
-        self.formValidate.remark = data.remark;
-        self.modelVisible = true;
+        self.formValidate.deptName = data.deptName
+        self.formValidate.parentId = data.parentId
+        self.formValidate.sortno = String(data.sortno)
+        self.formValidate.remark = data.remark
+        self.modelVisible = true
       }).catch(err => {
-        console.log('err', err);
-      });
+        console.log('err', err)
+      })
     }
   }
 }
