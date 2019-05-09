@@ -11,10 +11,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -63,26 +60,26 @@ public class SysUserController {
         return sysUserService.list(sysUserListParam);
     }
 
-//    /**
-//     * @Description: 查询用户详情信息
-//     * @author licm
-//     * @date 2018-11-09
-//     */
-//    @ApiOperation(value = "根据pkid获取用户", httpMethod = "GET")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "pkid", value = "pkid", dataType = "long", paramType = "path", required = true)
-//    })
-//    @RequestMapping(value = "/{pkid}", method = RequestMethod.GET)
-//    public ResultBo get(
-//            @PathVariable Long pkid
-//    ) {
-//        //主处理
-//        return adminUserService.get(pkid);
-//    }
+    /**
+     * @Description: 查询用户详情信息
+     * @author xiagf
+     * @date 2019-05-09
+     */
+    @ApiOperation(value = "根据userId获取用户信息", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户id", dataType = "long", paramType = "path", required = true)
+    })
+    @GetMapping(value = "/{userId}")
+    public ResultBO get(
+            @PathVariable Long pkid
+    ) {
+        //主处理
+        return sysUserService.get(pkid);
+    }
 //
 //    /**
 //     * @Description: 保存用户信息
-//     * @author licm
+//     * @author xiagf
 //     * @date 2018-11-09
 //     */
 //    @ApiOperation(value = "保存用户信息(admin)", httpMethod = "POST")
@@ -97,7 +94,7 @@ public class SysUserController {
 //
 //    /**
 //     * @Description: 批量删除用户
-//     * @author licm
+//     * @author xiagf
 //     * @date 2018-11-09
 //     */
 //    @ApiOperation(value = "批量删除用户", httpMethod = "POST")
