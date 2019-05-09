@@ -3,23 +3,29 @@
     <Card shadow>
       <Row>
         <Col span="6">
-          <div>
+        <div class="layout-tree-list">
+          <Card>
             <Tree :data="departmentList" @on-select-change="clickTreeNodeChange"></Tree>
-          </div>
+          </Card>
+        </div>
         </Col>
         <Col span="16">
-          <div>
-            <Button @click="addSelectedInfo">新增</Button>
-            <Button @click="changeSelectedInfo">修改</Button>
-            <Button @click="deleteSelectedInfo">删除</Button>
-            <Input v-model="searchValue" placeholder="请输入部门名称"  @on-change="searchValueChange"/>
-            <Button @click="searchDepartmentInfo">查询</Button>
-            <Button @click="refreshDepartmentInfo">刷新</Button>
-          </div>
-          <div>
-            <Table ref="selection" :columns="column" :data="tableData" @on-selection-change="handleSelectChange"></Table>
-            <Page :current="filter.pageNo" @on-change="pageNoChange" @on-page-size-change="pageSizeChange" :total="total" show-elevator show-sizer show-total/>
-          </div>
+        <div class="layout-table-list">
+          <Card>
+            <div class="table-button-group">
+              <Button @click="addSelectedInfo" type="primary">新增</Button>
+              <Button @click="changeSelectedInfo" type="warning">修改</Button>
+              <Button @click="deleteSelectedInfo" type="error">删除</Button>
+              <Input v-model="searchValue" placeholder="请输入部门名称" class="table-search-input"  @on-change="searchValueChange"/>
+              <Button @click="searchDepartmentInfo" type="success">查询</Button>
+              <Button @click="refreshDepartmentInfo" type="info">刷新</Button>
+            </div>
+            <div>
+              <Table ref="selection" :columns="column" :data="tableData" @on-selection-change="handleSelectChange"></Table>
+              <Page :current="filter.pageNo" class="table-page"  @on-change="pageNoChange" @on-page-size-change="pageSizeChange" :total="total" show-elevator show-sizer show-total/>
+            </div>
+          </Card>
+        </div>
         </Col>
       </Row>
       <Modal v-model="modelVisible" width="560">
@@ -336,6 +342,7 @@ export default {
     addSelectedInfo () {
       const self = this
       self.modelVisible = true
+      self.$refs['formValidate'].resetFields()
       self.getSelectDepartmentList()
     },
     // 新增（修改）弹出框 获取上级部门下拉框
@@ -422,5 +429,21 @@ export default {
 </script>
 
 <style>
-
+  .layout-tree-list{
+    margin: 20px 0 0 20px
+  }
+  .layout-table-list{
+    margin: 20px 0 0 50px
+  }
+  .table-search-input{
+    width: 200px;
+    margin-left: 310px;
+    margin-right: 2px;
+  }
+  .table-button-group Button{
+    margin: 10px 5px 10px 0;
+  }
+  .table-page{
+    margin-top: 20px;
+  }
 </style>
