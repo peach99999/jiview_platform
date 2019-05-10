@@ -397,3 +397,12 @@ export const setTitle = (routeItem, vm) => {
   const resTitle = pageTitle ? `${title} - ${pageTitle}` : title
   window.document.title = resTitle
 }
+
+export const inArray = (ele, arr) => {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] === ele) {
+      return true
+    }
+  }
+  return false
+}
