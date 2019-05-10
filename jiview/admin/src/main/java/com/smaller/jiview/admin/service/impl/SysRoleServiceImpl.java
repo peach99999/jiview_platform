@@ -7,6 +7,7 @@ import com.smaller.jiview.admin.platform.system.mapper.SysRoleMapper;
 import com.smaller.jiview.admin.platform.system.model.SysRole;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
 import com.smaller.jiview.admin.pojo.param.SysRoleListParam;
+import com.smaller.jiview.admin.pojo.param.SysRoleRemoveParam;
 import com.smaller.jiview.admin.pojo.param.SysRoleSaveOrUpdateParam;
 import com.smaller.jiview.admin.service.SysRoleService;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
@@ -21,7 +22,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Autowired
     private SysRoleManager sysRoleManager;
-//    @Autowired
+    //    @Autowired
 //    private AdminMenuAuthManager adminMenuAuthManager;
 //    @Autowired
 //    private AdminRoleQuery adminRoleQuery;
@@ -35,7 +36,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     public ResultBO<SysRoleExt> list(SysRoleListParam sysRoleListParam) {
         pagerHelpManager.setStartPage(sysRoleListParam.getPageNo(), sysRoleListParam.getPageSize());
         List<SysRoleExt> sysRoleExts = sysRoleMapper.list(sysRoleListParam);
-        ResultBO<SysRoleExt>  result = new ResultBO<>(sysRoleExts);
+        ResultBO<SysRoleExt> result = new ResultBO<>(sysRoleExts);
         return result;
     }
 
@@ -50,10 +51,8 @@ public class SysRoleServiceImpl implements SysRoleService {
     public ResultBO saveOrUpdateRole(SysRoleSaveOrUpdateParam sysRoleSaveOrUpdateParam) {
         ResultBO resultBo = new ResultBO<>();
         SysRole sysRole = new SysRole();
-
         // 拷贝角色数据
         BeanUtil.springCopy(sysRoleSaveOrUpdateParam, sysRole);
-
         // 角色id不为null, 则更新, 否则新增
         if (sysRoleSaveOrUpdateParam.getRoleId() != null) {
             resultBo.setOpResult(sysRoleMapper.updateByPrimaryKeySelective(sysRole));
@@ -65,26 +64,15 @@ public class SysRoleServiceImpl implements SysRoleService {
 
         return resultBo;
     }
-//
-//    @Override
-//    public ResultBo remove(AdminRoleRemoveParam adminRoleRemoveParam) {
-//        ResultBo resultBo = new ResultBo<>();
-//        int count = 0;
-//
-//        // 循环删除指定角色
-//        for (Long pkid : adminRoleRemoveParam.getPkidList()) {
-//            AdminRole adminRole = new AdminRole();
-//
-//            // 删除指定角色
-//            adminRole.setPkid(pkid);
-//            adminRole.setVer(Constants.VER_MINUS_1 * pkid);
-//            adminRoleMapper.updateByPrimaryKeySelective(adminRole);
-//            count++;
-//        }
-//        resultBo.setOpResult(count);
-//
-//        return resultBo;
-//    }
+
+    @Override
+    public ResultBO remove(SysRoleRemoveParam sysRoleRemoveParam) {
+        ResultBO resultBo = new ResultBO<>();
+        List<Long> roleIds = sysRoleRemoveParam.getRoleIdList();
+        sysRoleManager.remove(roleIds);
+        resultBo.setOpResult(roleIds.size());
+        return resultBo;
+    }
 //
 //    @Override
 //    public ResultBo updateRoleMenuAuthorization(AdminRoleUpdateRoleMenuAuthorizationParam adminRoleUpdateRoleMenuAuthorizationParam) {

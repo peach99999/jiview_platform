@@ -2,6 +2,7 @@ package com.smaller.jiview.admin.controller;
 
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
 import com.smaller.jiview.admin.pojo.param.SysRoleListParam;
+import com.smaller.jiview.admin.pojo.param.SysRoleRemoveParam;
 import com.smaller.jiview.admin.pojo.param.SysRoleSaveOrUpdateParam;
 import com.smaller.jiview.admin.service.SysRoleService;
 import com.smaller.jiview.core.config.security.JwtHelper;
@@ -84,21 +85,21 @@ public class SysRoleController {
 
         return sysRoleService.saveOrUpdateRole(sysRoleSaveOrUpdateParam);
     }
-//
-//    /**
-//     * @Description: 删除角色
-//     * @author xuyq
-//     * @date 2019-03-01
-//     */
-//    @ApiOperation(value = "删除角色", httpMethod = "POST")
-//    @PostMapping(value = "/remove")
-//    public ResultBO remove(
-//            @RequestBody RoleRemoveParam adminRoleRemoveParam
-//    ) {
-//        adminRoleRemoveParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
-//
-//        return roleService.remove(adminRoleRemoveParam);
-//    }
+
+    /**
+     * @Description: 删除角色
+     * @author xiagf
+     * @date 2019-05-10
+     */
+    @ApiOperation(value = "删除角色", httpMethod = "POST")
+    @PostMapping(value = "/remove")
+    public ResultBO remove(
+            @RequestBody SysRoleRemoveParam sysRoleRemoveParam
+    ) {
+        sysRoleRemoveParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
+
+        return sysRoleService.remove(sysRoleRemoveParam);
+    }
 //
 //    /**
 //     * @Description:配置资源(admin)
