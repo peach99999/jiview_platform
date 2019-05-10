@@ -2,6 +2,7 @@ package com.smaller.jiview.admin.controller;
 
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
 import com.smaller.jiview.admin.pojo.param.SysRoleListParam;
+import com.smaller.jiview.admin.pojo.param.SysRoleSaveOrUpdateParam;
 import com.smaller.jiview.admin.service.SysRoleService;
 import com.smaller.jiview.core.config.security.JwtHelper;
 import com.smaller.jiview.core.constant.UrlConstants;
@@ -11,6 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -67,21 +69,21 @@ public class SysRoleController {
     ) {
         return sysRoleService.get(roleId);
     }
-//
-//    /**
-//     * @Description:保存角色
-//     * @author xuyq
-//     * @date 2019-03-01
-//     */
-//    @ApiOperation(value = "保存角色", httpMethod = "POST")
-//    @PostMapping(value = "/save-or-update")
-//    public ResultBO saveOrUpdate(
-//            @RequestBody @Validated RoleSaveOrUpdateParam roleSaveOrUpdateParam
-//    ) {
-//        roleSaveOrUpdateParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
-//
-//        return roleService.saveOrUpdateRole(roleSaveOrUpdateParam);
-//    }
+
+    /**
+     * @Description:保存更新角色
+     * @author xiagf
+     * @date 2019-05-10
+     */
+    @ApiOperation(value = "保存更新角色", httpMethod = "POST")
+    @PostMapping(value = "/save-or-update")
+    public ResultBO saveOrUpdate(
+            @RequestBody @Validated SysRoleSaveOrUpdateParam sysRoleSaveOrUpdateParam
+    ) {
+        sysRoleSaveOrUpdateParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
+
+        return sysRoleService.saveOrUpdateRole(sysRoleSaveOrUpdateParam);
+    }
 //
 //    /**
 //     * @Description: 删除角色

@@ -4,10 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.smaller.jiview.admin.manager.PagerHelpManager;
 import com.smaller.jiview.admin.manager.SysRoleManager;
 import com.smaller.jiview.admin.platform.system.mapper.SysRoleMapper;
+import com.smaller.jiview.admin.platform.system.model.SysRole;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
 import com.smaller.jiview.admin.pojo.param.SysRoleListParam;
+import com.smaller.jiview.admin.pojo.param.SysRoleSaveOrUpdateParam;
 import com.smaller.jiview.admin.service.SysRoleService;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
+import com.smaller.jiview.core.util.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,29 +45,26 @@ public class SysRoleServiceImpl implements SysRoleService {
         result.setRow(sysRoleManager.get(roleId));
         return result;
     }
-//
-//    @Override
-//    public ResultBo saveOrUpdateRole(AdminRoleSaveOrUpdateRoleParam adminRoleSaveOrUpdateRoleParam) {
-//        ResultBo resultBo = new ResultBo<>();
-//        AdminRole adminRole = new AdminRole();
-//
-//        // 拷贝角色数据
-//        BeanUtil.springCopy(adminRoleSaveOrUpdateRoleParam, adminRole);
-//
-//        // 角色pkid不为null, 则更新, 否则新增
-//        String loginUserUuid = adminRoleSaveOrUpdateRoleParam.getLoginUser().getLoginUserUuid();
-//        if (adminRoleSaveOrUpdateRoleParam.getPkid() != null) {
-//            adminRole.setUid(loginUserUuid);
-//            resultBo.setOpResult(adminRoleMapper.updateByPrimaryKeySelective(adminRole));
-//        } else {
-//            adminRole.setCid(loginUserUuid);
-//            adminRole.setUid(loginUserUuid);
-//            resultBo.setOpResult(adminRoleMapper.insertSelective(adminRole));
-//        }
-//        resultBo.setRow(adminRole);
-//
-//        return resultBo;
-//    }
+
+    @Override
+    public ResultBO saveOrUpdateRole(SysRoleSaveOrUpdateParam sysRoleSaveOrUpdateParam) {
+        ResultBO resultBo = new ResultBO<>();
+        SysRole sysRole = new SysRole();
+
+        // 拷贝角色数据
+        BeanUtil.springCopy(sysRoleSaveOrUpdateParam, sysRole);
+
+        // 角色id不为null, 则更新, 否则新增
+        if (sysRoleSaveOrUpdateParam.getRoleId() != null) {
+            resultBo.setOpResult(sysRoleMapper.updateByPrimaryKeySelective(sysRole));
+        } else {
+            sysRole.setCreateUserId(sysRoleSaveOrUpdateParam.getLoginUserDTO().getLoginUserPkid());
+            resultBo.setOpResult(sysRoleMapper.insertSelective(sysRole));
+        }
+        resultBo.setRow(sysRole);
+
+        return resultBo;
+    }
 //
 //    @Override
 //    public ResultBo remove(AdminRoleRemoveParam adminRoleRemoveParam) {

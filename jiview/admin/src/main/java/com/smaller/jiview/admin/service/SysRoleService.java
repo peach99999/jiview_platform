@@ -2,6 +2,7 @@ package com.smaller.jiview.admin.service;
 
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
 import com.smaller.jiview.admin.pojo.param.SysRoleListParam;
+import com.smaller.jiview.admin.pojo.param.SysRoleSaveOrUpdateParam;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
 
 /**
@@ -27,15 +28,15 @@ public interface SysRoleService {
      * @return ResultBo<AdminRoleExt>
      */
     ResultBO<SysRoleExt> get(Long roleId);
-//
-//    /**
-//     * 保存角色信息
-//     *
-//     * @param adminRoleSaveOrUpdateRoleParam
-//     * @return ResultBo
-//     */
-//    ResultBO saveOrUpdateRole(AdminRoleSaveOrUpdateRoleParam adminRoleSaveOrUpdateRoleParam);
-//
+
+    /**
+     * 保存角色信息
+     *
+     * @param sysRoleSaveOrUpdateParam
+     * @return ResultBo
+     */
+    ResultBO saveOrUpdateRole(SysRoleSaveOrUpdateParam sysRoleSaveOrUpdateParam);
+
 //    /**
 //     * 批量删除角色
 //     *
