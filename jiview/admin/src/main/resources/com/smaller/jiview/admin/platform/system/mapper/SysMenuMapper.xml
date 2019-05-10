@@ -46,16 +46,16 @@
     FROM sys_user_role aur
     JOIN sys_role_menu ama ON ama.role_id = aur.role_id
     WHERE 1 = 1
-    AND aur.user_id = #{value}
+    AND aur.user_id = #{userId}
     AND ama.menu_id = sm.menu_id
     )
   </select>
 
   <select id="listMenuPkidByRole" resultType="java.lang.Long">
 		SELECT
-		sm.pkid
+		sm.menu_id
 		FROM sys_menu sm
-		JOIN sys_role_menu ama ON ama.menu_id = sm.menu_id AND ama.role_id = #{value}
+		JOIN sys_role_menu ama ON ama.menu_id = sm.menu_id AND ama.role_id = #{roleId}
 		WHERE 1 = 1
 	</select>
 </mapper>

@@ -14,4 +14,60 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
   </resultMap>
+
+  <sql id="list_where">
+    where 1 = 1
+    <if test="roleName != null and roleName != ''" >
+      AND sr.role_name LIKE CONCAT('%',#{roleName},'%')
+    </if>
+    <if test="deptId != null and deptId != ''" >
+      AND sr.dept_id = #{deptId}
+    </if>
+  </sql>
+  <select id="list" resultType="com.smaller.jiview.admin.pojo.model.ext.SysRoleExt">
+    SELECT
+    (
+    SELECT
+    GROUP_CONCAT(menu_id)
+    FROM
+    sys_role_menu srm
+    WHERE
+    srm.role_id = sr.role_id
+    ) AS roleMenu,
+    sr.role_id,
+    sr.role_name,
+    sr.dept_id,
+    sr.roletype,
+    sr.remark,
+    sr.locked,
+    sr.create_time,
+    sd.dept_name
+    FROM
+    sys_role sr
+    LEFT JOIN sys_dept sd ON sd.dept_id = sr.dept_id
+    <include refid="list_where" />
+  </select>
+
+  <select id="get" resultType="com.smaller.jiview.admin.pojo.model.ext.SysRoleExt">
+    SELECT
+    (
+    SELECT
+    GROUP_CONCAT(menu_id)
+    FROM
+    sys_role_menu srm
+    WHERE
+    srm.role_id = sr.role_id
+    ) AS roleMenu,
+    sr.role_id,
+    sr.role_name,
+    sr.dept_id,
+    sr.roletype,
+    sr.remark,
+    sr.locked,
+    sr.create_time
+    FROM
+    sys_role sr
+    where 1=1
+    and sr.role_id = #{roleId}
+  </select>
 </mapper>
