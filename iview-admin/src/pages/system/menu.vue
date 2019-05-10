@@ -1,0 +1,426 @@
+<style lang="less">
+</style>
+
+<template>
+  <div>
+    <Row>
+      <Card>
+        <ButtonGroup class="margin-bottom-10">
+          <Button type="info" icon="plus" @click="gotoSaveHandle()">
+            新增菜单
+          </Button>
+          <Button type="error" icon="trash-a" @click="removeHandle()">
+            删除勾选的菜单
+          </Button>
+        </ButtonGroup>
+        <Row>
+          <Col span="8">
+            <Card>
+              <Tree :data="menuTree" show-checkbox ref="menuTree"
+                    @on-select-change="treeOnSelectChangeHandle"
+                    @on-toggle-expand="treeOnToggleExpandHandle"
+                    @on-check-change="treeOnCheckChangeHandle"></Tree>
+              <Spin fix v-if="spinShow">
+                  <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+                  <div>加载中...</div>
+              </Spin>
+            </Card>
+          </Col>
+          <Col span="15" offset="1">
+            <Card>
+              <Form ref="menu" :model="menu" :label-width="100" label-position="right">
+                <FormItem label="父级菜单">
+                  <Cascader :data="cascaderData" v-model="menu.parentPkids" change-on-select
+                            ref="cascaderParentIds"></Cascader>
+                </FormItem>
+                <FormItem label="菜单名称" prop="title">
+                  <Input v-model.trim="menu.title" placeholder="请输入" ref="txtMenuTitle"></Input>
+                </FormItem>
+                <FormItem label="菜单链接">
+                  <Input v-model.trim="menu.url" placeholder="请输入"></Input>
+                </FormItem>
+                <FormItem label="菜单图标">
+                  <Input v-model="menu.menuClass" placeholder="请输入"></Input>
+                </FormItem>
+                <FormItem label="菜单排序" prop="menuSort">
+                  <Input v-model.trim="menu.menuSort" placeholder="请输入" ref="txtMenuSort"></Input>
+                </FormItem>
+              </Form>
+              <div style="text-align: right">
+                <Button @click="cancelSaveHandle" style="margin-right: 10px;">
+                  取消
+                </Button>
+                <Button type="primary" :loading="saveLoading" @click="saveOrUpdateHandle">
+                  保存
+                </Button>
+              </div>
+            </Card>
+          </Col>
+        </Row>
+      </Card>
+    </Row>
+  </div>
+</template>
+
+<script>
+import * as util from '@/libs/util'
+import * as menuManagementApi from '@/api/menu'
+export default {
+  data () {
+    return {
+      menuTree: [],
+      menu: {
+        pkid: null,
+        parentPkids: [],
+        title: null,
+        url: null,
+        menuClass: '',
+        menuSort: null,
+        parentPkid: null,
+        checked: false,
+        selected: false,
+        expand: false
+      },
+      cascaderData: [],
+      saveLoading: false,
+      menus: [],
+      spinShow: false,
+      lastSelectedNode: null
+    }
+  },
+  computed: {},
+  mounted () {
+    const self = this
+    self.init()
+  },
+  methods: {
+    init (menuPkidsToExpand) {
+      const self = this
+      self.listMenu()
+      self.listMenuTree(menuPkidsToExpand)
+      self.cancelSaveHandle()
+    },
+    expandMenuTreeById (menuPkidToExpand) {
+      const self = this
+      self.expandMenuTreeByIds([menuPkidToExpand])
+    },
+    expandMenuTreeByIds (menuPkidsToExpand) {
+      const self = this
+      let expandMenuIds = self.getMenuIdsHierarchy(menuPkidsToExpand)
+      console.log('expandMenuIds:', expandMenuIds)
+      if (menuPkidsToExpand) {
+        self.menuTree.forEach((nodeLvl1) => {
+          if (util.inArray(nodeLvl1.pkid, expandMenuIds)) {
+            self.$set(nodeLvl1, 'expand', true)
+          }
+          if (nodeLvl1.children) {
+            nodeLvl1.children.forEach((nodeLvl2) => {
+              if (util.inArray(nodeLvl2.menuPkid, expandMenuIds)) {
+                self.$set(nodeLvl2, 'expand', true)
+              }
+              if (nodeLvl2.children) {
+                nodeLvl2.children.forEach((nodeLvl3) => {
+                  if (util.inArray(nodeLvl3.menuPkid, expandMenuIds)) {
+                    self.$set(nodeLvl3, 'expand', true)
+                  }
+                })
+              }
+            })
+          }
+        })
+      }
+    },
+    listMenu () {
+      const self = this
+      self.spinShow = true
+      menuManagementApi.list()
+        .then(function (response) {
+          self.menus = response.data.rows
+          self.spinShow = false
+          console.log('self.menus:', self.menus)
+        })
+        .catch(function (error) {
+          console.log('menuManagementApi.list→error:', error)
+          // self.$Message.error('系统错误,请联系管理员!')
+          self.spinShow = false
+        })
+    },
+    listMenuTree (menuPkidsToExpand) {
+      const self = this
+      menuManagementApi.listMenuTree()
+        .then(function (response) {
+          self.menuTree = response.data.rows
+          self.cascaderData = JSON.parse(JSON.stringify(self.menuTree))
+          self.formatForCascader()
+          self.expandMenuTreeByIds(menuPkidsToExpand)
+          // console.log('self.menuTree:', self.menuTree);
+          // console.log('self.cascaderData:', self.cascaderData);
+        })
+        .catch(function (error) {
+          console.log('menuManagementApi.listMenuTree→error:', error)
+          // self.$Message.error('系统错误,请联系管理员!')
+        })
+    },
+    formatForCascader () {
+      const self = this
+      console.log('self.cascaderData', self.cascaderData)
+      for (let i in self.cascaderData) {
+        self.cascaderData[i].label = self.cascaderData[i].menuName
+        self.cascaderData[i].value = self.cascaderData[i].menuId
+        if (self.cascaderData[i].children !== null) {
+          for (let j in self.cascaderData[i].children) {
+            self.cascaderData[i].children[j].label = self.cascaderData[i].children[j].menuName
+            self.cascaderData[i].children[j].value = self.cascaderData[i].children[j].menuId
+            if (self.cascaderData[i].children[j].children !== null) {
+              for (let m in self.cascaderData[i].children[j].children) {
+                let data = {}
+                data.label = self.cascaderData[i].children[j].children[m].menuName
+                data.value = self.cascaderData[i].children[j].children[m].menuId
+                self.cascaderData[i].children[j].children[m] = data
+              }
+            } else {
+              let data = {}
+              data.label = self.cascaderData[i].children[j].menuName
+              data.value = self.cascaderData[i].children[j].menuId
+              self.cascaderData[i].children[j] = data
+            }
+          }
+        } else {
+          let data = {}
+          data.label = self.cascaderData[i].menuName
+          data.value = self.cascaderData[i].menuId
+          self.cascaderData[i] = data
+        }
+      }
+    },
+    initCheckStatusForTree () {
+      const self = this
+      self.$refs.menuTree.getCheckedNodes().forEach((node) => {
+        self.$set(node, 'checked', false)
+      })
+    },
+    initSelectionForTree () {
+      const self = this
+      self.$refs.menuTree.getSelectedNodes().forEach((node) => {
+        self.$set(node, 'selected', false)
+      })
+    },
+    save (menu) {
+      const self = this
+      self.saveLoading = true
+      menuManagementApi.save(menu)
+        .then(function (response) {
+          self.saveLoading = false
+          self.$Msseage.success('菜单保存成功')
+          self.initCheckStatusForTree()
+          self.initSelectionForTree()
+          self.init([menu.parentPkid])
+        })
+        .catch(function (error) {
+          console.log('menuManagementApi.save→error:', error)
+          self.saveLoading = false
+          // self.$Message.error('系统错误,请联系管理员!');
+        })
+    },
+    update (menu) {
+      const self = this
+      self.saveLoading = true
+      menuManagementApi.update(menu)
+        .then(function (response) {
+          self.saveLoading = false
+          self.$Message.success('菜单保存成功')
+          self.initCheckStatusForTree()
+          self.initSelectionForTree()
+          self.init([menu.parentPkid])
+        })
+        .catch(function (error) {
+          console.log('menuManagementApi.update→error:', error)
+          self.saveLoading = false
+          // self.$Message.error('系统错误,请联系管理员!');
+        })
+    },
+    // 递归获取menuPkid层级
+    recurseMenuId (menuPkid, menuArr) {
+      const self = this
+      for (let i in self.menus) {
+        if (self.menus[i].menuId === menuPkid) {
+          if (self.menus[i].parentId) {
+            menuArr = [menuPkid, ...menuArr]
+            return self.recurseMenuId(self.menus[i].parentId, menuArr)
+          } else {
+            menuArr = [menuPkid, ...menuArr]
+          }
+        }
+      }
+      return menuArr
+    },
+    // 获取单menuPkid的parentPkid层级数组
+    getParentIdHierarchy (id) {
+      const self = this
+      let menuArr = self.getMenuIdHierarchy(id)
+      menuArr.pop()
+      return menuArr
+    },
+    // 获取单menuPkid层级数组
+    getMenuIdHierarchy (id) {
+      const self = this
+      return self.recurseMenuId(id, [])
+    },
+    // 获取多menuPkid层级数组
+    getMenuIdsHierarchy (ids) {
+      const self = this
+      let menuPkidsHierarchy = []
+      if (ids) {
+        for (let i = 0; i < ids.length; i++) {
+          let menuPkidHierarchy = self.getMenuIdHierarchy(ids[i])
+          menuPkidsHierarchy = menuPkidsHierarchy.concat(menuPkidHierarchy)
+        }
+      }
+      return menuPkidsHierarchy
+    },
+    getSelectedNode () {
+      const self = this
+      let lastSelectedNode = self.$refs.menuTree.getSelectedNodes()
+      return lastSelectedNode && lastSelectedNode.length > 0 && lastSelectedNode[0]
+    },
+    generateOrderNum () {
+      const self = this
+      let selectedNode = self.getSelectedNode()
+      let parentPkid = selectedNode.pkid || 0
+      let maxOrderNum = -1
+      for (let i in self.menus) {
+        if (self.menus[i].parentPkid === parentPkid && self.menus[i].menuSort > maxOrderNum) {
+          maxOrderNum = self.menus[i].menuSort
+        }
+      }
+      return ++maxOrderNum
+    },
+    gotoSaveHandle () {
+      const self = this
+      let selectedNode = self.getSelectedNode()
+      let selectedMenuId = selectedNode && selectedNode.pkid
+      self.expandMenuTreeById(selectedMenuId)
+      self.menu = {
+        pkid: -1,
+        title: '',
+        url: '',
+        menuClass: '',
+        menuSort: self.generateOrderNum(),
+        parentPkids: self.getMenuIdHierarchy(selectedMenuId),
+        type: 1
+      }
+      self.initCheckStatusForTree()
+      self.initSelectionForTree()
+      self.$refs.txtMenuTitle.focus()
+    },
+    cancelSaveHandle () {
+      const self = this
+      self.menu = {}
+      let selectedNodes = self.$refs.menuTree.getSelectedNodes() || []
+      Object.assign(self.menu, selectedNodes[0] || {})
+    },
+    validateForSaveOrUpdate (menu) {
+      const self = this
+      if (menu.parentPkids.length >= 3) {
+        self.$Message.warning('菜单最多为三级')
+        self.$refs.cascaderParentIds.handleFocus()
+        return false
+      }
+      if (menu.title === null || menu.title === undefined || menu.title === '') {
+        self.$Message.warning('请输入菜单名称')
+        self.$refs.txtMenuTitle.focus()
+        return false
+      }
+      if (menu.menuSort === null || menu.menuSort === undefined || menu.menuSort === '') {
+        self.$Message.warning('请输入菜单排序')
+        self.$refs.txtMenuSort.focus()
+        return false
+      }
+      return true
+    },
+    saveOrUpdateHandle () {
+      const self = this
+      if (!self.validateForSaveOrUpdate(self.menu)) {
+        return
+      }
+      let menu = {
+        pkid: (self.menu.pkid && self.menu.pkid > 0) ? self.menu.pkid : null,
+        menuSort: self.menu.menuSort,
+        title: self.menu.title,
+        type: self.menu.type,
+        url: self.menu.url,
+        menuClass: self.menu.menuClass,
+        parentPkid: self.menu.parentPkids.length > 0 ? self.menu.parentPkids[self.menu.parentPkids.length - 1] : 0
+      }
+      if (menu.pkid) {
+        self.update(menu)
+      } else {
+        self.save(menu)
+      }
+    },
+    treeOnSelectChangeHandle (selectedNodes) {
+      console.log('treeOnSelectChangeHandle→selectedNodes:', selectedNodes)
+      const self = this
+      if (!selectedNodes || selectedNodes.length === 0) {
+        self.menu = {}
+      } else {
+        Object.assign(self.menu, selectedNodes[0])
+        self.menu.parentPkids = self.getParentIdHierarchy(self.menu.pkid)
+        console.log('self.menu.parentPkids:', self.menu.parentPkids)
+      }
+    },
+    treeOnToggleExpandHandle (expandMenuTreeByIds) {
+      console.log('treeOnToggleExpandHandle→expandMenuTreeByIds:', expandMenuTreeByIds)
+    },
+    treeOnCheckChangeHandle (checkedNodes) {
+      console.log('treeOnCheckChangeHandle→checkedNodes:', checkedNodes)
+    },
+    remove (menuPkidsToRemove, menuPkidsToExpand) {
+      const self = this
+      self.$Modal.confirm({
+        title: '提示',
+        content: '<h2>您确定要删除这条数据吗?</h2>',
+        loading: true,
+        onOk: () => {
+          menuManagementApi.remove(menuPkidsToRemove)
+            .then(function (response) {
+              if (response.data.code) {
+                self.$Message.warning(response.data.msg)
+                self.$Modal.remove()
+              } else {
+                self.$Modal.remove()
+                self.$Message.success('删除成功')
+                self.initCheckStatusForTree()
+                self.initSelectionForTree()
+                self.init(menuPkidsToExpand)
+              }
+            })
+            .catch(function (error) {
+              console.log('menuManagementApi.remove→error:', error)
+              self.$Modal.remove()
+              // self.$Message.error('系统错误,请联系管理员!');
+            })
+        }
+      })
+    },
+    removeHandle () {
+      const self = this
+      let checkedMenuList = self.$refs.menuTree.getCheckedNodes()
+      let menuPkidsToRemove = []
+      let menuPkidsToExpand = []
+      if (checkedMenuList.length < 1) {
+        self.$Message.warning('请勾选要删除的菜单')
+        return
+      }
+      for (let i = 0; i < checkedMenuList.length; i++) {
+        let row = checkedMenuList[i]
+        menuPkidsToRemove.push(row.pkid)
+        menuPkidsToExpand.push(row.parentPkid)
+      }
+      if (menuPkidsToRemove && menuPkidsToRemove.length > 0) {
+        self.remove(menuPkidsToRemove, menuPkidsToExpand)
+      }
+    }
+  }
+}
+</script>

@@ -44,5 +44,6 @@ export default {
   drag_drawer_page: '可拖動抽屜',
   tree_select_page: '樹狀下拉選擇器',
   organizationalManagement: '組織機構管理',
-  management: '系統管理'
+  management: '系統管理',
+  menu: '菜單管理'
 }

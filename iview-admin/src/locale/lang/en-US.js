@@ -44,5 +44,6 @@ export default {
   drag_drawer_page: 'Draggable Drawer',
   tree_select_page: 'Tree Selector',
   organizationalManagement: 'Organizational Management',
-  management: 'System Management'
+  management: 'System Management',
+  menu: 'Menu Management'
 }

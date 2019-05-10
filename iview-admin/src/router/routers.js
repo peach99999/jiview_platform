@@ -68,13 +68,13 @@ export default [
         component: () => import('@/pages/organizationalManagement/organizationalManagement.vue')
       },
       {
-        path: 'test',
-        name: 'test',
+        path: 'menu',
+        name: 'menu',
         meta: {
           // icon: 'md-notifications',
           title: '菜单管理'
-        }
-        // component: () => import('@/pages/organizationalManagement/organizationalManagement.vue')
+        },
+        component: () => import('@/pages/system/menu.vue')
       }
     ]
   },
