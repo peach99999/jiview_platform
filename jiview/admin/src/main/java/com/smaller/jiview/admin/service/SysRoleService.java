@@ -4,6 +4,7 @@ import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
 import com.smaller.jiview.admin.pojo.param.SysRoleListParam;
 import com.smaller.jiview.admin.pojo.param.SysRoleRemoveParam;
 import com.smaller.jiview.admin.pojo.param.SysRoleSaveOrUpdateParam;
+import com.smaller.jiview.admin.pojo.param.SysRoleUpdateMenuAuthParam;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
 
 /**
@@ -45,6 +46,11 @@ public interface SysRoleService {
      * @return ResultBo
      */
     ResultBO remove(SysRoleRemoveParam sysRoleRemoveParam);
-//
-//    ResultBO updateRoleMenuAuthorization(AdminRoleUpdateRoleMenuAuthorizationParam adminRoleUpdateRoleMenuAuthorizationParam);
+
+    /**
+     * 角色菜单权限
+     * @param sysRoleUpdateMenuAuthParam
+     * @return
+     */
+    ResultBO updateMenuAuth(SysRoleUpdateMenuAuthParam sysRoleUpdateMenuAuthParam);
 }

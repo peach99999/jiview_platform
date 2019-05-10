@@ -13,4 +13,13 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
   </resultMap>
+
+  <delete id="remove">
+    delete from
+    sys_role_menu_part
+    WHERE role_id = #{roleId}
+    <foreach collection="menuIds" item="menuId" index="index" open="and menu_id in ( " close=")" separator=",">
+      #{menuId}
+    </foreach>
+  </delete>
 </mapper>

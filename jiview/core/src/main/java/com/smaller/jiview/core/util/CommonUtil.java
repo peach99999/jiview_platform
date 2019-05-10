@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.smaller.jiview.core.config.security.JwtUser;
 import com.smaller.jiview.core.config.web.MKRequestWrapper;
 import com.smaller.jiview.core.constant.Constants;
+import com.smaller.jiview.core.pojo.dto.DiffDTO;
 import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
 import com.smaller.jiview.core.pojo.param.BaseListParam;
 import lombok.extern.slf4j.Slf4j;
@@ -204,6 +205,15 @@ public class CommonUtil {
      */
     public static JwtUser getJwtUser(HttpServletRequest request) {
         return (JwtUser) request.getAttribute(Constants.JWT_USER_KEY);
+    }
+
+    public static <T> DiffDTO<T> diff(List<T> news, List<T> origs) {
+        DiffDTO diff = new DiffDTO<>();
+
+        diff.setAdded(washAdded(news, origs));
+        diff.setDeleted(washAdded(origs, news));
+
+        return diff;
     }
 
 }

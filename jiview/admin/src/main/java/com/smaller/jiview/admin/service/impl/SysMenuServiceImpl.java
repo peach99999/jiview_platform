@@ -75,15 +75,12 @@ public class SysMenuServiceImpl implements SysMenuService {
 
         // 获取用户权限
         SysUserRole sysUserRole = sysUserRoleManager.getByUserPkid(loginUserPkid);
-        Long SysUserRoleId = Optional.ofNullable(sysUserRole)
+        Long SysRoleId = Optional.ofNullable(sysUserRole)
                 .orElse(new SysUserRole())
                 .getAuthorizeId();
 
         // 新增菜单权限数据
-        SysRoleMenu sysRoleMenu = new SysRoleMenu();
-        sysRoleMenu.setMenuId(sysMenu.getMenuId());
-        sysRoleMenu.setRoleId(SysUserRoleId);
-        sysRoleMenuManager.save(sysRoleMenu, loginUserDTO);
+        sysRoleMenuManager.save(SysRoleId, sysMenu.getMenuId(), loginUserDTO);
 
         result.setOpResult(resultCode);
 

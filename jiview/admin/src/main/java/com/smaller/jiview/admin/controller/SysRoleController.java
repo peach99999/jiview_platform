@@ -1,6 +1,7 @@
 package com.smaller.jiview.admin.controller;
 
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
+import com.smaller.jiview.admin.pojo.param.SysRoleUpdateMenuAuthParam;
 import com.smaller.jiview.admin.pojo.param.SysRoleListParam;
 import com.smaller.jiview.admin.pojo.param.SysRoleRemoveParam;
 import com.smaller.jiview.admin.pojo.param.SysRoleSaveOrUpdateParam;
@@ -100,19 +101,19 @@ public class SysRoleController {
 
         return sysRoleService.remove(sysRoleRemoveParam);
     }
-//
-//    /**
-//     * @Description:配置资源(admin)
-//     * @author xuyq
-//     * @date 2019-03-01
-//     */
-//    @ApiOperation(value = "更新菜单权限", httpMethod = "POST")
-//    @PostMapping(value = "/update-menu-auth")
-//    public ResultBO updateMenuAuth(
-//            @RequestBody RoleUpdateMenuAuthParam roleUpdateMenuAuthParam
-//    ) {
-//        roleUpdateMenuAuthParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
-//
-//        return roleService.updateMenuAuth(roleUpdateMenuAuthParam);
-//    }
+
+    /**
+     * @Description:配置资源(admin)
+     * @author xiagf
+     * @date 2019-05-10
+     */
+    @ApiOperation(value = "更新菜单权限", httpMethod = "POST")
+    @PostMapping(value = "/update-menu-auth")
+    public ResultBO updateMenuAuth(
+            @RequestBody SysRoleUpdateMenuAuthParam sysRoleUpdateMenuAuthParam
+    ) {
+        sysRoleUpdateMenuAuthParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
+
+        return sysRoleService.updateMenuAuth(sysRoleUpdateMenuAuthParam);
+    }
 }
