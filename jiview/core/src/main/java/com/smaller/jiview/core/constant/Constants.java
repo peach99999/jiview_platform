@@ -6,6 +6,7 @@ package com.smaller.jiview.core.constant;
 public class Constants {
     private Constants() {
     }
+
     public static final String REQUEST_BODY_KEY = "REQUEST_BODY";
 
     public static final String JWT_USER_KEY = "jwtUser";
@@ -26,4 +27,10 @@ public class Constants {
      */
     public static final Integer PAGE_NO = 0;
     public static final Integer PAGE_SIZE = 10;
+
+    /**
+     * 权限级别(1:访问权限;2:管理权限)
+     */
+    public static final Byte AUTHORIZE_LEVEL_1 = 1;
+    public static final Integer AUTHORIZE_LEVEL_2 = 2;
 }

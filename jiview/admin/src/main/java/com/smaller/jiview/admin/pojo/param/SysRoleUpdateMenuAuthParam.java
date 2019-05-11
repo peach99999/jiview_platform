@@ -18,5 +18,5 @@ public class SysRoleUpdateMenuAuthParam extends BaseParam {
     private Long roleId;
 
     @ApiModelProperty("menuIds")
-    private List<Long> menuIds;
+    private List<SysRoleMenuParam> sysRoleMenuParams;
 }

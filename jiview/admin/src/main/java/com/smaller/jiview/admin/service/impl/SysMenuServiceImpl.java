@@ -11,6 +11,7 @@ import com.smaller.jiview.admin.pojo.param.MenuRemoveParam;
 import com.smaller.jiview.admin.pojo.param.MenuSaveParam;
 import com.smaller.jiview.admin.pojo.param.MenuUpdateParam;
 import com.smaller.jiview.admin.service.SysMenuService;
+import com.smaller.jiview.core.constant.Constants;
 import com.smaller.jiview.core.exception.BizException;
 import com.smaller.jiview.core.message.AdminMessage;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
@@ -75,12 +76,12 @@ public class SysMenuServiceImpl implements SysMenuService {
 
         // 获取用户权限
         SysUserRole sysUserRole = sysUserRoleManager.getByUserPkid(loginUserPkid);
-        Long SysRoleId = Optional.ofNullable(sysUserRole)
+        Long sysRoleId = Optional.ofNullable(sysUserRole)
                 .orElse(new SysUserRole())
                 .getAuthorizeId();
 
         // 新增菜单权限数据
-        sysRoleMenuManager.save(SysRoleId, sysMenu.getMenuId(), loginUserDTO);
+        sysRoleMenuManager.save(sysRoleId, sysMenu.getMenuId(), Constants.AUTHORIZE_LEVEL_1, loginUserDTO);
 
         result.setOpResult(resultCode);
 

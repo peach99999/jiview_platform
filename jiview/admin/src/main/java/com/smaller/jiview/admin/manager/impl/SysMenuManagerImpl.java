@@ -164,6 +164,7 @@ public class SysMenuManagerImpl implements SysMenuManager {
     @Override
     public Integer save(SysMenu sysMenu, LoginUserDTO loginUserDTO) {
         sysMenu.setParentId(Optional.ofNullable(sysMenu.getParentId()).orElse(0L));
+        sysMenu.setCreateUserId(loginUserDTO.getLoginUserPkid());
         return sysMenuMapper.insertSelective(sysMenu);
     }
 

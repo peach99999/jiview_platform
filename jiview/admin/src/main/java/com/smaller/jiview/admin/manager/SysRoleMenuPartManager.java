@@ -1,5 +1,7 @@
 package com.smaller.jiview.admin.manager;
 
+import com.smaller.jiview.admin.platform.system.model.SysRoleMenuPart;
+
 import java.util.List;
 
 /**
@@ -8,4 +10,6 @@ import java.util.List;
 public interface SysRoleMenuPartManager {
 
     void remove(Long roleId, List<Long> menuIds);
+
+    void save(List<SysRoleMenuPart> list, Long roleId, Long userId);
 }

@@ -6,6 +6,7 @@ import com.smaller.jiview.admin.manager.SysRoleMenuManager;
 import com.smaller.jiview.admin.manager.SysRoleMenuPartManager;
 import com.smaller.jiview.admin.platform.system.mapper.SysRoleMapper;
 import com.smaller.jiview.admin.platform.system.model.SysRole;
+import com.smaller.jiview.admin.platform.system.model.SysRoleMenuPart;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
 import com.smaller.jiview.admin.pojo.param.SysRoleListParam;
 import com.smaller.jiview.admin.pojo.param.SysRoleRemoveParam;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,6 +46,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Override
     public ResultBO<SysRoleExt> list(SysRoleListParam sysRoleListParam) {
+        // PagerHelp分页 要紧接着跟查询语句
         pagerHelpManager.setStartPage(sysRoleListParam.getPageNo(), sysRoleListParam.getPageSize());
         List<SysRoleExt> sysRoleExts = sysRoleMapper.list(sysRoleListParam);
         ResultBO<SysRoleExt> result = new ResultBO<>(sysRoleExts);
@@ -92,15 +95,23 @@ public class SysRoleServiceImpl implements SysRoleService {
 
         Long roleId = roleUpdateMenuAuthParam.getRoleId();
         // 角色新的菜单权限id
-        List<Long> newMenuPkids = roleUpdateMenuAuthParam.getMenuIds();
+        List<Long> newMenuPkids = new ArrayList<>();
+        // 角色菜单部件集
+        List<SysRoleMenuPart> sysRoleMenuPartList = new ArrayList<>();
+        roleUpdateMenuAuthParam.getSysRoleMenuParams().forEach(sysRoleMenuParam -> {
+            newMenuPkids.add(sysRoleMenuParam.getMenuId());
+            sysRoleMenuPartList.addAll(sysRoleMenuParam.getMenuPartList());
+        });
         // 角色旧的菜单权限id
         List<Long> oldMenuPkids = sysRoleMenuManager.list(roleId);
 
         DiffDTO diff = CommonUtil.diff(newMenuPkids, oldMenuPkids);
-        List<Long> menuIdsForSave = diff.getAdded();
+//        List<Long> menuIdsForSave = diff.getAdded();
         List<Long> menuIdsForRemove = diff.getDeleted();
 
-        menuIdsForSave.forEach(menuPkid -> sysRoleMenuManager.save(roleId, menuPkid, loginUserDTO));
+//        menuIdsForSave.forEach(menuId -> sysRoleMenuManager.save(roleId, menuId, Constants.AUTHORIZE_LEVEL_1, loginUserDTO));
+        // 保存或更新角色菜单权限
+        sysRoleMenuManager.saveOrUpdate(roleUpdateMenuAuthParam.getSysRoleMenuParams(), roleId, loginUserDTO);
 
         // 删除角色菜单权限以及部件权限
         if (!menuIdsForRemove.isEmpty()) {
