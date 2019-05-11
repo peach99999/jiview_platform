@@ -19,13 +19,13 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
     private SysUserRoleMapper adminUserRoleMapper;
 
     @Override
-    public SysUserRole getByUserPkid(Long loginUserPkid) {
+    public List<SysUserRole> getByUserPkid(Long loginUserPkid) {
 
         Example example = new Example(SysUserRole.class);
         example.createCriteria().andEqualTo("userId",loginUserPkid);
         List<SysUserRole> orgUserRoles = adminUserRoleMapper.selectByExample(example);
 
-        return CommonUtil.getFirstElement(orgUserRoles);
+        return orgUserRoles;
     }
 
     @Override

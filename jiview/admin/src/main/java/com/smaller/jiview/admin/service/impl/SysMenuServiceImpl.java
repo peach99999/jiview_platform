@@ -20,6 +20,7 @@ import com.smaller.jiview.core.util.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -75,13 +76,11 @@ public class SysMenuServiceImpl implements SysMenuService {
         Integer resultCode = menuManager.save(sysMenu, loginUserDTO);
 
         // 获取用户权限
-        SysUserRole sysUserRole = sysUserRoleManager.getByUserPkid(loginUserPkid);
-        Long sysRoleId = Optional.ofNullable(sysUserRole)
-                .orElse(new SysUserRole())
-                .getAuthorizeId();
+        List<SysUserRole> sysUserRoleList = sysUserRoleManager.getByUserPkid(loginUserPkid);
 
-        // 新增菜单权限数据
-        sysRoleMenuManager.save(sysRoleId, sysMenu.getMenuId(), Constants.AUTHORIZE_LEVEL_1, loginUserDTO);
+        // 新增菜单权限数据(给每个用户下面的角色增加该菜单访问权限)
+        sysUserRoleList.forEach(sysUserRole ->
+                sysRoleMenuManager.save(sysUserRole.getAuthorizeId(), sysMenu.getMenuId(), Constants.AUTHORIZE_LEVEL_1, loginUserDTO));
 
         result.setOpResult(resultCode);
 
