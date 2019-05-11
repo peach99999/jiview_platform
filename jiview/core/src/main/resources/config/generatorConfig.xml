@@ -54,6 +54,13 @@
         <generatedKey column="user_id" sqlStatement="MySql" identity="true"/>
         </table>
 
+        <!--<table tableName="sys_code" domainObjectName="SysCode" enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<property value="false" name="useActualColumnNames"/>-->
+            <!--&lt;!&ndash; 指定主键列，insert后可取到id值，identity表示是自增列&ndash;&gt;-->
+            <!--<generatedKey column="code_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
         <!--&lt;!&ndash; 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名&ndash;&gt;-->
         <!--<table tableName="sys_user" domainObjectName="SysUser" enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smaller.jiview.admin.platform.system.mapper.SysCodeMapper" >
+  <resultMap id="BaseResultMap" type="com.smaller.jiview.admin.platform.system.model.SysCode" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <result column="code_id" property="codeId" jdbcType="BIGINT" />
+    <result column="code_type" property="codeType" jdbcType="VARCHAR" />
+    <result column="code_key" property="codeKey" jdbcType="VARCHAR" />
+    <result column="code_value" property="codeValue" jdbcType="VARCHAR" />
+    <result column="code_sort" property="codeSort" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="BIGINT" />
+  </resultMap>
+</mapper>
