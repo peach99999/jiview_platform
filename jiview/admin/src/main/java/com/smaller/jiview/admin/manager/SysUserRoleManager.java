@@ -1,6 +1,7 @@
 package com.smaller.jiview.admin.manager;
 
 import com.smaller.jiview.admin.platform.system.model.SysUserRole;
+import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
 
 import java.util.List;
 
@@ -10,5 +11,7 @@ import java.util.List;
 public interface SysUserRoleManager {
     List<SysUserRole> getByUserPkid(Long loginUserPkid);
 
-    Integer remove(Long userPkid);
+    void remove(Long userPkid);
+
+    void updateUserRoleInfo(Long userId, List<Long> roleIdList, LoginUserDTO loginUserDTO);
 }

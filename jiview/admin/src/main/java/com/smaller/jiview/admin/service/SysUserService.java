@@ -5,6 +5,7 @@ import com.smaller.jiview.admin.pojo.model.ext.SysRoleMenuPartExt;
 import com.smaller.jiview.admin.pojo.model.ext.SysUserExt;
 import com.smaller.jiview.admin.pojo.param.SysUserListParam;
 import com.smaller.jiview.admin.pojo.param.SysUserRemoveParam;
+import com.smaller.jiview.admin.pojo.param.SysUserSaveOrUpdateParam;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
 import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
 
@@ -34,14 +35,14 @@ public interface SysUserService {
 
     ResultBO<SysRoleMenuPartExt> getUserMenuPartAuth(Long menuId, LoginUserDTO loginUserDTO);
 
-//    /**
-//     * 保存用户信息
-//     *
-//     * @param adminUserSaveOrUpdateUserParam
-//     * @return ResultBo
-//     */
-//    ResultBO saveOrUpdateUser(AdminUserSaveOrUpdateUserParam adminUserSaveOrUpdateUserParam);
-//
+    /**
+     * 保存用户信息
+     *
+     * @param sysUserSaveOrUpdateParam
+     * @return ResultBo
+     */
+    ResultBO saveOrUpdateUser(SysUserSaveOrUpdateParam sysUserSaveOrUpdateParam);
+
     /**
      * 批量删除用户
      *

@@ -1,6 +1,6 @@
 package com.smaller.jiview.admin.service.impl;
 
-import com.smaller.jiview.admin.manager.UserManager;
+import com.smaller.jiview.admin.manager.SysUserManager;
 import com.smaller.jiview.admin.platform.system.mapper.SysUserMapper;
 import com.smaller.jiview.admin.platform.system.model.SysUser;
 import com.smaller.jiview.admin.pojo.param.LoginParam;
@@ -25,7 +25,7 @@ public class LoginServiceImpl implements LoginService {
     private JwtHelper jwtHelper;
 
     @Autowired
-    private UserManager userManager;
+    private SysUserManager sysUserManager;
 
     @Autowired
     private SysUserMapper sysUserMapper;
@@ -37,7 +37,7 @@ public class LoginServiceImpl implements LoginService {
         String userLogin = loginParam.getUserLogin();
         String userPwd = loginParam.getUserPwd();
 
-        SysUser SysUser = userManager.getForAdminLogin(userLogin, userPwd);
+        SysUser SysUser = sysUserManager.getForAdminLogin(userLogin, userPwd);
         Long userId = SysUser.getId();
 
         UserForReturnDTO userForReturnDTO = new UserForReturnDTO();
@@ -81,7 +81,7 @@ public class LoginServiceImpl implements LoginService {
 
         orgUser.setPassword(encodePwd);
 
-        if (userManager.getByUserLogin(orgUser.getAccount()) == null) {
+        if (sysUserManager.getByUserLogin(orgUser.getAccount()) == null) {
             throw new BizException(AdminMessage.NO_SUCH_USER);
         }
 

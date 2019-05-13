@@ -1,7 +1,7 @@
 package com.smaller.jiview.core.message;
 
 /**
- * Created by xiagf on 2018/11/13.
+ * Created by xiagf on 2019/05/06.
  */
 public class AdminMessage {
     private AdminMessage() {
@@ -17,5 +17,6 @@ public class AdminMessage {
     public static final BaseMessage LOGIN_SUCCESS = new BaseMessage("1200010", "登录成功");
     public static final BaseMessage LOGIN_FAILED = new BaseMessage("1200011", "登录失败");
     public static final BaseMessage NO_SUCH_USER = new BaseMessage("1200021", "用户不存在");
+    public static final BaseMessage SYS_USER_EXSITS = new BaseMessage("1200031", "账号已存在");
 
 }

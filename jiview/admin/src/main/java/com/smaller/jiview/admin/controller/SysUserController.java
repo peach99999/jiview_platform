@@ -4,6 +4,7 @@ import com.smaller.jiview.admin.pojo.model.ext.SysRoleMenuPartExt;
 import com.smaller.jiview.admin.pojo.model.ext.SysUserExt;
 import com.smaller.jiview.admin.pojo.param.SysUserListParam;
 import com.smaller.jiview.admin.pojo.param.SysUserRemoveParam;
+import com.smaller.jiview.admin.pojo.param.SysUserSaveOrUpdateParam;
 import com.smaller.jiview.admin.service.SysUserService;
 import com.smaller.jiview.core.config.security.JwtHelper;
 import com.smaller.jiview.core.constant.UrlConstants;
@@ -13,6 +14,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -95,22 +97,22 @@ public class SysUserController {
         //主处理
         return sysUserService.getUserMenuPartAuth(menuId,jwtHelper.getLoginUserDTO());
     }
-//
-//    /**
-//     * @Description: 保存用户信息
-//     * @author xiagf
-//     * @date 2018-11-09
-//     */
-//    @ApiOperation(value = "保存用户信息(admin)", httpMethod = "POST")
-//    @RequestMapping(value = "/save-or-update-user", method = RequestMethod.POST)
-//    public ResultBo saveOrUpdateUser(
-//            @RequestBody @Validated AdminUserSaveOrUpdateUserParam adminUserSaveOrUpdateUserParam
-//    ) {
-//        adminUserSaveOrUpdateUserParam.setLoginUser(jwtHelper.getLoginUser());
-//        //主处理
-//        return adminUserService.saveOrUpdateUser(adminUserSaveOrUpdateUserParam);
-//    }
-//
+
+    /**
+     * @Description: 保存用户信息
+     * @author xiagf
+     * @date 2018-11-09
+     */
+    @ApiOperation(value = "保存用户信息(admin)", httpMethod = "POST")
+    @RequestMapping(value = "/save-or-update-user", method = RequestMethod.POST)
+    public ResultBO saveOrUpdateUser(
+            @RequestBody @Validated SysUserSaveOrUpdateParam sysUserSaveOrUpdateParam
+    ) {
+        sysUserSaveOrUpdateParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
+        //主处理
+        return sysUserService.saveOrUpdateUser(sysUserSaveOrUpdateParam);
+    }
+
     /**
      * @Description: 批量删除用户
      * @author xiagf
