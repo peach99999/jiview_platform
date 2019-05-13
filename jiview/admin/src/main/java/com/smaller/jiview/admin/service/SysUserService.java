@@ -21,7 +21,7 @@ public interface SysUserService {
      * 查询用户列表
      *
      * @param sysUserListParam
-     * @return ResultBo<SysUserExt>
+     * @return ResultBO<SysUserExt>
      */
     ResultBO<SysUserExt> list(SysUserListParam sysUserListParam);
 
@@ -29,7 +29,7 @@ public interface SysUserService {
      * 获取用户信息
      *
      * @param userId
-     * @return ResultBo<AdminUserExt>
+     * @return ResultBO<AdminUserExt>
      */
     ResultBO get(Long userId);
 
@@ -46,7 +46,7 @@ public interface SysUserService {
      * 保存用户信息
      *
      * @param sysUserSaveOrUpdateParam
-     * @return ResultBo
+     * @return ResultBO
      */
     ResultBO saveOrUpdateUser(SysUserSaveOrUpdateParam sysUserSaveOrUpdateParam);
 
@@ -54,7 +54,7 @@ public interface SysUserService {
      * 批量删除用户
      *
      * @param sysUserRemoveParam
-     * @return ResultBo
+     * @return ResultBO
      */
     ResultBO remove(SysUserRemoveParam sysUserRemoveParam);
 

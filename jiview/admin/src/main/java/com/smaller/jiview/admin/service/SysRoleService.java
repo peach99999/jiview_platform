@@ -19,7 +19,7 @@ public interface SysRoleService {
      * 查询角色列表
      *
      * @param sysRoleListParam
-     * @return ResultBo<SysRoleExt>
+     * @return ResultBO<SysRoleExt>
      */
     ResultBO<SysRoleExt> list(SysRoleListParam sysRoleListParam);
 
@@ -27,7 +27,7 @@ public interface SysRoleService {
      * 获取角色详情
      *
      * @param roleId
-     * @return ResultBo<AdminRoleExt>
+     * @return ResultBO<AdminRoleExt>
      */
     ResultBO<SysRoleExt> get(Long roleId);
 
@@ -35,7 +35,7 @@ public interface SysRoleService {
      * 保存角色信息
      *
      * @param sysRoleSaveOrUpdateParam
-     * @return ResultBo
+     * @return ResultBO
      */
     ResultBO saveOrUpdateRole(SysRoleSaveOrUpdateParam sysRoleSaveOrUpdateParam);
 
@@ -43,7 +43,7 @@ public interface SysRoleService {
      * 批量删除角色
      *
      * @param sysRoleRemoveParam
-     * @return ResultBo
+     * @return ResultBO
      */
     ResultBO remove(SysRoleRemoveParam sysRoleRemoveParam);
 

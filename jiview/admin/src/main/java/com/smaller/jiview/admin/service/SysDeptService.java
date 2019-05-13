@@ -36,7 +36,7 @@ public interface SysDeptService {
      * 批量删除部门信息
      *
      * @param sysDeptRemoveParam
-     * @return ResultBo
+     * @return ResultBO
      */
     ResultBO remove(SysDeptRemoveParam sysDeptRemoveParam);
 
@@ -44,14 +44,14 @@ public interface SysDeptService {
      * 新增部门信息
      *
      * @param sysDeptSaveOrUpdateParam
-     * @return ResultBo
+     * @return ResultBO
      */
     ResultBO saveOrUpdateSysDept(SysDeptSaveOrUpdateParam sysDeptSaveOrUpdateParam);
 
     /**
      * 新增部门查询供选择部门下拉列表
      *
-     * @return ResultBo
+     * @return ResultBO
      */
     ResultBO listDept();
 
