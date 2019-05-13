@@ -3,14 +3,19 @@ package com.smaller.jiview.admin.service.impl;
 import com.smaller.jiview.admin.manager.PagerHelpManager;
 import com.smaller.jiview.admin.platform.system.mapper.SysRoleMenuPartMapper;
 import com.smaller.jiview.admin.platform.system.mapper.SysUserMapper;
+import com.smaller.jiview.admin.platform.system.mapper.SysUserRoleMapper;
+import com.smaller.jiview.admin.platform.system.model.SysUser;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleMenuPartExt;
 import com.smaller.jiview.admin.pojo.model.ext.SysUserExt;
+import com.smaller.jiview.admin.pojo.model.ext.SysUserRoleExt;
 import com.smaller.jiview.admin.pojo.param.SysUserListParam;
 import com.smaller.jiview.admin.service.SysUserService;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
 import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
+import com.smaller.jiview.core.util.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -26,6 +31,9 @@ public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysRoleMenuPartMapper sysRoleMenuPartMapper;
 
+    @Autowired
+    private SysUserRoleMapper sysUserRoleMapper;
+
     @Override
     public ResultBO<SysUserExt> list(SysUserListParam sysUserListParam) {
         pagerHelpManager.setStartPage(sysUserListParam.getPageNo(), sysUserListParam.getPageSize());
@@ -36,7 +44,19 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public ResultBO get(Long userId) {
-        return null;
+        ResultBO<SysUserExt> result = new ResultBO<>();
+        // 查询用户信息
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+        SysUserExt sysUserExt = new SysUserExt();
+        BeanUtil.springCopy(sysUser, sysUserExt);
+
+        // 查询用户角色信息
+        List<SysUserRoleExt> sysUserRoleExtList = sysUserRoleMapper.listUserRole(userId);
+        if (sysUserRoleExtList.size() > 0) {
+            sysUserExt.setSysUserRoleExtList(sysUserRoleExtList);
+        }
+        result.setRow(sysUserExt);
+        return result;
     }
 
     @Override

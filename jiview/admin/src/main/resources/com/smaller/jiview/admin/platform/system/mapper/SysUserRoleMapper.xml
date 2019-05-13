@@ -11,4 +11,16 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
   </resultMap>
+  <select id="listUserRole" resultType="com.smaller.jiview.admin.pojo.model.ext.SysUserRoleExt">
+    SELECT
+    sur.authorize_id,
+    sur.user_id,
+    sur.role_id,
+    sr.role_name AS roleName
+    FROM sys_user_role sur
+    LEFT JOIN sys_role sr
+    ON sur.role_id = sr.role_id
+    WHERE 1=1
+    AND sur.user_id = #{userId}
+  </select>
 </mapper>

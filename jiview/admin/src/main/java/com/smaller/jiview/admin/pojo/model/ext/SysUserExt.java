@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * SysUserExt
  *
@@ -16,4 +18,7 @@ import lombok.Data;
 public class SysUserExt extends SysUser {
     @ApiModelProperty("部门名称")
     private String deptName;
+
+    @ApiModelProperty("用户角色集")
+    private List<SysUserRoleExt> sysUserRoleExtList;
 }
