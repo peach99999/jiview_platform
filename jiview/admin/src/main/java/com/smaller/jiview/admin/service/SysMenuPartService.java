@@ -12,7 +12,19 @@ import com.smaller.jiview.core.pojo.bo.ResultBO;
  */
 public interface SysMenuPartService {
 
+    /**
+     * 菜单部件更新或删除
+     *
+     * @param sysMenuPartSaveOrupdateParam
+     * @return
+     */
     ResultBO menuPartSaveOrupdate(SysMenuPartSaveOrupdateParam sysMenuPartSaveOrupdateParam);
 
+    /**
+     * 获取菜单的所有组件信息
+     *
+     * @param menuId
+     * @return
+     */
     ResultBO get(Long menuId);
 }

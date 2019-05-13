@@ -9,7 +9,19 @@ import java.util.List;
  */
 public interface SysRoleManager {
 
+    /**
+     * 获取用户信息
+     *
+     * @param roleId
+     * @return
+     */
     SysRoleExt get(Long roleId);
 
+    /**
+     * 删除角色信息
+     *
+     * @param roleIds
+     * @return
+     */
     Integer remove(List<Long> roleIds);
 }

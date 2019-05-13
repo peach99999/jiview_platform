@@ -10,7 +10,12 @@ import java.util.List;
  */
 public interface SysDeptManager {
 
-
+    /**
+     * 查询部门名称
+     *
+     * @param list
+     * @return
+     */
     List<SysDeptExt> listDeptParentName(List<SysDeptExt> list);
 
 }

@@ -33,6 +33,13 @@ public interface SysUserService {
      */
     ResultBO get(Long userId);
 
+    /**
+     * 获取用户菜单部件权限信息
+     *
+     * @param menuId
+     * @param loginUserDTO
+     * @return
+     */
     ResultBO<SysRoleMenuPartExt> getUserMenuPartAuth(Long menuId, LoginUserDTO loginUserDTO);
 
     /**

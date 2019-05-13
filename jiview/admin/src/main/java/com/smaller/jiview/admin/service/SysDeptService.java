@@ -18,6 +18,7 @@ public interface SysDeptService {
 
     /**
      * 部门列表
+     *
      * @param sysDeptListParam
      * @return
      */
@@ -25,6 +26,7 @@ public interface SysDeptService {
 
     /**
      * 部门详情
+     *
      * @param deptId
      * @return
      */

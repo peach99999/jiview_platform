@@ -49,6 +49,7 @@ public interface SysRoleService {
 
     /**
      * 角色菜单权限
+     *
      * @param sysRoleUpdateMenuAuthParam
      * @return
      */
