@@ -5,16 +5,19 @@ import com.smaller.jiview.admin.platform.system.mapper.SysRoleMenuPartMapper;
 import com.smaller.jiview.admin.platform.system.mapper.SysUserMapper;
 import com.smaller.jiview.admin.platform.system.mapper.SysUserRoleMapper;
 import com.smaller.jiview.admin.platform.system.model.SysUser;
+import com.smaller.jiview.admin.platform.system.model.SysUserRole;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleMenuPartExt;
 import com.smaller.jiview.admin.pojo.model.ext.SysUserExt;
 import com.smaller.jiview.admin.pojo.model.ext.SysUserRoleExt;
 import com.smaller.jiview.admin.pojo.param.SysUserListParam;
+import com.smaller.jiview.admin.pojo.param.SysUserRemoveParam;
 import com.smaller.jiview.admin.service.SysUserService;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
 import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
 import com.smaller.jiview.core.util.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -33,6 +36,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Autowired
     private SysUserRoleMapper sysUserRoleMapper;
+
 
     @Override
     public ResultBO<SysUserExt> list(SysUserListParam sysUserListParam) {
@@ -63,6 +67,20 @@ public class SysUserServiceImpl implements SysUserService {
     public ResultBO<SysRoleMenuPartExt> getUserMenuPartAuth(Long menuId, LoginUserDTO loginUserDTO) {
         ResultBO<SysRoleMenuPartExt> result = new ResultBO<>();
         result.setRows(sysRoleMenuPartMapper.listUserRoleMenuPart(menuId, loginUserDTO.getLoginUserPkid()));
+        return result;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public ResultBO remove(SysUserRemoveParam sysUserRemoveParam) {
+        ResultBO result = new ResultBO();
+        // 删除用户表中的用户信息以及用户角色信息
+        for (Long userId : sysUserRemoveParam.getUserIdList()) {
+            sysUserMapper.deleteByPrimaryKey(userId);
+            Example example = new Example(SysUserRole.class);
+            example.createCriteria().andEqualTo("userId", userId);
+            sysUserRoleMapper.deleteByExample(example);
+        }
         return result;
     }
 

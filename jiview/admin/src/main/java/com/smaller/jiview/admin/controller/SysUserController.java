@@ -3,6 +3,7 @@ package com.smaller.jiview.admin.controller;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleMenuPartExt;
 import com.smaller.jiview.admin.pojo.model.ext.SysUserExt;
 import com.smaller.jiview.admin.pojo.param.SysUserListParam;
+import com.smaller.jiview.admin.pojo.param.SysUserRemoveParam;
 import com.smaller.jiview.admin.service.SysUserService;
 import com.smaller.jiview.core.config.security.JwtHelper;
 import com.smaller.jiview.core.constant.UrlConstants;
@@ -110,18 +111,18 @@ public class SysUserController {
 //        return adminUserService.saveOrUpdateUser(adminUserSaveOrUpdateUserParam);
 //    }
 //
-//    /**
-//     * @Description: 批量删除用户
-//     * @author xiagf
-//     * @date 2018-11-09
-//     */
-//    @ApiOperation(value = "批量删除用户", httpMethod = "POST")
-//    @RequestMapping(value = "/remove", method = RequestMethod.POST)
-//    public ResultBo remove(
-//            @RequestBody AdminUserRemoveParam adminUserRemoveParam
-//    ) {
-//        adminUserRemoveParam.setLoginUser(jwtHelper.getLoginUser());
-//        //主处理
-//        return adminUserService.remove(adminUserRemoveParam);
-//    }
+    /**
+     * @Description: 批量删除用户
+     * @author xiagf
+     * @date 2019-05-13
+     */
+    @ApiOperation(value = "批量删除用户", httpMethod = "POST")
+    @RequestMapping(value = "/remove", method = RequestMethod.POST)
+    public ResultBO remove(
+            @RequestBody SysUserRemoveParam sysUserRemoveParam
+    ) {
+        sysUserRemoveParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
+        //主处理
+        return sysUserService.remove(sysUserRemoveParam);
+    }
 }

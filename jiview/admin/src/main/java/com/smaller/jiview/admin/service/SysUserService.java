@@ -4,6 +4,7 @@ package com.smaller.jiview.admin.service;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleMenuPartExt;
 import com.smaller.jiview.admin.pojo.model.ext.SysUserExt;
 import com.smaller.jiview.admin.pojo.param.SysUserListParam;
+import com.smaller.jiview.admin.pojo.param.SysUserRemoveParam;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
 import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
 
@@ -41,13 +42,13 @@ public interface SysUserService {
 //     */
 //    ResultBO saveOrUpdateUser(AdminUserSaveOrUpdateUserParam adminUserSaveOrUpdateUserParam);
 //
-//    /**
-//     * 批量删除用户
-//     *
-//     * @param adminUserRemoveParam
-//     * @return ResultBo
-//     */
-//    ResultBO remove(AdminUserRemoveParam adminUserRemoveParam);
+    /**
+     * 批量删除用户
+     *
+     * @param sysUserRemoveParam
+     * @return ResultBo
+     */
+    ResultBO remove(SysUserRemoveParam sysUserRemoveParam);
 
 
 }
