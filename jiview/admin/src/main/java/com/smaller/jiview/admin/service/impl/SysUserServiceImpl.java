@@ -5,11 +5,14 @@ import com.smaller.jiview.admin.manager.SysUserManager;
 import com.smaller.jiview.admin.manager.SysUserRoleManager;
 import com.smaller.jiview.admin.platform.system.mapper.SysRoleMenuPartMapper;
 import com.smaller.jiview.admin.platform.system.mapper.SysUserMapper;
+import com.smaller.jiview.admin.platform.system.mapper.SysUserMenuPartMapper;
 import com.smaller.jiview.admin.platform.system.mapper.SysUserRoleMapper;
 import com.smaller.jiview.admin.platform.system.model.SysUser;
+import com.smaller.jiview.admin.platform.system.model.SysUserMenuPart;
 import com.smaller.jiview.admin.platform.system.model.SysUserRole;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleMenuPartExt;
 import com.smaller.jiview.admin.pojo.model.ext.SysUserExt;
+import com.smaller.jiview.admin.pojo.model.ext.SysUserMenuPartExt;
 import com.smaller.jiview.admin.pojo.model.ext.SysUserRoleExt;
 import com.smaller.jiview.admin.pojo.param.SysUserListParam;
 import com.smaller.jiview.admin.pojo.param.SysUserRemoveParam;
@@ -47,6 +50,9 @@ public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysUserRoleManager sysUserRoleManager;
 
+    @Autowired
+    private SysUserMenuPartMapper sysUserMenuPartMapper;
+
 
     @Override
     public ResultBO<SysUserExt> list(SysUserListParam sysUserListParam) {
@@ -80,6 +86,13 @@ public class SysUserServiceImpl implements SysUserService {
         list = sysRoleMenuPartMapper.listUserRoleMenuPart(menuId, loginUserDTO.getLoginUserPkid());
         if (list.size() == 0) {
             // todo 查询用户设置的菜单权限
+            List<SysUserMenuPartExt> sysUserMenuPartExtList = sysUserMenuPartMapper.listUserMenuPart(menuId, loginUserDTO.getLoginUserPkid());
+            List<SysRoleMenuPartExt> finalList = list;
+            sysUserMenuPartExtList.forEach(sysUserMenuPartExt -> {
+                SysRoleMenuPartExt sysRoleMenuPartExt = new SysRoleMenuPartExt();
+                BeanUtil.springCopy(sysUserMenuPartExt,sysRoleMenuPartExt);
+                finalList.add(sysRoleMenuPartExt);
+            });
         }
         result.setRows(list);
         return result;
