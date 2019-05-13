@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -75,7 +76,12 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public ResultBO<SysRoleMenuPartExt> getUserMenuPartAuth(Long menuId, LoginUserDTO loginUserDTO) {
         ResultBO<SysRoleMenuPartExt> result = new ResultBO<>();
-        result.setRows(sysRoleMenuPartMapper.listUserRoleMenuPart(menuId, loginUserDTO.getLoginUserPkid()));
+        List<SysRoleMenuPartExt> list = new ArrayList<>();
+        list = sysRoleMenuPartMapper.listUserRoleMenuPart(menuId, loginUserDTO.getLoginUserPkid());
+        if (list.size() == 0) {
+            // todo 查询用户设置的菜单权限
+        }
+        result.setRows(list);
         return result;
     }
 

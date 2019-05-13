@@ -2,7 +2,9 @@ package com.smaller.jiview.admin.manager.impl;
 
 import com.smaller.jiview.admin.manager.SysMenuManager;
 import com.smaller.jiview.admin.platform.system.mapper.SysMenuMapper;
+import com.smaller.jiview.admin.platform.system.mapper.SysUserMenuMapMapper;
 import com.smaller.jiview.admin.platform.system.model.SysMenu;
+import com.smaller.jiview.admin.platform.system.model.SysUserMenuMap;
 import com.smaller.jiview.admin.pojo.model.ext.SysMenuExt;
 import com.smaller.jiview.admin.pojo.param.MenuRemoveParam;
 import com.smaller.jiview.core.constant.Constants;
@@ -20,6 +22,9 @@ import java.util.stream.Collectors;
 public class SysMenuManagerImpl implements SysMenuManager {
     @Autowired
     private SysMenuMapper sysMenuMapper;
+
+    @Autowired
+    private SysUserMenuMapMapper sysUserMenuMapMapper;
 
     private SysMenuExt procForList(SysMenuExt sysMenuExt) {
         if (sysMenuExt.getUrl() != null) {
@@ -65,7 +70,12 @@ public class SysMenuManagerImpl implements SysMenuManager {
     @Override
     public List<SysMenuExt> listUserMenuTree(Long loginPkid) {
         List<SysMenuExt> menus = sysMenuMapper.list();
-        List<SysMenuExt> userMenus = sysMenuMapper.listForUser(loginPkid);
+        List<SysMenuExt> userMenus = new ArrayList<>();
+        userMenus = sysMenuMapper.listForUser(loginPkid);
+        // 如果通过角色去查用户的菜单权限没查到的话  说明该用户没有配置角色  是直接配置菜单选线的
+        if (userMenus.size() == 0) {
+            userMenus = sysUserMenuMapMapper.listForUserMenu(loginPkid);
+        }
         return listMenuTreeCommon(menus, userMenus);
     }
 
