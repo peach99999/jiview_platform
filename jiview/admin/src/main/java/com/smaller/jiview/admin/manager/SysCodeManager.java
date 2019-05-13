@@ -5,7 +5,7 @@ import com.smaller.jiview.admin.pojo.param.SysCodeListParam;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
 
 /**
- * Created by xuyq on 2019/03/01
+ * Created by xiagf on 2019/05/13
  */
 public interface SysCodeManager {
     /**
