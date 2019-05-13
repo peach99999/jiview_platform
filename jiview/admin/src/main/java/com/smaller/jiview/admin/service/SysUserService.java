@@ -1,9 +1,11 @@
 package com.smaller.jiview.admin.service;
 
 
+import com.smaller.jiview.admin.pojo.model.ext.SysRoleMenuPartExt;
 import com.smaller.jiview.admin.pojo.model.ext.SysUserExt;
 import com.smaller.jiview.admin.pojo.param.SysUserListParam;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
+import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
 
 /**
  * SysUserService
@@ -24,10 +26,12 @@ public interface SysUserService {
     /**
      * 获取用户信息
      *
-     * @param pkid
+     * @param userId
      * @return ResultBo<AdminUserExt>
      */
-    ResultBO get(Long pkid);
+    ResultBO get(Long userId);
+
+    ResultBO<SysRoleMenuPartExt> getUserMenuPartAuth(Long menuId, LoginUserDTO loginUserDTO);
 
 //    /**
 //     * 保存用户信息

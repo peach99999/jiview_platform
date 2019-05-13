@@ -1,5 +1,6 @@
 package com.smaller.jiview.admin.controller;
 
+import com.smaller.jiview.admin.pojo.model.ext.SysRoleMenuPartExt;
 import com.smaller.jiview.admin.pojo.model.ext.SysUserExt;
 import com.smaller.jiview.admin.pojo.param.SysUserListParam;
 import com.smaller.jiview.admin.service.SysUserService;
@@ -71,10 +72,27 @@ public class SysUserController {
     })
     @GetMapping(value = "/{userId}")
     public ResultBO get(
-            @PathVariable Long pkid
+            @PathVariable Long userId
     ) {
         //主处理
-        return sysUserService.get(pkid);
+        return sysUserService.get(userId);
+    }
+
+    /**
+     * @Description: 查询用户菜单部件权限
+     * @author xiagf
+     * @date 2019-05-13
+     */
+    @ApiOperation(value = "查询用户菜单部件权限", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "menuId", value = "菜单id", dataType = "long", paramType = "path", required = true)
+    })
+    @GetMapping(value = "menu-part-auth/{menuId}")
+    public ResultBO<SysRoleMenuPartExt> getUserMenuPartAuth(
+            @PathVariable Long menuId
+    ) {
+        //主处理
+        return sysUserService.getUserMenuPartAuth(menuId,jwtHelper.getLoginUserDTO());
     }
 //
 //    /**
