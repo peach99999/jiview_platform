@@ -1,5 +1,5 @@
 import Main from '@/components/main'
-import parentView from '@/components/parent-view'
+// import parentView from '@/components/parent-view'
 
 /**
  * iview-admin中meta除了原生参数外可配置的参数:
@@ -25,7 +25,7 @@ export const loginRouter = {
     hideInMenu: true
   },
   component: () => import('@/view/login/login.vue')
-};
+}
 
 export const page404 = {
   path: '*',
@@ -35,7 +35,7 @@ export const page404 = {
     title: '404-页面不存在'
   },
   component: () => import('@/view/error-page/404.vue')
-};
+}
 
 export const page401 = {
   path: '/401',
@@ -45,7 +45,7 @@ export const page401 = {
     title: '401-页面不存在'
   },
   component: () => import('@/view/error-page/401.vue')
-};
+}
 
 export const page500 = {
   path: '/500',
@@ -55,7 +55,7 @@ export const page500 = {
     title: '500-服务端错误'
   },
   component: () => import('@/view/error-page/500.vue')
-};
+}
 
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [{
@@ -85,7 +85,7 @@ export const appRouter = [{
       component: () => import('@/pages/system/menu.vue')
     }
   ]
-}];
+}]
 // 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在otherRouter里
 export const otherRouter = {
   path: '/',
@@ -139,7 +139,7 @@ export const otherRouter = {
       component: () => import('@/view/argu-page/query.vue')
     }
   ]
-};
+}
 
 export const routers = [
   loginRouter,

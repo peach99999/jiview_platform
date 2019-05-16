@@ -31,6 +31,8 @@ const showThisMenuEle = (item, access) => {
  * @returns {Array}
  */
 export const getMenuByRouter = (list, access) => {
+  console.log('getMenuByRouter list:', list)
+  console.log('getMenuByRouter access:', access)
   let res = []
   forEach(list, item => {
     if (!item.meta || (item.meta && !item.meta.hideInMenu)) {
@@ -94,14 +96,26 @@ export const getRouteTitleHandled = (route) => {
 }
 
 export const showTitle = (item, vm) => {
-  let { title, __titleIsFunction__ } = item.meta
-  if (!title) return
-  if (useI18n) {
-    if (title.includes('{{') && title.includes('}}') && useI18n) title = title.replace(/({{[\s\S]+?}})/, (m, str) => str.replace(/{{([\s\S]*)}}/, (m, _) => vm.$t(_.trim())))
-    else if (__titleIsFunction__) title = item.meta.title
-    else title = vm.$t(item.name)
-  } else title = (item.meta && item.meta.title) || item.name
-  return title
+  if (item.meta) {
+    let { title, __titleIsFunction__ } = item.meta
+    if (!title) return
+    if (useI18n) {
+      if (title.includes('{{') && title.includes('}}') && useI18n) title = title.replace(/({{[\s\S]+?}})/, (m, str) => str.replace(/{{([\s\S]*)}}/, (m, _) => vm.$t(_.trim())))
+      else if (__titleIsFunction__) title = item.meta.title
+      else title = vm.$t(item.name)
+    } else title = (item.meta && item.meta.title) || item.name
+    return title
+  }
+  if (!item.meta) {
+    let { menuName } = item
+    if (!menuName) return
+    if (useI18n) {
+      if (menuName.includes('{{') && menuName.includes('}}') && useI18n) menuName = title.replace(/({{[\s\S]+?}})/, (m, str) => str.replace(/{{([\s\S]*)}}/, (m, _) => vm.$t(_.trim())))
+      // else if (__titleIsFunction__) menuName = item.menuName
+      else menuName = vm.$t(item.routerName)
+    } else menuName = (item && item.menuName) || item.routerName
+    return menuName
+  }
 }
 
 /**

@@ -1,3 +1,4 @@
 export const showTitle = (item, vm) => {
-  return vm.$config.useI18n ? vm.$t(item.name) : ((item.meta && item.meta.title) || item.name)
+  console.log('showTitle item:',item)
+  return vm.$config.useI18n ? vm.$t(item.routerName) : ((item.menuName) || item.routerName)
 }

@@ -12,6 +12,7 @@ import {
   localRead
 } from '@/libs/util'
 import { saveErrorLogger } from '@/api/data'
+import * as menuManagementApi from '@/api/menu'
 import router from '@/router'
 import routers from '@/router/routers'
 import config from '@/config'
@@ -32,7 +33,8 @@ export default {
     homeRoute: {},
     local: localRead('local'),
     errorList: [],
-    hasReadErrorPage: false
+    hasReadErrorPage: false,
+    menuList: []
   },
   getters: {
     menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access),
@@ -85,6 +87,14 @@ export default {
     },
     setHasReadErrorLoggerStatus (state, status = true) {
       state.hasReadErrorPage = status
+    },
+    updateMenulist (state, name) {
+      menuManagementApi.listUserMenuTree()
+        .then(function (respnose) {
+          // state.allMenuList = respnose.data.rows;
+          state.menuList = respnose.data.rows
+          sessionStorage.setItem('menuList', JSON.stringify(state.menuList))
+        })
     }
   },
   actions: {

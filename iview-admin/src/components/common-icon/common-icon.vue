@@ -10,17 +10,21 @@ export default {
   props: {
     type: {
       type: String,
-      required: true
+      required: false
     },
     color: String,
     size: Number
   },
   computed: {
     iconType () {
-      return this.type.indexOf('_') === 0 ? 'Icons' : 'Icon'
+      if (this.type) {
+        return this.type.indexOf('_') === 0 ? 'Icons' : 'Icon'
+      }
     },
     iconName () {
-      return this.iconType === 'Icons' ? this.getCustomIconName(this.type) : this.type
+      if (this.iconType && this.type) {
+        return this.iconType === 'Icons' ? this.getCustomIconName(this.type) : this.type
+      }
     },
     iconSize () {
       return this.size || (this.iconType === 'Icons' ? 12 : undefined)
