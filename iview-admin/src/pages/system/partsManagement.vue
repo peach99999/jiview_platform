@@ -97,27 +97,9 @@ export default {
     partTypeChange(){
 
     },
-    saveOrUpdateMenuPart(){
+    saveOrUpdateMenuPart(param){
       const self = this
-      let list = []
-      if(self.menuId){
-        this.partsObj.partsList.forEach((item, index) => {
-          let param = {
-            cmpId: item.cmpId,
-            cmpType: item.cmpType,
-            menuId: self.menuId,
-            remark: item.remark
-          }
-          if(item.partId){
-            param.partId= item.partId
-          }
-          list.push(param)
-        })
-      }
-      let sysMenuPartSaveOrupdateParam = {
-        menuPartList:list
-      }
-      partsManagementApi.saveOrUpdateMenuPart(sysMenuPartSaveOrupdateParam)
+      partsManagementApi.saveOrUpdateMenuPart(param)
         .then(function (response) {
           self.getMenuPartDetail(self.menuId)
         })
@@ -126,8 +108,8 @@ export default {
         })
     },
     handleSubmit (name) {
-      console.log('partsList:', this.partsObj.partsList)
       if(this.partsObj.partsList && this.partsObj.partsList.length === 0){
+        console.log('partsList:', this.partsObj.partsList)
         let menuPartList= []
         let param = {
           menuId: this.menuId
@@ -138,15 +120,35 @@ export default {
         }
         this.saveOrUpdateMenuPart(sysMenuPartSaveOrupdateParam)
       }
-      this.$refs[name].validate((valid) => {
-        console.log('valid:', valid)
-        if (valid) {
-          this.$Message.success('Success!');
-          this.saveOrUpdateMenuPart()
-        } else {
-          this.$Message.error('Fail!');
+      if(this.partsObj.partsList && this.partsObj.partsList.length !== 0){
+        let list = []
+        if(this.menuId){
+          this.partsObj.partsList.forEach((item, index) => {
+            let param = {
+              cmpId: item.cmpId,
+              cmpType: item.cmpType,
+              menuId: this.menuId,
+              remark: item.remark
+            }
+            if(item.partId){
+              param.partId= item.partId
+            }
+            list.push(param)
+          })
         }
-      })
+        let sysMenuPartSaveOrupdateParam = {
+          menuPartList:list
+        }
+        this.$refs[name].validate((valid) => {
+          console.log('valid:', valid)
+          if (valid) {
+            this.$Message.success('Success!');
+            this.saveOrUpdateMenuPart(sysMenuPartSaveOrupdateParam)
+          } else {
+            this.$Message.error('Fail!');
+          }
+        })
+      }
     },
     handleReset (name) {
       this.$refs[name].resetFields();
