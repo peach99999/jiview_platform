@@ -16,7 +16,7 @@
         <Row>
           <Col span="8">
             <Card>
-              <Tree :data="menuTree" show-checkbox ref="menuTree"
+              <Tree :data="menuTree" show-checkbox ref="menuTree" :render="renderContent"
                     @on-select-change="treeOnSelectChangeHandle"
                     @on-toggle-expand="treeOnToggleExpandHandle"
                     @on-check-change="treeOnCheckChangeHandle"></Tree>
@@ -449,6 +449,37 @@ export default {
       if (menuPkidsToRemove && menuPkidsToRemove.length > 0) {
         self.remove(menuPkidsToRemove, menuPkidsToExpand)
       }
+    },
+    renderContent (h, { root, node, data }) {
+      console.log('data:',data)
+      return h('span', {
+        style: {
+          display: 'inline-block',
+          width: '100%'
+        }
+      }, [
+        h('span',[
+          h('Icon', {
+            style: {
+              marginRight: '8px'
+            }
+          }),
+          h('span', data.title)
+        ]),
+        h('Button', {
+          props: Object.assign({},  {
+            size: 'small',
+          }),
+          style: {
+            marginRight: '38px',
+            float: 'right',
+            display: data.parentId?"":"none",
+          },
+          on: {
+            click: () => { this.$router.push({name:'partsManagement',params:{menuId: data.menuId}}) }
+          }
+        }, '部件管理')
+      ]);
     }
   }
 }
