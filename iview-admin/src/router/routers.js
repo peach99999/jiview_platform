@@ -109,6 +109,16 @@ export const otherRouter = {
       component: () => import('@/view/single-page/home')
     },
     {
+      path: 'partsManagement/:menuId',
+      name: 'partsManagement',
+      meta: {
+        title: 'partsManagement',
+        notCache: true
+        // beforeCloseName: 'before_close_normal'
+      },
+      component: () => import('@/pages/system/partsManagement.vue')
+    },
+    {
       path: 'message_page',
       name: 'message_page',
       meta: {

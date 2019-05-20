@@ -45,5 +45,6 @@ export default {
   tree_select_page: '树状下拉选择器',
   organizationalManagement: '组织机构管理',
   management: '系统管理',
-  menu: '菜单管理'
+  menu: '菜单管理',
+  partsManagement: '部件管理'
 }

@@ -45,5 +45,6 @@ export default {
   tree_select_page: 'Tree Selector',
   organizationalManagement: 'Organizational Management',
   management: 'System Management',
-  menu: 'Menu Management'
+  menu: 'Menu Management',
+  partsManagement: 'Component Management'
 }
