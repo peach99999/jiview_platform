@@ -7,11 +7,13 @@ import com.smaller.jiview.admin.pojo.param.SysMenuPartParam;
 import com.smaller.jiview.admin.pojo.param.SysMenuPartSaveOrupdateParam;
 import com.smaller.jiview.admin.service.SysMenuPartService;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
+import com.smaller.jiview.core.pojo.dto.DiffDTO;
 import com.smaller.jiview.core.util.BeanUtil;
 import com.smaller.jiview.core.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,7 +44,7 @@ public class SysMenuPartServiceImpl implements SysMenuPartService {
             }
             return result;
         }
-        Set<Long> partIddSet = new HashSet<>();
+        List<Long> newPartIdList = new ArrayList<>();
         // 查询该菜单是否有设置过部件
         List<SysMenuPart> menuPartList = sysMenuPartManager.listMenuPart(CommonUtil.getFirstElement(sysMenuPartSaveOrupdateParam.getMenuPartList()).getMenuId());
         for (SysMenuPartParam sysMenuPartParam : sysMenuPartSaveOrupdateParam.getMenuPartList()) {
@@ -50,14 +52,14 @@ public class SysMenuPartServiceImpl implements SysMenuPartService {
             BeanUtil.springCopy(sysMenuPartParam, sysMenuPart);
             // partId不为空表示更新 否则为新增
             if (sysMenuPartParam.getPartId() != null) {
-                partIddSet.add(sysMenuPart.getPartId());
+                newPartIdList.add(sysMenuPart.getPartId());
                 sysMenuPartMapper.updateByPrimaryKeySelective(sysMenuPart);
             } else {
                 sysMenuPart.setCreateUserId(sysMenuPartSaveOrupdateParam.getLoginUserDTO().getLoginUserPkid());
                 sysMenuPartMapper.insertSelective(sysMenuPart);
             }
         }
-        delMenuPart(count, partIddSet, menuPartList);
+        delMenuPart(count, newPartIdList, menuPartList);
         result.setMsg("菜单部件提交成功!");
         return result;
     }
@@ -73,13 +75,18 @@ public class SysMenuPartServiceImpl implements SysMenuPartService {
      * 判断菜单部件是否删除过
      *
      * @param newCount
-     * @param partIdSet
+     * @param newPartIdList
      * @param oldMenuPartList
      */
-    private void delMenuPart(Integer newCount, Set<Long> partIdSet, List<SysMenuPart> oldMenuPartList) {
-        if (newCount < oldMenuPartList.size()) {
+    private void delMenuPart(Integer newCount, List<Long> newPartIdList, List<SysMenuPart> oldMenuPartList) {
+        List<Long> oldPartIdList = new ArrayList<>();
+        oldMenuPartList.forEach(sysMenuPart -> oldPartIdList.add(sysMenuPart.getPartId()));
+
+        DiffDTO diff = CommonUtil.diff(newPartIdList, oldPartIdList);
+        List<Long> partIdsForRemove = diff.getDeleted();
+        for (Long partId:partIdsForRemove) {
             for (SysMenuPart sysMenuPart : oldMenuPartList) {
-                if (!partIdSet.contains(sysMenuPart.getPartId())) {
+                if (sysMenuPart.getPartId().equals(partId)) {
                     sysMenuPartMapper.deleteByPrimaryKey(sysMenuPart);
                 }
             }

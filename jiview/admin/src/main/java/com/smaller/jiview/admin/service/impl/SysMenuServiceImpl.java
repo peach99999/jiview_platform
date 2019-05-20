@@ -75,7 +75,7 @@ public class SysMenuServiceImpl implements SysMenuService {
         BeanUtil.springCopy(menuSaveParam, sysMenu);
         Integer resultCode = menuManager.save(sysMenu, loginUserDTO);
 
-        // 获取用户权限
+        // 获取用户权限co
         List<SysUserRole> sysUserRoleList = sysUserRoleManager.getByUserPkid(loginUserPkid);
 
         // 新增菜单权限数据(给每个用户下面的角色增加该菜单访问权限)
