@@ -20,11 +20,11 @@ public class SysMenuPartParam {
     @ApiModelProperty("菜单id")
     private Long menuId;
 
-    @NotNull(message = "UI组件ID不能为空")
+//    @NotNull(message = "UI组件ID不能为空")
     @ApiModelProperty("UI组件ID")
     private String cmpId;
 
-    @NotNull(message = "UI组件类型不能为空")
+//    @NotNull(message = "UI组件类型不能为空")
     @ApiModelProperty("UI组件类型(1:按钮组件;2:表单输入组件;3:容器面板组件)")
     private Byte cmpType;
 

@@ -25,4 +25,11 @@ public class SysMenuPartManagerImpl implements SysMenuPartManager {
         example.createCriteria().andEqualTo("menuId", menuId);
         return sysMenuPartMapper.selectByExample(example);
     }
+
+    @Override
+    public void remove(Long menuId) {
+        Example example = new Example(SysMenuPart.class);
+        example.createCriteria().andEqualTo("menuId", menuId);
+        sysMenuPartMapper.deleteByExample(example);
+    }
 }

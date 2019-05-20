@@ -17,4 +17,10 @@ public interface SysMenuPartManager {
      */
     List<SysMenuPart> listMenuPart(Long menuId);
 
+    /**
+     * 删除
+     * @param menuId
+     */
+    void remove(Long menuId);
+
 }
