@@ -40,9 +40,9 @@ public class SysMenuPartServiceImpl implements SysMenuPartService {
             if (sysMenuPartParam.getCmpId() == null && sysMenuPartParam.getCmpType() == null){
                 if (sysMenuPartParam.getMenuId() != null){
                     sysMenuPartManager.remove(sysMenuPartParam.getMenuId());
+                    return result;
                 }
             }
-            return result;
         }
         List<Long> newPartIdList = new ArrayList<>();
         // 查询该菜单是否有设置过部件
