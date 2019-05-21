@@ -22,7 +22,7 @@
             :prop="'partsList.' + index + '.cmpId'"
             :rules="[{required: true, trigger: 'blur', message: '请输入部件ID'}]"
           >
-            <Input type="text" v-model.trim="item.cmpId" placeholder="部件ID" disabled></Input>
+            <Input type="text" v-model.trim="item.cmpId" placeholder="部件ID" @on-blur="changePartId" ></Input>
           </FormItem>
         </Col>
         <Col span="7" >
@@ -70,10 +70,11 @@ export default {
       },
       partTypeList: [
         {
-          partTypePkid: 0,
+          partTypePkid: 1,
           partType: '按钮组件'
         }
-      ]
+      ],
+      sameId: ''
     }
   },
   computed: {},
@@ -108,62 +109,86 @@ export default {
         })
     },
     handleSubmit (name) {
-      if(this.partsObj.partsList && this.partsObj.partsList.length === 0){
-        console.log('partsList:', this.partsObj.partsList)
-        let menuPartList= []
-        let param = {
-          menuId: this.menuId
+      this.judgeIsExistSameId()
+      if(!this.sameId){
+        if(this.partsObj.partsList && this.partsObj.partsList.length === 0){
+          console.log('partsList:', this.partsObj.partsList)
+          let menuPartList= []
+          let param = {
+            menuId: this.menuId
+          }
+          menuPartList.push(param)
+          let sysMenuPartSaveOrupdateParam = {
+            menuPartList:  menuPartList
+          }
+          this.saveOrUpdateMenuPart(sysMenuPartSaveOrupdateParam)
         }
-        menuPartList.push(param)
-        let sysMenuPartSaveOrupdateParam = {
-          menuPartList:  menuPartList
-        }
-        this.saveOrUpdateMenuPart(sysMenuPartSaveOrupdateParam)
-      }
-      if(this.partsObj.partsList && this.partsObj.partsList.length !== 0){
-        let list = []
-        if(this.menuId){
-          this.partsObj.partsList.forEach((item, index) => {
-            let param = {
-              cmpId: item.cmpId,
-              cmpType: item.cmpType,
-              menuId: this.menuId,
-              remark: item.remark
+        if(this.partsObj.partsList && this.partsObj.partsList.length !== 0){
+          let list = []
+          if(this.menuId){
+            this.partsObj.partsList.forEach((item, index) => {
+              let param = {
+                cmpId: item.cmpId,
+                cmpType: item.cmpType,
+                menuId: this.menuId,
+                remark: item.remark
+              }
+              if(item.partId){
+                param.partId= item.partId
+              }
+              list.push(param)
+            })
+          }
+          let sysMenuPartSaveOrupdateParam = {
+            menuPartList:list
+          }
+          this.$refs[name].validate((valid) => {
+            console.log('valid:', valid)
+            if (valid) {
+              this.$Message.success('Success!');
+              this.saveOrUpdateMenuPart(sysMenuPartSaveOrupdateParam)
+            } else {
+              this.$Message.error('Fail!');
             }
-            if(item.partId){
-              param.partId= item.partId
-            }
-            list.push(param)
           })
         }
-        let sysMenuPartSaveOrupdateParam = {
-          menuPartList:list
-        }
-        this.$refs[name].validate((valid) => {
-          console.log('valid:', valid)
-          if (valid) {
-            this.$Message.success('Success!');
-            this.saveOrUpdateMenuPart(sysMenuPartSaveOrupdateParam)
-          } else {
-            this.$Message.error('Fail!');
-          }
-        })
       }
     },
     handleReset (name) {
       this.$refs[name].resetFields();
     },
     handleAdd () {
-      this.index = this.partsObj.partsList.length+1
-      let id = this.menuId + '-' + this.index
+//      this.index = this.partsObj.partsList.length+1
+//      let id = this.menuId + '-' + this.index
       this.partsObj.partsList.push({
-        cmpId: id,
-        cmpType: 0,
+        cmpId: '',
+        cmpType: 1,
         remark: ''
       });
     },
     handleRemove (index) {
       this.partsObj.partsList.splice(index,1)
+    },
+    changePartId (e) {
+//      this.judgeIsExistSameId()
+    },
+    judgeIsExistSameId () {
+      let list = []
+      this.sameId = ''
+      for(let item of this.partsObj.partsList){
+        list.push(item.cmpId)
+      }
+      let str = list.join(",") + ",";
+      for (let i = 0; i < list.length; i++) {
+        if (str.replace(list[i] + ",", "").indexOf(list[i] + ",") > -1) {
+          this.sameId = list[i]
+          this.$Notice.warning({
+            title: '警告',
+            desc: '部件ID' + this.sameId + '存在重复，请修改'
+          })
+          break
+        }
+      }
     }
   }
 }
