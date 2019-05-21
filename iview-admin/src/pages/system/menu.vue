@@ -322,6 +322,7 @@ export default {
       return ++maxOrderNum
     },
     gotoSaveHandle () {
+      console.log('新增菜单',this.menu)
       const self = this
       let selectedNode = self.getSelectedNode()
       let selectedMenuId = selectedNode && selectedNode.pkid
@@ -388,12 +389,13 @@ export default {
       console.log('treeOnSelectChangeHandle→selectedNodes:', selectedNodes)
       const self = this
       self.menu = {}
-      if (!selectedNodes || selectedNodes.length === 0) {
+      if (!selectedNodes || !selectedNodes.node) {
         self.menu = {}
       } else {
-        Object.assign(self.menu, selectedNodes[0])
+        Object.assign(self.menu, selectedNodes.node)
         self.menu.parentPkids = self.getParentIdHierarchy(self.menu.menuId)
       }
+      console.log('点击查看菜单详情：',this.menu)
     },
     treeOnToggleExpandHandle (expandMenuTreeByIds) {
       console.log('treeOnToggleExpandHandle→expandMenuTreeByIds:', expandMenuTreeByIds)
@@ -464,7 +466,11 @@ export default {
               marginRight: '8px'
             }
           }),
-          h('span', data.title)
+          h('span',{
+            on: {
+              click: () => { this.treeOnSelectChangeHandle(node) }
+            }
+          }, data.title)
         ]),
         h('Button', {
           props: Object.assign({},  {
