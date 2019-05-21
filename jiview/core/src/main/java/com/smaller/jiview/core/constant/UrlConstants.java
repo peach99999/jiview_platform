@@ -41,5 +41,10 @@ public class UrlConstants {
      */
     public static final String ADMIN_SYS_CODE_PREFIX = "/sys-code";
 
+    /**
+     * Admin系统字典管理
+     */
+    public static final String ADMIN_SYS_ROLE_PREFIX = "/sys-role";
+
 
 }

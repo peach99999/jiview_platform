@@ -18,8 +18,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(UrlConstants.ADMIN_LOGIN_PREFIX)
-@Api("登录")
+@RequestMapping(UrlConstants.ADMIN_SYS_ROLE_PREFIX)
+@Api("角色")
 public class SysRoleController {
 
     @Autowired

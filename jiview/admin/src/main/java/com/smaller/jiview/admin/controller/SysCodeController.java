@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(UrlConstants.ADMIN_SYS_CODE_PREFIX)
-@Api("登录")
+@Api("字典")
 public class SysCodeController {
 
     @Autowired
