@@ -55,9 +55,9 @@ public class LoginServiceImpl implements LoginService {
         jwtDTO.setUserLogin(userLogin);
 
         // 需要返回的用户信息项目，在此手动设置
-        userForReturnDTO.setLoginPkid(userId);
-//        userForReturnDTO.setLoginUUID(loginUUID);
-        userForReturnDTO.setUserLogin(userLogin);
+        userForReturnDTO.setUserId(userId);
+        userForReturnDTO.setDeptId(SysUser.getDeptId());
+        userForReturnDTO.setAccount(userLogin);
         userForReturnDTO.setAuthorization(jwtHelper.createAndSaveToken(jwtDTO));
 
         bo.setRow(userForReturnDTO);

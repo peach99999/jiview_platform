@@ -9,11 +9,9 @@ import java.io.Serializable;
 public class UserForReturnDTO implements Serializable {
     private static final long serialVersionUID = 3196076942937074998L;
 
-    private Long loginPkid;
-    private String loginUUID;
-    private String userLogin;
-    private Long supplierPkid;
-    private String orgRoleKey;
+    private Long userId;
+    private String account;
+    private Long deptId;
 
     @JSONField(name = "Authorization")
     private String authorization;
