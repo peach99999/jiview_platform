@@ -46,5 +46,6 @@ export default {
   organizationalManagement: 'Organizational Management',
   management: 'System Management',
   menu: 'Menu Management',
-  partsManagement: 'Component Management'
+  partsManagement: 'Component Management',
+  role: 'Role Management'
 }

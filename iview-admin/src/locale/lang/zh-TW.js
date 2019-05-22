@@ -46,5 +46,6 @@ export default {
   organizationalManagement: '組織機構管理',
   management: '系統管理',
   menu: '菜單管理',
-  partsManagement: '部件管理'
+  partsManagement: '部件管理',
+  role: '角色管理'
 }
