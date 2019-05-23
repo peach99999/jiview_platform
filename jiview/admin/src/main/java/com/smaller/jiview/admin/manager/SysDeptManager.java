@@ -18,4 +18,13 @@ public interface SysDeptManager {
      */
     List<SysDeptExt> listDeptParentName(List<SysDeptExt> list);
 
+    /**
+     * 获取部门下所有子部门id
+     *
+     * @param parentId
+     * @param subDeptIds
+     * @return
+     */
+    List<Long> listDeptIds(List<Long> subDeptIds, Long parentId);
+
 }

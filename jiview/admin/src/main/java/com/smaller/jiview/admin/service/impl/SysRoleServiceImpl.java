@@ -1,9 +1,7 @@
 package com.smaller.jiview.admin.service.impl;
 
-import com.smaller.jiview.admin.manager.PagerHelpManager;
-import com.smaller.jiview.admin.manager.SysRoleManager;
-import com.smaller.jiview.admin.manager.SysRoleMenuManager;
-import com.smaller.jiview.admin.manager.SysRoleMenuPartManager;
+import com.github.pagehelper.Page;
+import com.smaller.jiview.admin.manager.*;
 import com.smaller.jiview.admin.platform.system.mapper.SysRoleMapper;
 import com.smaller.jiview.admin.platform.system.model.SysRole;
 import com.smaller.jiview.admin.platform.system.model.SysRoleMenuPart;
@@ -22,6 +20,7 @@ import com.smaller.jiview.core.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,12 +43,22 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Autowired
     private SysRoleMenuPartManager sysRoleMenuPartManager;
 
+    @Autowired
+    private SysDeptManager sysDeptManager;
+
     @Override
     public ResultBO<SysRoleExt> list(SysRoleListParam sysRoleListParam) {
+        List<Long> subDeptIds = new ArrayList<>();
+        // 查询部门下所有子部门的角色
+        if (!ObjectUtils.isEmpty(sysRoleListParam.getDeptId())) {
+            // 获取子部门角色
+            subDeptIds.add(sysRoleListParam.getDeptId());
+            subDeptIds = sysDeptManager.listDeptIds(subDeptIds, sysRoleListParam.getDeptId());
+        }
         // PagerHelp分页 要紧接着跟查询语句
         pagerHelpManager.setStartPage(sysRoleListParam.getPageNo(), sysRoleListParam.getPageSize());
-        List<SysRoleExt> sysRoleExts = sysRoleMapper.list(sysRoleListParam);
-        ResultBO<SysRoleExt> result = new ResultBO<>(sysRoleExts);
+        List<SysRoleExt> sysRoleExtList = sysRoleMapper.list(sysRoleListParam.getDeptId(), sysRoleListParam.getRoleName(), subDeptIds);
+        ResultBO<SysRoleExt> result = new ResultBO<>(sysRoleExtList);
         return result;
     }
 

@@ -1,11 +1,12 @@
 package com.smaller.jiview.admin.manager;
 
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
+import com.smaller.jiview.admin.pojo.param.SysRoleListParam;
 
 import java.util.List;
 
 /**
- * Created by xiagf on 2019/05/10.
+ * @author xiagf on 2019/05/10.
  */
 public interface SysRoleManager {
 
@@ -24,4 +25,21 @@ public interface SysRoleManager {
      * @return
      */
     Integer remove(List<Long> roleIds);
+
+    /**
+     * 查询角色列表
+     *
+     * @param list
+     * @param subDeptIds
+     * @return
+     */
+    List<SysRoleExt> listSubDeptRoles(List<SysRoleExt> list, List<Long> subDeptIds);
+
+    /**
+     * 过滤角色名称
+     *
+     * @param list
+     * @return
+     */
+    List<SysRoleExt> roleNameFilter(List<SysRoleExt> list, String roleName);
 }
