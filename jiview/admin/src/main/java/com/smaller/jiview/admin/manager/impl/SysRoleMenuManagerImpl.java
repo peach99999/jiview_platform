@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by xiagf on 2019-05-10
+ * @author xiagf on 2019-05-10
  */
 @Service
 public class SysRoleMenuManagerImpl implements SysRoleMenuManager {

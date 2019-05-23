@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by xuyuqing on 2017/04/18.
+ * @author xiagf on 2019/05/08.
  */
 @Data
 public class ResultBO<T extends Serializable> implements Serializable {

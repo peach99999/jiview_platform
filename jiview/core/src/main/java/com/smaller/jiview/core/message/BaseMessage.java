@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * Created by xiagf on 2018/11/13.
+ * @author xiagf on 2018/11/13.
  */
 @Data
 public class BaseMessage implements Serializable {

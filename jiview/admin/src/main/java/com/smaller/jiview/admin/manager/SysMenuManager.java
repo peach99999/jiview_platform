@@ -8,7 +8,7 @@ import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
 import java.util.List;
 
 /**
- * Created by xuyq on 2019-05-09
+ * @author xuyq on 2019-05-09
  */
 public interface SysMenuManager {
     /**

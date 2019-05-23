@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * Created by xigf on 2019/04/30.
+ * @author xigf on 2019/04/30.
  */
 @Data
 @ApiModel("部门参数")

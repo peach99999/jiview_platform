@@ -4,7 +4,7 @@ import com.smaller.jiview.core.message.BaseMessage;
 import lombok.Data;
 
 /**
- * Created by xiagf on 2018/11/13.
+ * @author xiagf on 2018/11/13.
  */
 @Data
 public class SysException extends RuntimeException {

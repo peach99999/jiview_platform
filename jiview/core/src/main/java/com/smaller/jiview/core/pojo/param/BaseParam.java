@@ -12,7 +12,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * Created by jianghe on 2017/6/14.
+ * @author jianghe on 2017/6/14.
  */
 @Data
 public class BaseParam implements Serializable {

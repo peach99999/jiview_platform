@@ -31,7 +31,7 @@ import java.security.cert.X509Certificate;
 
 
 /**
- * Created by oneway on 2017/5/12.
+ * @author oneway on 2017/5/12.
  */
 @Slf4j
 @Component

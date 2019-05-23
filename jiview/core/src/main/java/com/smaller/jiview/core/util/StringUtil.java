@@ -7,7 +7,7 @@ import com.github.promeg.pinyinhelper.Pinyin;
 import java.io.UnsupportedEncodingException;
 
 /**
- * Created by jianghe on 2017/8/31.
+ * @author jianghe on 2017/8/31.
  */
 public class StringUtil {
     private StringUtil() {

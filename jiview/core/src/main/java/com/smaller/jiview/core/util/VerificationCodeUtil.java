@@ -8,7 +8,7 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 /**
- * Created by xiagf on 2019/03/01
+ * @author xiagf on 2019/03/01
  */
 @Slf4j
 public class VerificationCodeUtil {

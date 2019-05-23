@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Created by xiagf on 2019-05-09.
+ * @author xiagf on 2019-05-09.
  */
 @Service
 public class SysMenuManagerImpl implements SysMenuManager {

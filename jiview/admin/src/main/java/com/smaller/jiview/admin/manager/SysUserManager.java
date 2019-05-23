@@ -5,7 +5,7 @@ import com.smaller.jiview.admin.platform.system.model.SysUser;
 import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
 
 /**
- * Created by xiagf on 2019/05/09
+ * @author xiagf on 2019/05/09
  */
 public interface SysUserManager {
     /**

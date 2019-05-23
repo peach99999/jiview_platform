@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * Created by jianghe on 2017/6/14.
+ * @author jianghe on 2017/6/14.
  */
 @Data
 @ApiModel("后台管理重置密码参数")

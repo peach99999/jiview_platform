@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * Created by xiagf on 2019-05-10.
+ * @author xiagf on 2019-05-10.
  */
 @Data
 public class SysRoleUpdateMenuAuthParam extends BaseParam {

@@ -14,7 +14,7 @@ import tk.mybatis.mapper.entity.Example;
 import java.util.List;
 
 /**
- * Created by xiagf on 2019/05/13
+ * @author xiagf on 2019/05/13
  */
 @Service
 public class SysCodeManagerImpl implements SysCodeManager {

@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * Created by xigf on 2019/05/10.
+ * @author xigf on 2019/05/10.
  */
 @Data
 @ApiModel("角色菜单权限参数")

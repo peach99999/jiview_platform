@@ -7,7 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by xiagf on 2018/12/5.
+ * @author xiagf on 2018/12/5.
  */
 @Component
 @Data

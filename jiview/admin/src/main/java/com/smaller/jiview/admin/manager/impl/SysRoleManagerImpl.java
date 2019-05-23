@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by xiagf on 2019-05-10.
+ * @author xiagf on 2019-05-10.
  */
 @Service
 public class SysRoleManagerImpl implements SysRoleManager {

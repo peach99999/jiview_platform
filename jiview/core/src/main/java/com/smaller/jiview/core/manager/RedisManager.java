@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by xiagf 2018/11/22
+ * @author xiagf 2018/11/22
  */
 public interface RedisManager {
     /**

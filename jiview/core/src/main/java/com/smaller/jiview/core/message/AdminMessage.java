@@ -1,7 +1,7 @@
 package com.smaller.jiview.core.message;
 
 /**
- * Created by xiagf on 2019/05/06.
+ * @author xiagf on 2019/05/06.
  */
 public class AdminMessage {
     private AdminMessage() {

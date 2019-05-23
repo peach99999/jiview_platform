@@ -14,7 +14,7 @@ import java.util.List;
 
 
 /**
- * Created by xiagf on 2019/03/01
+ * @author xiagf on 2019/03/01
  */
 @Service
 public class SysDeptManagerImpl implements SysDeptManager {

@@ -6,7 +6,7 @@ import com.smaller.jiview.admin.platform.system.model.SysMenuPart;
 import java.util.List;
 
 /**
- * Created by xiagf on 2019/05/09
+ * @author xiagf on 2019/05/09
  */
 public interface SysMenuPartManager {
 

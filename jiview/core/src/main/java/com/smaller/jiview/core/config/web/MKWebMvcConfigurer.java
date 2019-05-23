@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by aboullaite on 2017-02-24.
+ * @author aboullaite on 2017-02-24.
  */
 
 @Configuration

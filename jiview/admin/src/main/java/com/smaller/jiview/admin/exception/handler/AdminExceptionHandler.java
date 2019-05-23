@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 /**
- * Created by xiagf on 2018/11/13.
+ * @author xiagf on 2018/11/13.
  */
 @ControllerAdvice
 @ResponseBody

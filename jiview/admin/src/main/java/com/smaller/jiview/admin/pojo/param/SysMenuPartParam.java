@@ -7,7 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by xigf on 2019/05/09.
+ * @author xigf on 2019/05/09.
  */
 @Data
 @ApiModel("菜单部门参数")

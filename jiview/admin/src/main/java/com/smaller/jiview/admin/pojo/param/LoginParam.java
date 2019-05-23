@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * Created by xigf on 2019/03/01.
+ * @author xigf on 2019/03/01.
  */
 @Data
 @ApiModel("admin管理员登陆信息")

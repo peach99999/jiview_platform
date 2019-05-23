@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by xiagf on 2019/05/09.
+ * @author xiagf on 2019/05/09.
  */
 @Data
 @ApiModel("编辑菜单参数")
