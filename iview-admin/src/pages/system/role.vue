@@ -44,14 +44,14 @@
           <FormItem label="角色名：" prop="roleName">
             <Input v-model.trim="role.roleName" style="width:300px;" placeholder="请输入角色名"/>
           </FormItem>
-          <FormItem label="角色类型：" prop="roleTypeId">
-            <Select v-model="role.roleTypeId" style="width:300px;" placeholder="请选择角色类型" clearable filterable :transfer="true">
-              <Option v-for="(item,index) in roleTypeList" :value="item.roleTypeId" :key="index">{{ item.roleTypeName }}</Option>
+          <FormItem label="角色类型：" prop="roleType">
+            <Select v-model="role.roleType" style="width:300px;" placeholder="请选择角色类型" clearable filterable :transfer="true">
+              <Option v-for="(item,index) in roleTypeList" :value="item.roleType" :key="index">{{ item.roleTypeName }}</Option>
             </Select>
           </FormItem>
           <FormItem label="锁定状态：" prop="locked">
             <Select v-model="role.locked" style="width:300px;" placeholder="请选择锁定状态" clearable filterable :transfer="true">
-              <Option v-for="(item,index) in lockedStatusList" :value="item.lockedId" :key="index">{{ item.lockedStatus }}</Option>
+              <Option v-for="(item,index) in lockedStatusList" :value="item.locked" :key="index">{{ item.lockedStatus }}</Option>
             </Select>
           </FormItem>
           <FormItem label="备注：" prop="remark">
@@ -59,17 +59,17 @@
           </FormItem>
         </Form>
         <div slot="footer">
-            <Button type="text" @click="saveOrUpdateHandle">取消</Button>
-            <Button type="primary" :loading="save_loading" @click="saveOrUpdateConfirmHandle">保存</Button>
+          <Button type="text" @click="saveOrUpdateHandle">取消</Button>
+          <Button type="primary" :loading="save_loading" @click="saveOrUpdateConfirmHandle">保存</Button>
         </div>
       </Modal>
       <Modal v-model="showUpdateRoleMenuAuthorizationFlg" :closable='true' :mask-closable=false :width="500">
-          <h3 slot="header" style="color:#2D8CF0">配置菜单权限</h3>
-          <Tree :data="menuTree" show-checkbox multiple ref="menuTree"></Tree>
-          <div slot="footer">
-              <Button type="text" @click="menuCfgCancelHandle">取消</Button>
-              <Button type="primary" :loading="saveLoading" @click="menuCfgConfirmHandle">保存</Button>
-          </div>
+        <h3 slot="header" style="color:#2D8CF0">配置菜单权限</h3>
+        <Tree :data="menuTree" show-checkbox multiple ref="menuTree"></Tree>
+        <div slot="footer">
+          <Button type="text" @click="menuCfgCancelHandle">取消</Button>
+          <Button type="primary" :loading="saveLoading" @click="menuCfgConfirmHandle">保存</Button>
+        </div>
       </Modal>
     </Card>
   </div>
@@ -97,7 +97,13 @@ export default {
         pageNo: 1,
         pageSize: 10
       },
-      role: {},
+      role: {
+        deptId: [],
+        roleName: '',
+        roleType: null,
+        locked: null,
+        remark: ''
+      },
       save_loading: false,
       inforValidate: {
         roleName: [
@@ -106,7 +112,7 @@ export default {
         deptId: [
           { required: true, message: '请选择部门', trigger: 'change', type: 'array' }
         ],
-        roleTypeId: [
+        roleType: [
           { required: true, message: '请选择角色类型', trigger: 'change', type: 'number' }
         ],
         locked: [
@@ -200,28 +206,29 @@ export default {
       cascaderData: [],
       roleTypeList: [
         {
-          roleTypeId: 1,
+          roleType: 1,
           roleTypeName: '业务角色'
         },
         {
-          roleTypeId: 2,
+          roleType: 2,
           roleTypeName: '管理角色'
         },
         {
-          roleTypeId: 3,
+          roleType: 3,
           roleTypeName: '系统内置角色'
         }
       ],
       lockedStatusList: [
         {
-          lockedId: 1,
+          locked: 1,
           lockedStatus: '锁定'
         },
         {
-          lockedId: 0,
+          locked: 0,
           lockedStatus: '激活'
         }
-      ]
+      ],
+      deptIdList: []
     }
   },
   mounted () {
@@ -310,8 +317,11 @@ export default {
         deptId: self.role.deptId[index],
         remark: self.role.remark,
         roleName: self.role.roleName,
-        roletype: self.role.roleTypeId,
+        roletype: self.role.roleType,
         locked: self.role.locked
+      }
+      if(self.role.roleId){
+        param.roleId = self.role.roleId
       }
       roleManagementApi.updateRoleInfo(param)
         .then(res => {
@@ -352,9 +362,26 @@ export default {
     queryRoleDetail (pkid) {
       const self = this
       self.addOrEditRoleFlg = true
+      self.deptIdList = []
       // 调用获取角色信息接口
       roleManagementApi.getRoleInfo(pkid).then(res => {
-        self.role = res.data.row || []
+        self.role.deptId = [25,27]
+        self.foreachAndSearchDeptParentNode(self.menuTree,res.data.row.deptId)
+        if (res.data.row) {
+          self.role.deptId = self.deptIdList
+          self.role.roleName = res.data.row.roleName
+          self.role.roleType = res.data.row.roletype
+          self.role.roleId = res.data.row.roleId
+          if(res.data.row.remark){
+            self.role.remark = res.data.row.remark
+          }
+          if (res.data.row.locked) {
+            self.role.locked = 1
+          }
+          if (!res.data.row.locked) {
+            self.role.locked = 0
+          }
+        }
         console.log('queryRoleDetail self.role', self.role)
       }).catch(err => {
         console.log('err', err)
@@ -510,6 +537,25 @@ export default {
           data.label = self.cascaderData[i].menuName
           data.value = self.cascaderData[i].menuId
           self.cascaderData[i] = data
+        }
+      }
+    },
+    // 遍历数组 查找部门的父部门
+    foreachAndSearchDeptParentNode (deptList,deptId) {
+      const self = this
+      if (deptList) {
+        for (let value of deptList ) {
+          if (deptId === value.menuId) {
+            if (value.parentId) {
+              self.foreachAndSearchDeptParentNode (self.menuTree,value.parentId)
+            }
+            self.deptIdList.push(value.menuId)
+          }
+          if (deptId !== value.menuId){
+            if (value.children) {
+              self.foreachAndSearchDeptParentNode (value.children,deptId)
+            }
+          }
         }
       }
     }
