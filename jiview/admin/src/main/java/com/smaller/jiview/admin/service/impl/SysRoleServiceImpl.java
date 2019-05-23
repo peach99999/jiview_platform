@@ -23,6 +23,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author xigf 2019/05/23
@@ -59,7 +60,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         }
         // PagerHelp分页 要紧接着跟查询语句
         pagerHelpManager.setStartPage(sysRoleListParam.getPageNo(), sysRoleListParam.getPageSize());
-        List<SysRoleExt> sysRoleExtList = sysRoleMapper.list(sysRoleListParam.getDeptId(), sysRoleListParam.getRoleName(), subDeptIds);
+        List<SysRoleExt> sysRoleExtList = sysRoleMapper.list(Optional.ofNullable(sysRoleListParam.getDeptId()).orElse(Long.valueOf(1)), Optional.ofNullable(sysRoleListParam.getRoleName()).orElse("null"), subDeptIds);
         ResultBO<SysRoleExt> result = new ResultBO<>(sysRoleExtList);
         return result;
     }
