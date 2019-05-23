@@ -12,16 +12,16 @@ spring:
         url: jdbc:mysql://119.57.73.147:3306/jiview_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&zeroDateTimeBehavior=convertToNull
         username: evaluation
         password: lwq@mysql_Eval_123456
-  redis:
-    database: 0
-    host: 119.57.73.147
-    password: 123456
-    port: 6379
 #  redis:
 #    database: 0
-#    host: redis.mbinfo.cn
-#    password: mkredis63502!
-#    port: 63502
+#    host: 119.57.73.147
+#    password: 123456
+#    port: 6379
+  redis:
+    database: 0
+    host: sairendevdb.mksoftapp.com
+    password: zpyFa669nDUnM4Tx
+    port: 63791
 jwt:
   issuer: platform_admin_issuer                 # 该JWT的签发者
   audience: platform_admin_audience               # 该JWT的验证者
