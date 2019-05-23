@@ -4,17 +4,20 @@ package com.smaller.jiview.admin.config.security;
 import com.smaller.jiview.admin.platform.system.model.SysUser;
 import com.smaller.jiview.core.config.security.JwtUser;
 
+/**
+ * @author xigf 2019/05/23
+ */
 public final class JwtUserFactory {
     private JwtUserFactory() {
     }
 
-    public static JwtUser create(SysUser SysUser) {
+    public static JwtUser create(SysUser sysUser) {
         return new JwtUser(
-                String.valueOf(SysUser.getId()),
-                SysUser.getAccount(),
+                String.valueOf(sysUser.getId()),
+                sysUser.getAccount(),
                 null,
-                SysUser.getMobile(),
-                SysUser.getUserType(),
+                sysUser.getMobile(),
+                sysUser.getUserType(),
                 null,
                 null
         );

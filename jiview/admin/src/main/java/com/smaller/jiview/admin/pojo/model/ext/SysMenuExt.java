@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * @author xigf 2019/05/23
+ */
 @Data
 public class SysMenuExt extends SysMenu {
     private String routerName;

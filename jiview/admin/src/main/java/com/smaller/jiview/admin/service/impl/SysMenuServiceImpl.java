@@ -4,7 +4,6 @@ import com.smaller.jiview.admin.manager.SysMenuManager;
 import com.smaller.jiview.admin.manager.SysRoleMenuManager;
 import com.smaller.jiview.admin.manager.SysUserRoleManager;
 import com.smaller.jiview.admin.platform.system.model.SysMenu;
-import com.smaller.jiview.admin.platform.system.model.SysRoleMenu;
 import com.smaller.jiview.admin.platform.system.model.SysUserRole;
 import com.smaller.jiview.admin.pojo.model.ext.SysMenuExt;
 import com.smaller.jiview.admin.pojo.param.MenuRemoveParam;
@@ -21,8 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * @author xigf 2019/05/23
+ */
 @Service
 public class SysMenuServiceImpl implements SysMenuService {
 

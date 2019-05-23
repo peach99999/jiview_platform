@@ -45,14 +45,6 @@
 
   <select id="get" resultType="com.smaller.jiview.admin.pojo.model.ext.SysRoleExt">
     SELECT
-    (
-    SELECT
-    GROUP_CONCAT(menu_id)
-    FROM
-    sys_role_menu srm
-    WHERE
-    srm.role_id = sr.role_id
-    ) AS roleMenu,
     sr.role_id,
     sr.role_name,
     sr.dept_id,

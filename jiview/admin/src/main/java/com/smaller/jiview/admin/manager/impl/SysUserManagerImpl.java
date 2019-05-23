@@ -35,11 +35,11 @@ public class SysUserManagerImpl implements SysUserManager {
                 .andEqualTo("account", userLogin)
                 .andEqualTo("password", SecurityUtil.encodePwd(userPwd));
 
-        List<SysUser> SysUsers = sysUserMapper.selectByExample(example);
-        if (SysUsers.isEmpty()) {
+        List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
+        if (sysUsers.isEmpty()) {
             throw new BizException(AdminMessage.LOGIN_FAILED);
         }
-        return CommonUtil.getFirstElement(SysUsers);
+        return CommonUtil.getFirstElement(sysUsers);
     }
 
 

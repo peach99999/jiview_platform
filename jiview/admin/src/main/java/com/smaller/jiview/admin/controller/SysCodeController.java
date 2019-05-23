@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author xigf 2019/05/23
+ */
 @RestController
 @RequestMapping(UrlConstants.ADMIN_SYS_CODE_PREFIX)
 @Api("字典")

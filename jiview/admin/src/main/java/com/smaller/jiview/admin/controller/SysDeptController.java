@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
+/**
+ * @author xigf 2019/05/23
+ */
 @RestController
 @RequestMapping(UrlConstants.ADMIN_SYS_DEPT_PREFIX)
 @Api("部门管理")
@@ -54,7 +56,6 @@ public class SysDeptController {
     }
 
 
-
     /**
      * @Description:按条件查找角色
      * @author xiagf
@@ -80,7 +81,7 @@ public class SysDeptController {
     @PostMapping(value = "/remove")
     public ResultBO remove(
             @RequestBody SysDeptRemoveParam sysDeptRemoveParam
-            ) {
+    ) {
         sysDeptRemoveParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
         //主处理
         return sysDeptService.remove(sysDeptRemoveParam);

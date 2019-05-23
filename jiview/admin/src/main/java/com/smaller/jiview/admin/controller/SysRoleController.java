@@ -17,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @author xigf 2019/05/23
+ */
 @RestController
 @RequestMapping(UrlConstants.ADMIN_SYS_ROLE_PREFIX)
 @Api("角色")

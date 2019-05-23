@@ -82,7 +82,8 @@ public class DateUtil {
         }
 
         ZoneId zoneId = ZoneId.systemDefault();
-        ZonedDateTime zdt = localDateTime.atZone(zoneId);//Combines this date-time with a time-zone to create a  ZonedDateTime.
+        // Combines this date-time with a time-zone to create a  ZonedDateTime.
+        ZonedDateTime zdt = localDateTime.atZone(zoneId);
         return Date.from(zdt.toInstant());
     }
 

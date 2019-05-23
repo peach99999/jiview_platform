@@ -10,4 +10,5 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @ControllerAdvice
 @ResponseBody
-public class AdminExceptionHandler extends BaseExceptionHandler {}
+public class AdminExceptionHandler extends BaseExceptionHandler {
+}

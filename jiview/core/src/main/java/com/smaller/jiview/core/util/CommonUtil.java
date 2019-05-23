@@ -176,7 +176,8 @@ public class CommonUtil {
      * @return String
      */
     public static String getSystemEncode() {
-        System.getProperties().list(System.out);// 得到当前的系统属性。并将属性列表输出到控制台
+        // 得到当前的系统属性。并将属性列表输出到控制台
+        System.getProperties().list(System.out);
         return System.getProperty("file.encoding");
     }
 

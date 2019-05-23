@@ -8,8 +8,25 @@ import tk.mybatis.mapper.common.MySqlMapper;
 
 import java.util.List;
 
+/**
+ * @author xigf 2019/05/23
+ */
 public interface SysRoleMenuPartMapper extends Mapper<SysRoleMenuPart>, MySqlMapper<SysRoleMenuPart> {
+    /**
+     * 删除角色菜单部件信息
+     *
+     * @param roleId
+     * @param menuIds
+     * @return
+     */
     Integer remove(@Param("roleId") Long roleId, @Param("menuIds") List<Long> menuIds);
 
+    /**
+     * 查询角色菜单部件信息
+     *
+     * @param menuId
+     * @param userId
+     * @return
+     */
     List<SysRoleMenuPartExt> listUserRoleMenuPart(@Param("menuId") Long menuId, @Param("userId") Long userId);
 }

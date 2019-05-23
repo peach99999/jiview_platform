@@ -19,6 +19,9 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author xigf 2019/05/23
+ */
 @Service
 public class LoginServiceImpl implements LoginService {
     @Autowired
@@ -37,26 +40,19 @@ public class LoginServiceImpl implements LoginService {
         String userLogin = loginParam.getUserLogin();
         String userPwd = loginParam.getUserPwd();
 
-        SysUser SysUser = sysUserManager.getForAdminLogin(userLogin, userPwd);
-        Long userId = SysUser.getId();
+        SysUser sysUser = sysUserManager.getForAdminLogin(userLogin, userPwd);
+        Long userId = sysUser.getId();
 
         UserForReturnDTO userForReturnDTO = new UserForReturnDTO();
         JwtDTO jwtDTO = new JwtDTO();
 
-//        LoginUserDTO loginUserDTO = new LoginUserDTO();
-//        loginUserDTO.setLoginUserPkid(loginPkid);
-//        loginUserDTO.setLoginUserUuid(loginUUID);
-//        loginUserDTO.setIp(HttpUtil.getClientRealIP(request));
-//        loginUserDTO.setRequestUri(request.getRequestURI());
-
         // 存入token的用户信息项目，在此手动设置
         jwtDTO.setLoginPkid(userId);
-//        jwtDTO.setLoginUUID(loginUUID);
         jwtDTO.setUserLogin(userLogin);
 
         // 需要返回的用户信息项目，在此手动设置
         userForReturnDTO.setUserId(userId);
-        userForReturnDTO.setDeptId(SysUser.getDeptId());
+        userForReturnDTO.setDeptId(sysUser.getDeptId());
         userForReturnDTO.setAccount(userLogin);
         userForReturnDTO.setAuthorization(jwtHelper.createAndSaveToken(jwtDTO));
 
@@ -66,6 +62,7 @@ public class LoginServiceImpl implements LoginService {
 
     /**
      * 设置密码
+     *
      * @param resetPwdParam
      * @return
      */
@@ -86,7 +83,7 @@ public class LoginServiceImpl implements LoginService {
         }
 
         Example example = new Example(SysUser.class);
-        example.createCriteria().andEqualTo("account",orgUser.getAccount());
+        example.createCriteria().andEqualTo("account", orgUser.getAccount());
         bo.setOpResult(sysUserMapper.updateByExampleSelective(orgUser, example));
 
         return bo;

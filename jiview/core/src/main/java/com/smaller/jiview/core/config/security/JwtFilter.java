@@ -41,7 +41,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
 //        posHeaderKey
         if (token != null && token.startsWith(jwtProperties.getTokenType())) {
-            final String authToken = token.substring(jwtProperties.getTokenType().length()); // The part after "Bearer "
+            // The part after "Bearer "
+            final String authToken = token.substring(jwtProperties.getTokenType().length());
             String username = jwtHelper.getUsernameFromToken(authToken);
 
             logger.info("checking authentication " + username);

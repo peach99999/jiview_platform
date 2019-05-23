@@ -8,6 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author xigf 2019/05/23
+ */
 @Service
 public class JwtUserDetailsServiceImpl implements UserDetailsService {
     @Autowired

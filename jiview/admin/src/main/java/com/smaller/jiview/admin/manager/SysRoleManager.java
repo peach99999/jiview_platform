@@ -39,6 +39,7 @@ public interface SysRoleManager {
      * 过滤角色名称
      *
      * @param list
+     * @param roleName
      * @return
      */
     List<SysRoleExt> roleNameFilter(List<SysRoleExt> list, String roleName);

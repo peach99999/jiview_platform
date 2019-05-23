@@ -120,7 +120,7 @@ public class UrlUtil {
             }
 
         } catch (final UnsupportedEncodingException e) {
-            throw new Error(e); // If we can't encode UTF-8, we fail.
+            throw new Error(e);
         }
     }
 

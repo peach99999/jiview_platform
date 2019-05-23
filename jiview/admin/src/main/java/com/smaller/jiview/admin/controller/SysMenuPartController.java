@@ -12,6 +12,9 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @author xigf 2019/05/23
+ */
 @RestController
 @RequestMapping(UrlConstants.ADMIN_SYS_MENU_PART_PREFIX)
 @Api("菜单部件")

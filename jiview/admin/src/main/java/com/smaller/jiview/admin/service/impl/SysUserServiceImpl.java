@@ -29,6 +29,9 @@ import tk.mybatis.mapper.entity.Example;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author xigf 2019/05/23
+ */
 @Service
 public class SysUserServiceImpl implements SysUserService {
 
@@ -90,7 +93,7 @@ public class SysUserServiceImpl implements SysUserService {
             List<SysRoleMenuPartExt> finalList = list;
             sysUserMenuPartExtList.forEach(sysUserMenuPartExt -> {
                 SysRoleMenuPartExt sysRoleMenuPartExt = new SysRoleMenuPartExt();
-                BeanUtil.springCopy(sysUserMenuPartExt,sysRoleMenuPartExt);
+                BeanUtil.springCopy(sysUserMenuPartExt, sysRoleMenuPartExt);
                 finalList.add(sysRoleMenuPartExt);
             });
         }

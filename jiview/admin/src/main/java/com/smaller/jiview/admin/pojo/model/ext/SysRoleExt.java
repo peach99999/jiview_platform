@@ -7,6 +7,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * @author xigf 2019/05/23
+ */
 @Data
 @ApiModel("用户角色")
 public class SysRoleExt extends SysRole {

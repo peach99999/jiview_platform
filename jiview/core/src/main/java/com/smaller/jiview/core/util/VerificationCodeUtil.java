@@ -12,7 +12,7 @@ import java.util.Random;
  */
 @Slf4j
 public class VerificationCodeUtil {
-    private static Random random;  // SecureRandom is preferred to Random
+    private static Random random;
 
     static {
         try {

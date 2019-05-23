@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author xigf 2019/05/23
+ */
 @Service
 public class SysDeptServiceImpl implements SysDeptService {
 
@@ -32,7 +35,7 @@ public class SysDeptServiceImpl implements SysDeptService {
     @Override
     public ResultBO<SysDeptExt> list(SysDeptListParam sysDeptListParam) {
         pagerHelpManager.setStartPage(sysDeptListParam.getPageNo(), sysDeptListParam.getPageSize());
-        List<SysDeptExt> deptList = sysDeptMapper.listSysUser(sysDeptListParam);
+        List<SysDeptExt> deptList = sysDeptMapper.listSysDept(sysDeptListParam);
         sysDeptManager.listDeptParentName(deptList);
         ResultBO<SysDeptExt> result = new ResultBO<>(deptList);
         return result;

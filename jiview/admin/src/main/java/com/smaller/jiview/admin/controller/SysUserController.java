@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
+/**
+ * @author xigf 2019/05/23
+ */
 @RestController
 @RequestMapping(UrlConstants.ADMIN_SYS_USER_PREFIX)
 @Api("系统用户管理")
@@ -95,7 +97,7 @@ public class SysUserController {
             @PathVariable Long menuId
     ) {
         //主处理
-        return sysUserService.getUserMenuPartAuth(menuId,jwtHelper.getLoginUserDTO());
+        return sysUserService.getUserMenuPartAuth(menuId, jwtHelper.getLoginUserDTO());
     }
 
     /**

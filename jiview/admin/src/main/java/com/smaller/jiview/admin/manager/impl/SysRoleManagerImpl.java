@@ -78,7 +78,6 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Override
     public List<SysRoleExt> roleNameFilter(List<SysRoleExt> list,String roleName) {
         List<SysRoleExt> nameFilterLiist = new Page<SysRoleExt>();
-//        nameFilterLiist = list.stream().filter(sysRoleExt -> sysRoleExt.getRoleName().contains(roleName)).collect(Collectors.toList());
         for (SysRoleExt sysRoleExt:list) {
             if (sysRoleExt.getRoleName().contains(roleName)){
                 nameFilterLiist.add(sysRoleExt);

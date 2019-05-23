@@ -8,6 +8,16 @@ import tk.mybatis.mapper.common.MySqlMapper;
 
 import java.util.List;
 
+/**
+ * @author xigf 2019/05/23
+ */
 public interface SysUserMenuPartMapper extends Mapper<SysUserMenuPart>, MySqlMapper<SysUserMenuPart> {
+    /**
+     * 查询用户菜单部件权限信息
+     *
+     * @param menuId
+     * @param userId
+     * @return
+     */
     List<SysUserMenuPartExt> listUserMenuPart(@Param("menuId") Long menuId, @Param("userId") Long userId);
 }

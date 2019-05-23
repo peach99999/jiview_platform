@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Data
-//@PropertySource(ignoreResourceNotFound = true, value = "classpath:application-${spring.profiles.active}.yml")
 public class JwtProperties {
     private String headerKey = HttpHeaders.AUTHORIZATION;
 

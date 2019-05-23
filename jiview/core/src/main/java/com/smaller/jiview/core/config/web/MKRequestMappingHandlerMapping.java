@@ -56,7 +56,8 @@ public class MKRequestMappingHandlerMapping extends RequestMappingHandlerMapping
         if (!patternsSet.isEmpty()) {
             try {
                 if (patternsField != null) {
-                    patternsField.setAccessible(true);// 设置操作权限为true
+                    // 设置操作权限为true
+                    patternsField.setAccessible(true);
                     patternsField.set(patternsRequestCondition, patternsSet);
                 }
             } catch (IllegalAccessException e) {

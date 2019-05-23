@@ -18,7 +18,6 @@ import java.util.Properties;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, MultipartAutoConfiguration.class})
 @ComponentScan(basePackages = "com.smaller.*", nameGenerator = FQCNBeanNameGenerator.class)
-//@MapperScan(basePackages = {"com.smaller.jiview.*.dao.*"})
 @MapperScan(basePackages = {"com.smaller.jiview.*.platform.system.*"})
 public class Application extends SpringBootServletInitializer {
     public static void main(String[] args) {
@@ -40,7 +39,10 @@ public class Application extends SpringBootServletInitializer {
         };
     }
 
-    //配置mybatis的分页插件pageHelper
+    /**
+     * 配置mybatis的分页插件pageHelper
+     * @return
+     */
     @Bean
     public PageHelper pageHelper() {
         PageHelper pageHelper = new PageHelper();
@@ -48,7 +50,8 @@ public class Application extends SpringBootServletInitializer {
         properties.setProperty("offsetAsPageNum", "true");
         properties.setProperty("rowBoundsWithCount", "true");
         properties.setProperty("reasonable", "true");
-        properties.setProperty("dialect", "mysql");    //配置mysql数据库的方言
+        // 配置mysql数据库的方言
+        properties.setProperty("dialect", "mysql");
         pageHelper.setProperties(properties);
         return pageHelper;
     }

@@ -18,6 +18,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author xigf 2019/05/23
+ */
 @Service
 public class SysMenuPartServiceImpl implements SysMenuPartService {
 
@@ -34,11 +37,11 @@ public class SysMenuPartServiceImpl implements SysMenuPartService {
         if (count <= 0) {
             return result;
         }
-        if (count == 1){
+        if (count == 1) {
             // 如果只有menuId不为空 则表示部件全部删除
             SysMenuPartParam sysMenuPartParam = CommonUtil.getFirstElement(sysMenuPartSaveOrupdateParam.getMenuPartList());
-            if (sysMenuPartParam.getCmpId() == null && sysMenuPartParam.getCmpType() == null){
-                if (sysMenuPartParam.getMenuId() != null){
+            if (sysMenuPartParam.getCmpId() == null && sysMenuPartParam.getCmpType() == null) {
+                if (sysMenuPartParam.getMenuId() != null) {
                     sysMenuPartManager.remove(sysMenuPartParam.getMenuId());
                     return result;
                 }
@@ -84,7 +87,7 @@ public class SysMenuPartServiceImpl implements SysMenuPartService {
 
         DiffDTO diff = CommonUtil.diff(newPartIdList, oldPartIdList);
         List<Long> partIdsForRemove = diff.getDeleted();
-        for (Long partId:partIdsForRemove) {
+        for (Long partId : partIdsForRemove) {
             for (SysMenuPart sysMenuPart : oldMenuPartList) {
                 if (sysMenuPart.getPartId().equals(partId)) {
                     sysMenuPartMapper.deleteByPrimaryKey(sysMenuPart);

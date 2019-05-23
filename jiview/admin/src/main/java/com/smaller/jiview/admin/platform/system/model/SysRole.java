@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
+/**
+ * @author xigf 2019/05/23
+ */
 @Table(name = "sys_role")
 public class SysRole implements Serializable {
     /**

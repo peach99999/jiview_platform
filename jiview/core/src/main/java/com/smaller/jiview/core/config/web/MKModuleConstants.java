@@ -5,6 +5,8 @@ public class MKModuleConstants {
 
     }
 
-    // 模块名称集合
+    /**
+     * 模块名称集合
+     */
     protected static final String[] modules = new String[]{"admin", "admin"};
 }

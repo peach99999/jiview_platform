@@ -81,12 +81,7 @@ public class MKWebMvcConfigurer implements WebMvcConfigurer {
             public boolean apply(Object object, String name, Object value) {
                 if (name.toLowerCase().indexOf("pwd") != -1
                         || name.toLowerCase().indexOf("password") != -1
-                        || name.equals("ver")
-                        || name.equals("cid")
-                        || name.equals("cdt")
-                        || name.equals("uid")
-                        || name.equals("udt")
-                        || name.equals("note")) {
+                        ) {
                     // JSON序列化时,上述属性被排除
                     return false;
                 }

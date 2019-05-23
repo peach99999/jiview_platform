@@ -9,7 +9,8 @@ public class MockUtil {
 
     public static String randomLatLng(double minLon, double maxLon, double minLat, double maxLat) {
         BigDecimal db = BigDecimal.valueOf(Math.random() * (maxLon - minLon) + minLon);
-        String lng = db.setScale(6, BigDecimal.ROUND_HALF_UP).toString();// 小数后6位
+        // 小数后6位
+        String lng = db.setScale(6, BigDecimal.ROUND_HALF_UP).toString();
         db = BigDecimal.valueOf(Math.random() * (maxLat - minLat) + minLat);
         String lat = db.setScale(6, BigDecimal.ROUND_HALF_UP).toString();
 

@@ -26,9 +26,12 @@ public class StringUtil {
         } catch (UnsupportedEncodingException e) {
             throw new SysException();
         }
-        int tempSubLength = subSLength;//截取字节数
-        String subStr = str.substring(0, str.length() < subSLength ? str.length() : subSLength);//截取的子串
-        int subStrByetsL = 0;//截取子串的字节长度
+        // 截取字节数
+        int tempSubLength = subSLength;
+        // 截取的子串
+        String subStr = str.substring(0, str.length() < subSLength ? str.length() : subSLength);
+        // 截取子串的字节长度
+        int subStrByetsL = 0;
         try {
             subStrByetsL = subStr.getBytes(charSetName).length;
         } catch (UnsupportedEncodingException e) {

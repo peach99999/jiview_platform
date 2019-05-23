@@ -1,6 +1,5 @@
 package com.smaller.jiview.admin.service.impl;
 
-import com.github.pagehelper.Page;
 import com.smaller.jiview.admin.manager.*;
 import com.smaller.jiview.admin.platform.system.mapper.SysRoleMapper;
 import com.smaller.jiview.admin.platform.system.model.SysRole;
@@ -25,6 +24,9 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author xigf 2019/05/23
+ */
 @Service
 public class SysRoleServiceImpl implements SysRoleService {
 
@@ -115,10 +117,8 @@ public class SysRoleServiceImpl implements SysRoleService {
         List<Long> oldMenuPkids = sysRoleMenuManager.list(roleId);
 
         DiffDTO diff = CommonUtil.diff(newMenuPkids, oldMenuPkids);
-//        List<Long> menuIdsForSave = diff.getAdded();
         List<Long> menuIdsForRemove = diff.getDeleted();
 
-//        menuIdsForSave.forEach(menuId -> sysRoleMenuManager.save(roleId, menuId, Constants.AUTHORIZE_LEVEL_1, loginUserDTO));
         // 保存或更新角色菜单权限
         sysRoleMenuManager.saveOrUpdate(roleUpdateMenuAuthParam.getSysRoleMenuParams(), roleId, loginUserDTO);
 

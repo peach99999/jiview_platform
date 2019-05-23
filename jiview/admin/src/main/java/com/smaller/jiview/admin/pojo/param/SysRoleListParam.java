@@ -14,9 +14,13 @@ import lombok.Setter;
 @Setter
 public class SysRoleListParam extends BaseListParam {
 
-    //角色名
+    /**
+     * 角色名
+     */
     private String roleName;
 
-    // 部门id
+    /**
+     * 部门id
+     */
     private Long deptId;
 }

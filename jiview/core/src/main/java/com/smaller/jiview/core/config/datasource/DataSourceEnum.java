@@ -8,7 +8,13 @@ package com.smaller.jiview.core.config.datasource;
  */
 public enum DataSourceEnum {
 
+    /**
+     * 默认数据源
+     */
     PRIMARY("defaultDataSource"),
+    /**
+     * 读数据源
+     */
     READ("readDataSource");
 
     private String name;

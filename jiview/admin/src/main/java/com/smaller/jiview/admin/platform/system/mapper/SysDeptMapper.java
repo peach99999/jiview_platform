@@ -8,9 +8,23 @@ import tk.mybatis.mapper.common.MySqlMapper;
 
 import java.util.List;
 
+/**
+ * @author xigf 2019/05/23
+ */
 public interface SysDeptMapper extends Mapper<SysDept>, MySqlMapper<SysDept> {
-    List<SysDeptExt> listSysUser(SysDeptListParam sysDeptListParam);
+    /**
+     * 查询部门信息
+     *
+     * @param sysDeptListParam
+     * @return
+     */
+    List<SysDeptExt> listSysDept(SysDeptListParam sysDeptListParam);
 
+    /**
+     * 查询部门信息
+     *
+     * @return
+     */
     List<SysDept> listDept();
 
 }
