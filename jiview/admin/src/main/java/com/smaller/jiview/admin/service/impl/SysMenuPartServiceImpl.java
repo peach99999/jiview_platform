@@ -14,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author xigf 2019/05/23
@@ -62,7 +60,7 @@ public class SysMenuPartServiceImpl implements SysMenuPartService {
                 sysMenuPartMapper.insertSelective(sysMenuPart);
             }
         }
-        delMenuPart(count, newPartIdList, menuPartList);
+        delMenuPart(newPartIdList, menuPartList);
         result.setMsg("菜单部件提交成功!");
         return result;
     }
@@ -77,11 +75,10 @@ public class SysMenuPartServiceImpl implements SysMenuPartService {
     /**
      * 判断菜单部件是否删除过
      *
-     * @param newCount
      * @param newPartIdList
      * @param oldMenuPartList
      */
-    private void delMenuPart(Integer newCount, List<Long> newPartIdList, List<SysMenuPart> oldMenuPartList) {
+    private void delMenuPart(List<Long> newPartIdList, List<SysMenuPart> oldMenuPartList) {
         List<Long> oldPartIdList = new ArrayList<>();
         oldMenuPartList.forEach(sysMenuPart -> oldPartIdList.add(sysMenuPart.getPartId()));
 

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,7 +35,7 @@ public class SysDeptManagerImpl implements SysDeptManager {
 
     @Override
     public List<Long> listDeptIds(List<Long> deptIds,Long parentId) {
-        deptIds = getSubDeptId(deptIds, parentId);
+        getSubDeptId(deptIds, parentId);
         return deptIds;
     }
 

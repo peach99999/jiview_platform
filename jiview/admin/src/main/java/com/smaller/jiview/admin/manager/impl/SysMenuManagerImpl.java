@@ -4,13 +4,13 @@ import com.smaller.jiview.admin.manager.SysMenuManager;
 import com.smaller.jiview.admin.platform.system.mapper.SysMenuMapper;
 import com.smaller.jiview.admin.platform.system.mapper.SysUserMenuMapMapper;
 import com.smaller.jiview.admin.platform.system.model.SysMenu;
-import com.smaller.jiview.admin.platform.system.model.SysUserMenuMap;
 import com.smaller.jiview.admin.pojo.model.ext.SysMenuExt;
 import com.smaller.jiview.admin.pojo.param.MenuRemoveParam;
 import com.smaller.jiview.core.constant.Constants;
 import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -70,10 +70,10 @@ public class SysMenuManagerImpl implements SysMenuManager {
     @Override
     public List<SysMenuExt> listUserMenuTree(Long loginPkid) {
         List<SysMenuExt> menus = sysMenuMapper.list();
-        List<SysMenuExt> userMenus = new ArrayList<>();
+        List<SysMenuExt> userMenus;
         userMenus = sysMenuMapper.listForUser(loginPkid);
         // 如果通过角色去查用户的菜单权限没查到的话  说明该用户没有配置角色  是直接配置菜单选线的
-        if (userMenus.size() == 0) {
+        if (ObjectUtils.isEmpty(userMenus)) {
             userMenus = sysUserMenuMapMapper.listForUserMenu(loginPkid);
         }
         return listMenuTreeCommon(menus, userMenus);

@@ -1,8 +1,7 @@
 package com.smaller.jiview.admin.pojo.param;
 
 import com.smaller.jiview.core.pojo.param.BaseListParam;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * SysRoleListParam
@@ -10,8 +9,7 @@ import lombok.Setter;
  * @author xiagf
  * @date 2019/05/10
  */
-@Getter
-@Setter
+@Data
 public class SysRoleListParam extends BaseListParam {
 
     /**

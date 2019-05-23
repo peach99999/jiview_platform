@@ -1,7 +1,6 @@
 package com.smaller.jiview.admin.manager;
 
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
-import com.smaller.jiview.admin.pojo.param.SysRoleListParam;
 
 import java.util.List;
 

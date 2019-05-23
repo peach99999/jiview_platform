@@ -43,7 +43,7 @@
           FROM sys_user_role where user_id = #{userId}
         )
       AND srmp.menu_id = #{menuId}
-      AND srm.authorize_level = '${@com.smaller.jiview.core.constant.Constants@AUTHORIZE_LEVEL_2}'
+      AND srm.authorize_level = '${@com.smaller.jiview.core.constant.Constants@SYS_ROLE_MENU_AUTHORIZE_LEVEL_2}'
       GROUP BY srmp.menu_id,srmp.part_id
   </select>
 </mapper>

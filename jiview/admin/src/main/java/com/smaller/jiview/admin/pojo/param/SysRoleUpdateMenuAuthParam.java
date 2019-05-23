@@ -3,8 +3,6 @@ package com.smaller.jiview.admin.pojo.param;
 import com.smaller.jiview.core.pojo.param.BaseParam;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 

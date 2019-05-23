@@ -1,7 +1,6 @@
 package com.smaller.jiview.admin.service;
 
 
-import com.smaller.jiview.admin.platform.system.model.SysDept;
 import com.smaller.jiview.admin.pojo.model.ext.SysDeptExt;
 import com.smaller.jiview.admin.pojo.param.SysDeptListParam;
 import com.smaller.jiview.admin.pojo.param.SysDeptRemoveParam;

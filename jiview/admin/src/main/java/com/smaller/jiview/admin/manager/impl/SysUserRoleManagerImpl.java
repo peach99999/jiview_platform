@@ -4,7 +4,6 @@ import com.smaller.jiview.admin.manager.SysUserRoleManager;
 import com.smaller.jiview.admin.platform.system.mapper.SysUserRoleMapper;
 import com.smaller.jiview.admin.platform.system.model.SysUserRole;
 import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
-import com.smaller.jiview.core.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;

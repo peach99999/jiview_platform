@@ -11,7 +11,6 @@ import com.smaller.jiview.admin.platform.system.model.SysRole;
 import com.smaller.jiview.admin.platform.system.model.SysRoleMenu;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
 import com.smaller.jiview.admin.pojo.param.MenuAuthParam;
-import com.smaller.jiview.admin.pojo.param.SysRoleListParam;
 import com.smaller.jiview.core.util.BeanUtil;
 import com.smaller.jiview.core.util.CommonUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -21,7 +20,6 @@ import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author xiagf on 2019-05-10.

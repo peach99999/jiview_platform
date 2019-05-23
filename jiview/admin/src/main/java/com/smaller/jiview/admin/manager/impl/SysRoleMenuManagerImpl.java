@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
@@ -64,9 +65,10 @@ public class SysRoleMenuManagerImpl implements SysRoleMenuManager {
             sysRoleMenu.setAuthorizeLevel(sysRoleMenuParam.getAuthorizeLevel());
             sysRoleMenu.setCreateUserId(loginUserDTO.getLoginUserPkid());
             sysRoleMenuMapper.insertSelective(sysRoleMenu);
-            if (sysRoleMenuParam.getMenuPartList().size() > 0) {
+            if (!ObjectUtils.isEmpty(sysRoleMenuParam.getMenuPartList())) {
                 // 保存角色菜单部件权限
                 sysRoleMenuPartManager.save(sysRoleMenuParam.getMenuPartList(), roleId, loginUserDTO.getLoginUserPkid());
+                logger.info("保存角色菜单部件权限");
             }
         });
     }

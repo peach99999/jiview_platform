@@ -8,7 +8,6 @@ import com.smaller.jiview.admin.platform.system.mapper.SysUserMapper;
 import com.smaller.jiview.admin.platform.system.mapper.SysUserMenuPartMapper;
 import com.smaller.jiview.admin.platform.system.mapper.SysUserRoleMapper;
 import com.smaller.jiview.admin.platform.system.model.SysUser;
-import com.smaller.jiview.admin.platform.system.model.SysUserMenuPart;
 import com.smaller.jiview.admin.platform.system.model.SysUserRole;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleMenuPartExt;
 import com.smaller.jiview.admin.pojo.model.ext.SysUserExt;
@@ -24,9 +23,9 @@ import com.smaller.jiview.core.util.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -75,7 +74,7 @@ public class SysUserServiceImpl implements SysUserService {
 
         // 查询用户角色信息
         List<SysUserRoleExt> sysUserRoleExtList = sysUserRoleMapper.listUserRole(userId);
-        if (sysUserRoleExtList.size() > 0) {
+        if (!ObjectUtils.isEmpty(sysUserRoleExtList)) {
             sysUserExt.setSysUserRoleExtList(sysUserRoleExtList);
         }
         result.setRow(sysUserExt);
@@ -85,10 +84,9 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public ResultBO<SysRoleMenuPartExt> getUserMenuPartAuth(Long menuId, LoginUserDTO loginUserDTO) {
         ResultBO<SysRoleMenuPartExt> result = new ResultBO<>();
-        List<SysRoleMenuPartExt> list = new ArrayList<>();
-        list = sysRoleMenuPartMapper.listUserRoleMenuPart(menuId, loginUserDTO.getLoginUserPkid());
-        if (list.size() == 0) {
-            // todo 查询用户设置的菜单权限
+        List<SysRoleMenuPartExt> list = sysRoleMenuPartMapper.listUserRoleMenuPart(menuId, loginUserDTO.getLoginUserPkid());
+        if (ObjectUtils.isEmpty(list)) {
+            // 查询用户设置的菜单权限
             List<SysUserMenuPartExt> sysUserMenuPartExtList = sysUserMenuPartMapper.listUserMenuPart(menuId, loginUserDTO.getLoginUserPkid());
             List<SysRoleMenuPartExt> finalList = list;
             sysUserMenuPartExtList.forEach(sysUserMenuPartExt -> {

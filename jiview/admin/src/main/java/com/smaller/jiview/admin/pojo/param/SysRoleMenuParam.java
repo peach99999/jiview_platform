@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,7 +13,8 @@ import java.util.List;
  */
 @Data
 @ApiModel("角色菜单权限参数")
-public class SysRoleMenuParam {
+public class SysRoleMenuParam implements Serializable {
+    private static final long serialVersionUID = -4587628109468114575L;
 
     @ApiModelProperty("菜单Id")
     private Long menuId;

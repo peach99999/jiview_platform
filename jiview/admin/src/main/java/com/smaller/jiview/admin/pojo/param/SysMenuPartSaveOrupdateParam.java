@@ -13,6 +13,6 @@ import java.util.List;
 @ApiModel("部件提交参数")
 public class SysMenuPartSaveOrupdateParam extends BaseParam {
 
-    List<SysMenuPartParam> menuPartList;
+    private List<SysMenuPartParam> menuPartList;
 
 }

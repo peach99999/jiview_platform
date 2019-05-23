@@ -106,7 +106,7 @@ public class SysUserController {
      * @date 2018-11-09
      */
     @ApiOperation(value = "保存用户信息(admin)", httpMethod = "POST")
-    @RequestMapping(value = "/save-or-update-user", method = RequestMethod.POST)
+    @PostMapping(value = "/save-or-update-user")
     public ResultBO saveOrUpdateUser(
             @RequestBody @Validated SysUserSaveOrUpdateParam sysUserSaveOrUpdateParam
     ) {
@@ -121,7 +121,7 @@ public class SysUserController {
      * @date 2019-05-13
      */
     @ApiOperation(value = "批量删除用户", httpMethod = "POST")
-    @RequestMapping(value = "/remove", method = RequestMethod.POST)
+    @PostMapping(value = "/remove")
     public ResultBO remove(
             @RequestBody SysUserRemoveParam sysUserRemoveParam
     ) {
