@@ -53,7 +53,7 @@
     )
   </select>
 
-  <select id="listMenuPkidByRole" resultType="java.lang.Long">
+  <select id="listMenuIdByRole" resultType="java.lang.Long">
 		SELECT
 		sm.menu_id
 		FROM sys_menu sm

@@ -69,7 +69,7 @@ public class SysRoleController {
             @ApiImplicitParam(name = "roleId", value = "角色id", dataType = "long", paramType = "path", required = true)
     })
     @GetMapping(value = "/{roleId}")
-    public ResultBO get(
+    public ResultBO<SysRoleExt> get(
             @PathVariable Long roleId
     ) {
         return sysRoleService.get(roleId);

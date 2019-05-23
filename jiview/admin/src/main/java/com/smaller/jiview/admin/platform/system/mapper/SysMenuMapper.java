@@ -32,5 +32,5 @@ public interface SysMenuMapper extends Mapper<SysMenu>, MySqlMapper<SysMenu> {
      * @param roleId
      * @return
      */
-    List<Long> listMenuPkidByRole(Long roleId);
+    List<Long> listMenuIdByRole(Long roleId);
 }
