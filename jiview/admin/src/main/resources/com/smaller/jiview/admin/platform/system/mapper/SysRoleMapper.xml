@@ -20,12 +20,12 @@
     <if test="roleName != null and roleName != ''" >
       AND sr.role_name LIKE CONCAT('%',#{roleName},'%')
     </if>
-    <if test="deptId != null and deptId != ''" >
+    <!--<if test="deptId != null and deptId != ''" >-->
       <foreach collection="subDeptIds" item="deptId" index="index"
                open="AND sr.dept_id IN (" close=")" separator=",">
         #{deptId}
       </foreach>
-    </if>
+    <!--</if>-->
   </sql>
   <select id="list" resultType="com.smaller.jiview.admin.pojo.model.ext.SysRoleExt">
     SELECT

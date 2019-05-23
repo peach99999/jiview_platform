@@ -60,7 +60,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         }
         // PagerHelp分页 要紧接着跟查询语句
         pagerHelpManager.setStartPage(sysRoleListParam.getPageNo(), sysRoleListParam.getPageSize());
-        List<SysRoleExt> sysRoleExtList = sysRoleMapper.list(Optional.ofNullable(sysRoleListParam.getDeptId()).orElse(Long.valueOf(1)), Optional.ofNullable(sysRoleListParam.getRoleName()).orElse("null"), subDeptIds);
+        List<SysRoleExt> sysRoleExtList = sysRoleMapper.list(sysRoleListParam.getRoleName(), subDeptIds);
         ResultBO<SysRoleExt> result = new ResultBO<>(sysRoleExtList);
         return result;
     }

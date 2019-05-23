@@ -81,7 +81,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 
         // 新增菜单权限数据(给每个用户下面的角色增加该菜单访问权限)
         sysUserRoleList.forEach(sysUserRole ->
-                sysRoleMenuManager.save(sysUserRole.getAuthorizeId(), sysMenu.getMenuId(), Constants.AUTHORIZE_LEVEL_1, loginUserDTO));
+                sysRoleMenuManager.save(sysUserRole.getAuthorizeId(), sysMenu.getMenuId(), Constants.SYS_ROLE_MENU_AUTHORIZE_LEVEL_1, loginUserDTO));
 
         result.setOpResult(resultCode);
 

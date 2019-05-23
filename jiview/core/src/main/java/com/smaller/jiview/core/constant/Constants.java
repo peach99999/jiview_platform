@@ -31,6 +31,12 @@ public class Constants {
     /**
      * 权限级别(1:访问权限;2:管理权限)
      */
-    public static final Byte AUTHORIZE_LEVEL_1 = 1;
-    public static final Integer AUTHORIZE_LEVEL_2 = 2;
+    public static final Byte SYS_ROLE_MENU_AUTHORIZE_LEVEL_1 = 1;
+    public static final Byte SYS_ROLE_MENU_AUTHORIZE_LEVEL_2 = 2;
+
+    /**
+     * 锁定标志(1:锁定;0:激活)
+     */
+    public static final Byte SYS_ROLE_LOCKED_1 = 1;
+    public static final Byte SYS_ROLE_LOCKED_0 = 0;
 }

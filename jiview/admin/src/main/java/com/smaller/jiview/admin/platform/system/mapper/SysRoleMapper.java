@@ -15,12 +15,11 @@ public interface SysRoleMapper extends Mapper<SysRole>, MySqlMapper<SysRole> {
     /**
      * 查询角色列表
      *
-     * @param deptId
      * @param roleName
      * @param subDeptIds
      * @return
      */
-    List<SysRoleExt> list(@Param("deptId") long deptId, @Param("roleName") String roleName, @Param("subDeptIds") List<Long> subDeptIds);
+    List<SysRoleExt> list(@Param("roleName") String roleName, @Param("subDeptIds") List<Long> subDeptIds);
 
     /**
      * 获取角色信息
