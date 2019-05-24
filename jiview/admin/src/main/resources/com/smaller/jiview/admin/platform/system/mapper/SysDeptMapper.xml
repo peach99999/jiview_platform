@@ -17,12 +17,13 @@
 
   <sql id="list_where">
     where 1 = 1
-    <if test="deptId != null and deptId != ''">
-      AND parent_id = #{deptId} or dept_id = #{deptId}
-    </if>
     <if test="deptName != null and deptName != ''">
       AND dept_name LIKE CONCAT('%',#{deptName},'%')
     </if>
+    <foreach collection="subDeptIds" item="deptId" index="index"
+           open="AND dept_id IN (" close=")" separator=",">
+      #{deptId}
+    </foreach>
   </sql>
   <select id="listSysDept" resultType="com.smaller.jiview.admin.pojo.model.ext.SysDeptExt">
       SELECT

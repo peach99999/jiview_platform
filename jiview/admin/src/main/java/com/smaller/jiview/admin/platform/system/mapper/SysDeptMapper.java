@@ -3,6 +3,7 @@ package com.smaller.jiview.admin.platform.system.mapper;
 import com.smaller.jiview.admin.platform.system.model.SysDept;
 import com.smaller.jiview.admin.pojo.model.ext.SysDeptExt;
 import com.smaller.jiview.admin.pojo.param.SysDeptListParam;
+import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;
 
@@ -15,10 +16,11 @@ public interface SysDeptMapper extends Mapper<SysDept>, MySqlMapper<SysDept> {
     /**
      * 查询部门信息
      *
-     * @param sysDeptListParam
+     * @param deptName
+     * @param subDeptIds
      * @return
      */
-    List<SysDeptExt> listSysDept(SysDeptListParam sysDeptListParam);
+    List<SysDeptExt> listSysDept(@Param("deptName") String deptName, @Param("subDeptIds") List<Long> subDeptIds);
 
     /**
      * 查询部门信息

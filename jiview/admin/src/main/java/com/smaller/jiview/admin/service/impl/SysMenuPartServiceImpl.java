@@ -12,6 +12,7 @@ import com.smaller.jiview.core.util.BeanUtil;
 import com.smaller.jiview.core.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +39,8 @@ public class SysMenuPartServiceImpl implements SysMenuPartService {
         if (count == 1) {
             // 如果只有menuId不为空 则表示部件全部删除
             SysMenuPartParam sysMenuPartParam = CommonUtil.getFirstElement(sysMenuPartSaveOrupdateParam.getMenuPartList());
-            if (sysMenuPartParam.getCmpId() == null && sysMenuPartParam.getCmpType() == null) {
-                if (sysMenuPartParam.getMenuId() != null) {
+            if (ObjectUtils.isEmpty(sysMenuPartParam.getCmpId()) && ObjectUtils.isEmpty(sysMenuPartParam.getCmpType())) {
+                if (!ObjectUtils.isEmpty(sysMenuPartParam.getMenuId())) {
                     sysMenuPartManager.remove(sysMenuPartParam.getMenuId());
                     return result;
                 }

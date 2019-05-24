@@ -14,7 +14,9 @@ import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
 import com.smaller.jiview.core.util.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,8 +36,20 @@ public class SysDeptServiceImpl implements SysDeptService {
 
     @Override
     public ResultBO<SysDeptExt> list(SysDeptListParam sysDeptListParam) {
+        List<Long> subDeptIds = new ArrayList<>();
+        String deptName;
+        // 查询部门下所有子部门的角色
+        if (!ObjectUtils.isEmpty(sysDeptListParam.getDeptId())) {
+            // 获取子部门角色
+            subDeptIds.add(sysDeptListParam.getDeptId());
+            subDeptIds = sysDeptManager.listDeptIds(subDeptIds, sysDeptListParam.getDeptId());
+        }
         pagerHelpManager.setStartPage(sysDeptListParam.getPageNo(), sysDeptListParam.getPageSize());
-        List<SysDeptExt> deptList = sysDeptMapper.listSysDept(sysDeptListParam);
+        deptName = sysDeptListParam.getDeptName();
+        if (!ObjectUtils.isEmpty(deptName)){
+            deptName = deptName.trim();
+        }
+        List<SysDeptExt> deptList = sysDeptMapper.listSysDept(deptName,subDeptIds);
         sysDeptManager.listDeptParentName(deptList);
         ResultBO<SysDeptExt> result = new ResultBO<>(deptList);
         return result;

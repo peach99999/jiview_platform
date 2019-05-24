@@ -3,7 +3,6 @@ package com.smaller.jiview.admin.pojo.param;
 import com.smaller.jiview.core.pojo.param.BaseListParam;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 /**
  * SysRoleListParam

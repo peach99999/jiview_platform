@@ -3,8 +3,7 @@ package com.smaller.jiview.admin.pojo.param;
 import com.smaller.jiview.core.pojo.param.BaseParam;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -16,8 +15,7 @@ import java.util.List;
  * @author xiagf
  * @date 2019/05/13
  */
-@Getter
-@Setter
+@Data
 @ApiModel("保存用户参数")
 public class SysUserSaveOrUpdateParam extends BaseParam {
 
