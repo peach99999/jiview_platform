@@ -30,6 +30,10 @@
               <Table ref="selection" :columns="column" :data="tableData" @on-selection-change="handleSelectChange"></Table>
               <Page :current="filter.pageNo" class="table-page"  @on-change="pageNoChange" @on-page-size-change="pageSizeChange" :total="total" show-elevator show-sizer show-total/>
             </div>
+            <Spin fix v-if="loading">
+              <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+              <div>加载中...</div>
+            </Spin>
           </Card>
         </div>
         </Col>
@@ -132,6 +136,7 @@ export default {
   },
   mounted () {
     this.getDepartmentList()
+    this.getSelectDepartmentList()
   },
   methods: {
     // 获取部门列表信息
@@ -141,9 +146,9 @@ export default {
       getDepartmentList(param).then(res => {
         let list = [...res.data.rows] || []
         self.loading = false
-        if (!param || flag) {
-          self.handleDepartmentList(list)
-        }
+//        if (!param || flag) {
+//          self.handleDepartmentList(list)
+//        }
         self.tableData = list
         self.total = res.data.count
       }).catch(err => {
@@ -193,7 +198,6 @@ export default {
         }
       }
       this.departmentList = this.handleTreeData(listTmp, treeData)
-      // list:需要转换的数组（平铺型数组）  treeData:目标转换的数组（树型数组）
     },
     handleTreeData (list, treeData) {
       // list:需要转换的数组（平铺型数组）  treeData:目标转换的数组（树型数组）
@@ -263,6 +267,7 @@ export default {
         deptName: self.searchValue
       }
       self.getDepartmentList(param, flag)
+      self.getSelectDepartmentList()
     },
     handleSelectChange (seletion) {
       const self = this
@@ -361,7 +366,6 @@ export default {
       if (self.nodeDeptId) {
         self.formValidate.parentId = self.nodeDeptId
       }
-      self.getSelectDepartmentList()
       self.modelVisible = true
     },
     // 新增（修改）弹出框 获取上级部门下拉框
@@ -369,6 +373,7 @@ export default {
       const self = this
       getSelectDepartmentList().then(res => {
         self.selectDeptList = res.data.rows || []
+        self.handleDepartmentList([...res.data.rows])
       }).catch(err => {
         console.log('err', err)
       })

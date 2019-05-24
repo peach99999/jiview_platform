@@ -6,10 +6,10 @@
           <Row>
             <Form ref="filter" :model="filter" inline @keydown.enter.native="doQuery">
               <FormItem>
-                <Cascader :data="cascaderData" v-model="filter.deptId" change-on-select ref="cascaderParentIds" placeholder="请选择部门"></Cascader>
+                <Cascader :data="cascaderData" v-model="filter.deptId" change-on-select ref="cascaderParentIds" placeholder="请选择部门" style="width:300px;"></Cascader>
               </FormItem>
               <FormItem prop="user">
-                <Input type="text" v-model.trim="filter.roleName" placeholder="角色名" clearable/>
+                <Input type="text" v-model.trim="filter.roleName" placeholder="角色名" clearable style="width:300px;"/>
               </FormItem>
             </Form>
           </Row>
@@ -79,6 +79,8 @@
 // import * as util from '@/libs/util'
 import * as roleManagementApi from '@/api/role'
 import * as menuManagementApi from '@/api/menu'
+import { getDepartmentList } from '@/api/organizationalManagement'
+import {list} from "../../api/menu";
 export default {
   data () {
     return {
@@ -87,7 +89,7 @@ export default {
       loading: false,
       showUpdateRoleMenuAuthorizationFlg: false,
       saveLoading: false,
-      menuTreeOrig: [],
+//      menuTreeOrig: [],
       menuTree: [],
       currentRow: {},
       filter: {
@@ -160,15 +162,16 @@ export default {
                   click: () => {
                     const self = this
                     self.currentRow = params.row
-                    roleManagementApi.getRoleInfo(self.currentRow.pkid)
+                    roleManagementApi.getRoleInfo(self.currentRow.roleId)
                       .then(response => {
                         self.showUpdateRoleMenuAuthorizationFlg = true
-                        self.menuTree = JSON.parse(JSON.stringify(self.menuTreeOrig))
-                        for (let i in self.menuTree) {
-                          self.$set(self.menuTree[i], 'expand', true)
-                        }
-                        let roleMenus = (response.data.row && response.data.row.menuPkids) || []
-                        self.restoreMenuCheckedStatus(roleMenus)
+                        self.listMenuTree()
+//                        self.menuTree = JSON.parse(JSON.stringify(self.menuTreeOrig))
+//                        for (let i in self.menuTree) {
+//                          self.$set(self.menuTree[i], 'expand', true)
+//                        }
+//                        let roleMenus = (response.data.row && response.data.row.menuPkids) || []
+//                        self.restoreMenuCheckedStatus(roleMenus)
                       })
                       .catch(err => {
                         console.log('err', err)
@@ -242,7 +245,7 @@ export default {
     init () {
       const self = this
       self.doQuery()
-      self.listMenuTree()
+      self.getDepartmentList()
     },
     listForInit () {
       const self = this
@@ -294,7 +297,7 @@ export default {
     reset () {
       const self = this
       self.filter.roleName = ''
-      self.filter.deptId = ''
+      self.filter.deptId = []
       // if (!self.regionCompanyFlag) {
       // self.$refs.companyObj.clearSingleSelect();
       // }
@@ -365,8 +368,7 @@ export default {
       self.deptIdList = []
       // 调用获取角色信息接口
       roleManagementApi.getRoleInfo(pkid).then(res => {
-        self.role.deptId = [25,27]
-        self.foreachAndSearchDeptParentNode(self.menuTree,res.data.row.deptId)
+        self.foreachAndSearchDeptParentNode(self.cascaderData,res.data.row.deptId)
         if (res.data.row) {
           self.role.deptId = self.deptIdList
           self.role.roleName = res.data.row.roleName
@@ -493,14 +495,15 @@ export default {
         }
       })
     },
-    // 部门Id下拉选内容
+    // 菜单
     listMenuTree (menuPkidsToExpand) {
       const self = this
       menuManagementApi.listMenuTree()
         .then(function (response) {
-          self.menuTree = response.data.rows
-          self.cascaderData = JSON.parse(JSON.stringify(self.menuTree))
-          self.formatForCascader()
+          self.menuTree =  JSON.parse(JSON.stringify(response.data.rows))
+          console.log('self.menuTree:', self.menuTree)
+//          self.cascaderData = JSON.parse(JSON.stringify(self.menuTree))
+//          self.formatForCascader()
           // self.formatForMenuTree()
           // self.expandMenuTreeByIds(menuPkidsToExpand)
         })
@@ -509,34 +512,13 @@ export default {
           // self.$Message.error('系统错误,请联系管理员!')
         })
     },
-    formatForCascader () {
+    formatForCascader (list) {
       const self = this
-      for (let i in self.cascaderData) {
-        self.cascaderData[i].label = self.cascaderData[i].menuName
-        self.cascaderData[i].value = self.cascaderData[i].menuId
-        if (self.cascaderData[i].children !== null) {
-          for (let j in self.cascaderData[i].children) {
-            self.cascaderData[i].children[j].label = self.cascaderData[i].children[j].menuName
-            self.cascaderData[i].children[j].value = self.cascaderData[i].children[j].menuId
-            if (self.cascaderData[i].children[j].children !== null) {
-              for (let m in self.cascaderData[i].children[j].children) {
-                let data = {}
-                data.label = self.cascaderData[i].children[j].children[m].menuName
-                data.value = self.cascaderData[i].children[j].children[m].menuId
-                self.cascaderData[i].children[j].children[m] = data
-              }
-            } else {
-              let data = {}
-              data.label = self.cascaderData[i].children[j].menuName
-              data.value = self.cascaderData[i].children[j].menuId
-              self.cascaderData[i].children[j] = data
-            }
-          }
-        } else {
-          let data = {}
-          data.label = self.cascaderData[i].menuName
-          data.value = self.cascaderData[i].menuId
-          self.cascaderData[i] = data
+      for(let item of list){
+        item.label = item.title
+        item.value = item.deptId
+        if(item.children && item.children.length > 0){
+          self.formatForCascader(item.children)
         }
       }
     },
@@ -545,20 +527,78 @@ export default {
       const self = this
       if (deptList) {
         for (let value of deptList ) {
-          if (deptId === value.menuId) {
+          if (deptId === value.deptId) {
             if (value.parentId) {
-              self.foreachAndSearchDeptParentNode (self.menuTree,value.parentId)
+              self.foreachAndSearchDeptParentNode (self.cascaderData,value.parentId)
             }
-            self.deptIdList.push(value.menuId)
+            self.deptIdList.push(value.deptId)
           }
-          if (deptId !== value.menuId){
+          if (deptId !== value.deptId){
             if (value.children) {
               self.foreachAndSearchDeptParentNode (value.children,deptId)
             }
           }
         }
       }
-    }
+    },
+    // 获取部门信息
+    getDepartmentList (param, flag) {
+      const self = this
+      getDepartmentList(param).then(res => {
+        let list = [...res.data.rows] || []
+        if (!param || flag) {
+          self.handleDepartmentList(list)
+        }
+      }).catch(err => {
+        console.log('err', err)
+      })
+    },
+    // 将获得数据转换成树型结构数据
+    handleDepartmentList (list) {
+      let listTmp = [...list]
+      let treeData = []
+      for (let i = 0; i < listTmp.length; i++) {
+        if (!listTmp[i].parentId) {
+          let obj = {
+            title: listTmp[i].deptName,
+            expand: true,
+            deptId: listTmp[i].deptId,
+            children: []
+          }
+          treeData.push(obj)
+          listTmp.splice(i, 1)
+          i--
+        }
+      }
+      this.cascaderData = this.handleTreeData(listTmp, treeData)
+      this.formatForCascader(this.cascaderData)
+      // list:需要转换的数组（平铺型数组）  treeData:目标转换的数组（树型数组）
+    },
+    handleTreeData (list, treeData) {
+      // list:需要转换的数组（平铺型数组）  treeData:目标转换的数组（树型数组）
+      let treeTmpList = list
+      let treeTmpData = treeData
+      if (treeTmpList.length !== 0) {
+        for (let i = 0; i < treeTmpData.length; i++) {
+          for (let j = 0; j < treeTmpList.length; j++) {
+            if (treeTmpData[i].deptId === treeTmpList[j].parentId) {
+              let obj = {
+                title: treeTmpList[j].deptName,
+                expand: true,
+                deptId: treeTmpList[j].deptId,
+                parentId: treeTmpList[j].parentId,
+                children: []
+              }
+              treeTmpData[i].children.push(obj)
+              treeTmpList.splice(j, 1)
+              j--
+            }
+          }
+          this.handleTreeData(treeTmpList, treeTmpData[i].children)
+        }
+      }
+      return treeTmpData
+    },
   }
 }
 </script>
