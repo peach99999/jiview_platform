@@ -9,7 +9,9 @@ import lombok.Data;
  */
 @Data
 public class BaseListParam extends BaseParam {
+    @ApiModelProperty("页码")
     private Integer pageNo;
+    @ApiModelProperty("页数")
     private Integer pageSize;
 
     @ApiModelProperty(hidden = true)

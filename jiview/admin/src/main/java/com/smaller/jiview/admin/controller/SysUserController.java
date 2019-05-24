@@ -37,31 +37,10 @@ public class SysUserController {
      * @date 2019-05-08
      */
     @ApiOperation(value = "获取用户列表", httpMethod = "GET")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "页码", dataType = "int", paramType = "query", required = false),
-            @ApiImplicitParam(name = "pageSize", value = "每页数据量", dataType = "int", paramType = "query", required = false),
-            @ApiImplicitParam(name = "account", value = "账号", dataType = "string", paramType = "query", required = false),
-            @ApiImplicitParam(name = "userName", value = "姓名", dataType = "string", paramType = "query", required = false),
-            @ApiImplicitParam(name = "deptId", value = "部门id", dataType = "long", paramType = "query", required = false)
-    })
     @GetMapping(value = "")
     public ResultBO<SysUserExt> list(
-            @RequestParam(value = "pageNo", required = false) Integer pageNo,
-            @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @RequestParam(value = "account", required = false) String account,
-            @RequestParam(value = "userName", required = false) String userName,
-            @RequestParam(value = "deptId", required = false) Long deptId
+            @ModelAttribute SysUserListParam sysUserListParam
     ) {
-        //前处理
-        SysUserListParam sysUserListParam = new SysUserListParam();
-
-        // 设置查询参数
-        sysUserListParam.setPageNo(pageNo);
-        sysUserListParam.setPageSize(pageSize);
-        sysUserListParam.setAccount(account);
-        sysUserListParam.setUserName(userName);
-        sysUserListParam.setDeptId(deptId);
-
         //主处理
         return sysUserService.list(sysUserListParam);
     }

@@ -37,25 +37,10 @@ public class SysRoleController {
      * @date 2019-05-10
      */
     @ApiOperation(value = "获取角色列表", httpMethod = "GET")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "页码", dataType = "int", paramType = "query", required = false),
-            @ApiImplicitParam(name = "pageSize", value = "每页数据量", dataType = "int", paramType = "query", required = false),
-            @ApiImplicitParam(name = "roleName", value = "角色名", dataType = "string", paramType = "query", required = false),
-            @ApiImplicitParam(name = "deptId", value = "部门id", dataType = "long", paramType = "query", required = false)
-    })
     @GetMapping(value = "")
     public ResultBO<SysRoleExt> list(
-            @RequestParam(value = "pageNo", required = false) Integer pageNo,
-            @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @RequestParam(value = "roleName", required = false) String roleName,
-            @RequestParam(value = "deptId", required = false) Long deptId
+            @ModelAttribute SysRoleListParam sysRoleListParam
     ) {
-        SysRoleListParam sysRoleListParam = new SysRoleListParam();
-        sysRoleListParam.setPageNo(pageNo);
-        sysRoleListParam.setPageSize(pageSize);
-        sysRoleListParam.setRoleName(roleName);
-        sysRoleListParam.setDeptId(deptId);
-
         return sysRoleService.list(sysRoleListParam);
     }
 

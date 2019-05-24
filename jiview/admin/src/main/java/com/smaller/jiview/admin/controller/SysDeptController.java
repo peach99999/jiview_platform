@@ -35,23 +35,9 @@ public class SysDeptController {
      */
     @GetMapping(value = "")
     @ApiOperation(value = "部门管理列表", httpMethod = "GET")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "页码", dataType = "int", paramType = "query", required = false),
-            @ApiImplicitParam(name = "pageSize", value = "页容量", dataType = "int", paramType = "query", required = false),
-            @ApiImplicitParam(name = "deptId", value = "部门id", dataType = "long", paramType = "query", required = false),
-            @ApiImplicitParam(name = "deptName", value = "部门名称", dataType = "string", paramType = "query", required = false),
-    })
     public ResultBO<SysDeptExt> list(
-            @RequestParam(required = false) Integer pageNo,
-            @RequestParam(required = false) Integer pageSize,
-            @RequestParam(required = false) Long deptId,
-            @RequestParam(required = false) String deptName
+            @ModelAttribute SysDeptListParam sysDeptListParam
     ) {
-        SysDeptListParam sysDeptListParam = new SysDeptListParam();
-        sysDeptListParam.setDeptId(deptId);
-        sysDeptListParam.setDeptName(deptName);
-        sysDeptListParam.setPageNo(pageNo);
-        sysDeptListParam.setPageSize(pageSize);
         return sysDeptService.list(sysDeptListParam);
     }
 
@@ -62,8 +48,6 @@ public class SysDeptController {
      * @date 2019-05-05
      */
     @ApiOperation(value = "获取部门详情", httpMethod = "GET")
-    @ApiImplicitParams({
-    })
     @GetMapping(value = "/{deptId}")
     public ResultBO<SysDept> get(
             @ApiParam(value = "deptId", required = true) @PathVariable Long deptId
