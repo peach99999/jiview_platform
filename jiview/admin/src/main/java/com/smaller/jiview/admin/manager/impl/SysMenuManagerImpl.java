@@ -10,7 +10,7 @@ import com.smaller.jiview.core.constant.Constants;
 import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -73,7 +73,7 @@ public class SysMenuManagerImpl implements SysMenuManager {
         List<SysMenuExt> userMenus;
         userMenus = sysMenuMapper.listForUser(loginPkid);
         // 如果通过角色去查用户的菜单权限没查到的话  说明该用户没有配置角色  是直接配置菜单选线的
-        if (ObjectUtils.isEmpty(userMenus)) {
+        if (CollectionUtils.isEmpty(userMenus)) {
             userMenus = sysUserMenuMapMapper.listForUserMenu(loginPkid);
         }
         return listMenuTreeCommon(menus, userMenus);

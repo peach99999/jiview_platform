@@ -23,7 +23,7 @@ import com.smaller.jiview.core.util.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
+import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -74,7 +74,7 @@ public class SysUserServiceImpl implements SysUserService {
 
         // 查询用户角色信息
         List<SysUserRoleExt> sysUserRoleExtList = sysUserRoleMapper.listUserRole(userId);
-        if (!ObjectUtils.isEmpty(sysUserRoleExtList)) {
+        if (!CollectionUtils.isEmpty(sysUserRoleExtList)) {
             sysUserExt.setSysUserRoleExtList(sysUserRoleExtList);
         }
         result.setRow(sysUserExt);
@@ -85,7 +85,7 @@ public class SysUserServiceImpl implements SysUserService {
     public ResultBO<SysRoleMenuPartExt> getUserMenuPartAuth(Long menuId, LoginUserDTO loginUserDTO) {
         ResultBO<SysRoleMenuPartExt> result = new ResultBO<>();
         List<SysRoleMenuPartExt> list = sysRoleMenuPartMapper.listUserRoleMenuPart(menuId, loginUserDTO.getLoginUserPkid());
-        if (ObjectUtils.isEmpty(list)) {
+        if (CollectionUtils.isEmpty(list)) {
             // 查询用户设置的菜单权限
             List<SysUserMenuPartExt> sysUserMenuPartExtList = sysUserMenuPartMapper.listUserMenuPart(menuId, loginUserDTO.getLoginUserPkid());
             List<SysRoleMenuPartExt> finalList = list;

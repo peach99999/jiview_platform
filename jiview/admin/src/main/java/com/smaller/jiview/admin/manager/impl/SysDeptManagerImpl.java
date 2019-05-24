@@ -6,7 +6,7 @@ import com.smaller.jiview.admin.platform.system.model.SysDept;
 import com.smaller.jiview.admin.pojo.model.ext.SysDeptExt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
+import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -43,7 +43,7 @@ public class SysDeptManagerImpl implements SysDeptManager {
         Example example = new Example(SysDept.class);
         example.createCriteria().andEqualTo("parentId",parentId);
         List<SysDept> subList = sysDeptMapper.selectByExample(example);
-        if (!ObjectUtils.isEmpty(subList)){
+        if (!CollectionUtils.isEmpty(subList)){
             subList.forEach(sysDept -> {
                 getSubDeptId(list,sysDept.getDeptId());
                 list.add(sysDept.getDeptId());
