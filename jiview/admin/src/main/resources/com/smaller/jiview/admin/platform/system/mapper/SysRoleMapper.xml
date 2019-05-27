@@ -36,10 +36,10 @@
     sr.remark,
     sr.locked,
     sr.create_time,
-    sd.dept_name
+    sd.dept_name as deptName
     FROM
     sys_role sr
-    LEFT JOIN sys_dept sd ON sd.dept_id = sr.dept_id
+    JOIN sys_dept sd ON sd.dept_id = sr.dept_id
     <include refid="list_where" />
   </select>
 
