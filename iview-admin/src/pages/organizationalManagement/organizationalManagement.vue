@@ -162,6 +162,7 @@ export default {
       self.filter.pageNo = val
       self.filter.pageSize = 10
       const param = {
+        deptId:self.nodeDeptId,
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
         deptName: self.searchValue || ''
@@ -174,6 +175,7 @@ export default {
       self.filter.pageNo = 1
       self.filter.pageSize = val
       const param = {
+        deptId:self.nodeDeptId,
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
         deptName: self.searchValue || ''
@@ -234,7 +236,8 @@ export default {
       const param = {
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
-        deptId: e[0].deptId
+        deptId: e[0].deptId,
+        deptName: self.searchValue
       }
       self.getDepartmentList(param)
     },
@@ -248,6 +251,7 @@ export default {
       self.filter.pageNo = 1
       self.filter.pageSize = 10
       const param = {
+        deptId:self.nodeDeptId,
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
         deptName: self.searchValue
@@ -262,6 +266,7 @@ export default {
       self.searchValue = ''
       self.nodeDeptId = ''
       const param = {
+        deptId:self.nodeDeptId,
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
         deptName: self.searchValue

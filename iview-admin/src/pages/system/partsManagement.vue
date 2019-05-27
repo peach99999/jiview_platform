@@ -35,21 +35,21 @@
           </FormItem>
         </Col>
         <Col span="2" offset="1">
-        <Button @click="handleRemove(index)">Delete</Button>
+        <Button @click="handleRemove(index)">删除</Button>
         </Col>
       </Row>
       <FormItem>
         <Row>
           <Col span="12" offset="6">
-            <Button type="dashed" long @click="handleAdd" icon="md-add">Add item</Button>
+            <Button type="dashed" long @click="handleAdd" icon="md-add">添加部件</Button>
           </Col>
         </Row>
       </FormItem>
       <FormItem>
         <Row>
           <Col span="12" offset="10">
-            <Button type="primary" @click="handleSubmit('partsObj')">Submit</Button>
-            <Button @click="handleReset('partsObj')" style="margin-left: 8px">Reset</Button>
+            <Button type="primary" @click="handleSubmit('partsObj')">提交</Button>
+            <Button @click="handleReset('partsObj')" style="margin-left: 8px">重置</Button>
           </Col>
         </Row>
       </FormItem>
@@ -145,10 +145,10 @@ export default {
           this.$refs[name].validate((valid) => {
             console.log('valid:', valid)
             if (valid) {
-              this.$Message.success('Success!');
+              this.$Message.success('提交成功!');
               this.saveOrUpdateMenuPart(sysMenuPartSaveOrupdateParam)
             } else {
-              this.$Message.error('Fail!');
+              this.$Message.error('提交失败!');
             }
           })
         }
