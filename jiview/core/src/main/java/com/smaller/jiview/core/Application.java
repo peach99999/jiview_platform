@@ -41,6 +41,7 @@ public class Application extends SpringBootServletInitializer {
 
     /**
      * 配置mybatis的分页插件pageHelper
+     *
      * @return
      */
     @Bean

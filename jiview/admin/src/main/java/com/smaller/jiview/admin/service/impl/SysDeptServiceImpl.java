@@ -50,7 +50,6 @@ public class SysDeptServiceImpl implements SysDeptService {
             deptName = deptName.trim();
         }
         List<SysDeptExt> deptList = sysDeptMapper.listSysDept(deptName,subDeptIds);
-//        sysDeptManager.listDeptParentName(deptList);
         ResultBO<SysDeptExt> result = new ResultBO<>(deptList);
         return result;
 
