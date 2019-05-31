@@ -150,6 +150,7 @@ export default {
       menuManagementApi.listMenuTree()
         .then(function (response) {
           self.menuTree = response.data.rows
+          console.log('listMenuTree self.menuTree:', self.menuTree)
           self.cascaderData = JSON.parse(JSON.stringify(self.menuTree))
           self.formatForCascader()
           self.formatForMenuTree()
@@ -170,22 +171,23 @@ export default {
             self.menuTree[i].children[j].title = self.menuTree[i].children[j].menuName
             if (self.menuTree[i].children[j].children !== null) {
               for (let m in self.menuTree[i].children[j].children) {
-                let data = {}
-                data.title = self.menuTree[i].children[j].children[m].menuName
-                self.menuTree[i].children[j].children[m] = data
+                // let data = {}
+                self.menuTree[i].children[j].children[m].title = self.menuTree[i].children[j].children[m].menuName
+                // self.menuTree[i].children[j].children[m] = data
               }
             } else {
-              let data = {}
-              data.title = self.menuTree[i].children[j].menuName
-              self.menuTree[i].children[j] = data
+              // let data = {}
+              self.menuTree[i].children[j].title = self.menuTree[i].children[j].menuName
+              // self.menuTree[i].children[j] = data
             }
           }
         } else {
-          let data = {}
-          data.title = self.menuTree[i].menuName
-          self.menuTree[i] = data
+          // let data = {}
+          self.menuTree[i].title = self.menuTree[i].menuName
+          // self.menuTree[i] = data
         }
       }
+      console.log('formatForMenuTree menuTree:', self.menuTree)
     },
     // 格式化父级菜单下拉选内容
     formatForCascader () {
@@ -322,7 +324,7 @@ export default {
       return ++maxOrderNum
     },
     gotoSaveHandle () {
-      console.log('新增菜单',this.menu)
+      console.log('新增菜单', this.menu)
       const self = this
       let selectedNode = self.getSelectedNode()
       let selectedMenuId = selectedNode && selectedNode.pkid
@@ -395,7 +397,7 @@ export default {
         Object.assign(self.menu, selectedNodes.node)
         self.menu.parentPkids = self.getParentIdHierarchy(self.menu.menuId)
       }
-      console.log('点击查看菜单详情：',this.menu)
+      console.log('点击查看菜单详情：', this.menu)
     },
     treeOnToggleExpandHandle (expandMenuTreeByIds) {
       console.log('treeOnToggleExpandHandle→expandMenuTreeByIds:', expandMenuTreeByIds)
@@ -443,49 +445,53 @@ export default {
         self.$Message.warning('请勾选要删除的菜单')
         return
       }
+      console.log('checkedMenuList:', checkedMenuList)
       for (let i = 0; i < checkedMenuList.length; i++) {
         let row = checkedMenuList[i]
+        console.log('checkedMenuList row:', row)
         menuPkidsToRemove.push(row.menuId)
         menuPkidsToExpand.push(row.parentId)
       }
+      console.log('menuPkidsToRemove:', menuPkidsToRemove)
+      console.log('menuPkidsToExpand:', menuPkidsToExpand)
       if (menuPkidsToRemove && menuPkidsToRemove.length > 0) {
         self.remove(menuPkidsToRemove, menuPkidsToExpand)
       }
     },
     renderContent (h, { root, node, data }) {
-      console.log('data:',data)
+      console.log('data:', data)
       return h('span', {
         style: {
           display: 'inline-block',
           width: '100%'
         }
       }, [
-        h('span',[
+        h('span', [
           h('Icon', {
             style: {
               marginRight: '8px'
             }
           }),
-          h('span',{
+          h('span', {
             on: {
               click: () => { this.treeOnSelectChangeHandle(node) }
             }
           }, data.title)
         ]),
         h('Button', {
-          props: Object.assign({},  {
-            size: 'small',
+          props: Object.assign({}, {
+            size: 'small'
           }),
           style: {
             marginRight: '38px',
             float: 'right',
-            display: data.parentId?"":"none",
+            display: data.children && data.children.length > 0 ? 'none' : ''
           },
           on: {
-            click: () => { this.$router.push({name:'partsManagement',params:{menuId: data.menuId}}) }
+            click: () => { this.$router.push({ name: 'partsManagement', params: { menuId: data.menuId } }) }
           }
         }, '部件管理')
-      ]);
+      ])
     }
   }
 }

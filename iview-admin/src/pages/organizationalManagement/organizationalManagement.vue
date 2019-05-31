@@ -146,9 +146,9 @@ export default {
       getDepartmentList(param).then(res => {
         let list = [...res.data.rows] || []
         self.loading = false
-//        if (!param || flag) {
-//          self.handleDepartmentList(list)
-//        }
+        // if (!param || flag) {
+        // self.handleDepartmentList(list)
+        // }
         self.tableData = list
         self.total = res.data.count
       }).catch(err => {
@@ -162,7 +162,7 @@ export default {
       self.filter.pageNo = val
       self.filter.pageSize = 10
       const param = {
-        deptId:self.nodeDeptId,
+        deptId: self.nodeDeptId,
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
         deptName: self.searchValue || ''
@@ -175,7 +175,7 @@ export default {
       self.filter.pageNo = 1
       self.filter.pageSize = val
       const param = {
-        deptId:self.nodeDeptId,
+        deptId: self.nodeDeptId,
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
         deptName: self.searchValue || ''
@@ -237,7 +237,7 @@ export default {
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
         deptId: e[0].deptId,
-        deptName: self.searchValue
+        deptName: ''
       }
       self.getDepartmentList(param)
     },
@@ -251,7 +251,7 @@ export default {
       self.filter.pageNo = 1
       self.filter.pageSize = 10
       const param = {
-        deptId:self.nodeDeptId,
+        deptId: self.nodeDeptId,
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
         deptName: self.searchValue
@@ -266,7 +266,7 @@ export default {
       self.searchValue = ''
       self.nodeDeptId = ''
       const param = {
-        deptId:self.nodeDeptId,
+        deptId: self.nodeDeptId,
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
         deptName: self.searchValue

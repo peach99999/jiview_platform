@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import * as util from '@/libs/util'
+// import * as util from '@/libs/util'
 import * as partsManagementApi from '@/api/partsManagement'
 export default {
   data () {
@@ -95,10 +95,10 @@ export default {
           console.log('partsManagementApi.getMenuPartDetail→error:', error)
         })
     },
-    partTypeChange(){
+    partTypeChange () {
 
     },
-    saveOrUpdateMenuPart(param){
+    saveOrUpdateMenuPart (param) {
       const self = this
       partsManagementApi.saveOrUpdateMenuPart(param)
         .then(function (response) {
@@ -110,22 +110,22 @@ export default {
     },
     handleSubmit (name) {
       this.judgeIsExistSameId()
-      if(!this.sameId){
-        if(this.partsObj.partsList && this.partsObj.partsList.length === 0){
+      if (!this.sameId) {
+        if (this.partsObj.partsList && this.partsObj.partsList.length === 0) {
           console.log('partsList:', this.partsObj.partsList)
-          let menuPartList= []
+          let menuPartList = []
           let param = {
             menuId: this.menuId
           }
           menuPartList.push(param)
           let sysMenuPartSaveOrupdateParam = {
-            menuPartList:  menuPartList
+            menuPartList: menuPartList
           }
           this.saveOrUpdateMenuPart(sysMenuPartSaveOrupdateParam)
         }
-        if(this.partsObj.partsList && this.partsObj.partsList.length !== 0){
+        if (this.partsObj.partsList && this.partsObj.partsList.length !== 0) {
           let list = []
-          if(this.menuId){
+          if (this.menuId) {
             this.partsObj.partsList.forEach((item, index) => {
               let param = {
                 cmpId: item.cmpId,
@@ -133,60 +133,62 @@ export default {
                 menuId: this.menuId,
                 remark: item.remark
               }
-              if(item.partId){
-                param.partId= item.partId
+              if (item.partId) {
+                param.partId = item.partId
               }
               list.push(param)
             })
           }
           let sysMenuPartSaveOrupdateParam = {
-            menuPartList:list
+            menuPartList: list
           }
           this.$refs[name].validate((valid) => {
             console.log('valid:', valid)
             if (valid) {
-              this.$Message.success('提交成功!');
+              this.$Message.success('提交成功!')
               this.saveOrUpdateMenuPart(sysMenuPartSaveOrupdateParam)
             } else {
-              this.$Message.error('提交失败!');
+              this.$Message.error('提交失败!')
             }
           })
         }
       }
     },
     handleReset (name) {
-      this.$refs[name].resetFields();
+      this.$refs[name].resetFields()
     },
     handleAdd () {
-//      this.index = this.partsObj.partsList.length+1
-//      let id = this.menuId + '-' + this.index
+    // this.index = this.partsObj.partsList.length+1
+    // let id = this.menuId + '-' + this.index
       this.partsObj.partsList.push({
         cmpId: '',
         cmpType: 1,
         remark: ''
-      });
+      })
     },
     handleRemove (index) {
-      this.partsObj.partsList.splice(index,1)
+      this.partsObj.partsList.splice(index, 1)
     },
     changePartId (e) {
-//      this.judgeIsExistSameId()
+    // this.judgeIsExistSameId()
     },
     judgeIsExistSameId () {
       let list = []
       this.sameId = ''
-      for(let item of this.partsObj.partsList){
+      for (let item of this.partsObj.partsList) {
         list.push(item.cmpId)
       }
-      let str = list.join(",") + ",";
+      let str = list.join(',') + ','
       for (let i = 0; i < list.length; i++) {
-        if (str.replace(list[i] + ",", "").indexOf(list[i] + ",") > -1) {
+        if (str.replace(list[i] + ',', '').indexOf(list[i] + ',') > -1) {
           this.sameId = list[i]
-          this.$Notice.warning({
-            title: '警告',
-            desc: '部件ID' + this.sameId + '存在重复，请修改'
-          })
-          break
+          if (this.sameId) {
+            this.$Notice.warning({
+              title: '警告',
+              desc: '部件ID' + this.sameId + '存在重复，请修改'
+            })
+            break
+          }
         }
       }
     }
