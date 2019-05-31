@@ -19,4 +19,7 @@ public class MenuAuthParam implements Serializable {
 
     @ApiModelProperty("菜单访问权限(1:访问权限;2:管理权限)")
     private Byte authorizeLevel;
+
+    @ApiModelProperty("菜单名称")
+    private String menuName;
 }

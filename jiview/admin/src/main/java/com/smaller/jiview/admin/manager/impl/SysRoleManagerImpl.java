@@ -7,6 +7,7 @@ import com.smaller.jiview.admin.platform.system.mapper.SysMenuMapper;
 import com.smaller.jiview.admin.platform.system.mapper.SysRoleMapper;
 import com.smaller.jiview.admin.platform.system.mapper.SysRoleMenuMapper;
 import com.smaller.jiview.admin.platform.system.model.SysDept;
+import com.smaller.jiview.admin.platform.system.model.SysMenu;
 import com.smaller.jiview.admin.platform.system.model.SysRole;
 import com.smaller.jiview.admin.platform.system.model.SysRoleMenu;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
@@ -16,6 +17,7 @@ import com.smaller.jiview.core.util.CommonUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
@@ -48,8 +50,8 @@ public class SysRoleManagerImpl implements SysRoleManager {
         if (CollectionUtils.isNotEmpty(roles)) {
             role = roles.get(0);
             List<Long> menuIdList = sysMenuMapper.listMenuIdByRole(roleId);
-            menuIdList.forEach(menuId ->{
-                MenuAuthParam  menuAuthParam = new MenuAuthParam();
+            menuIdList.forEach(menuId -> {
+                MenuAuthParam menuAuthParam = new MenuAuthParam();
                 menuAuthParam.setMenuId(menuId);
                 getMenuAuthLevel(roleId, menuAuthParamList, menuId, menuAuthParam);
             });
@@ -61,11 +63,17 @@ public class SysRoleManagerImpl implements SysRoleManager {
 
     private void getMenuAuthLevel(Long roleId, List<MenuAuthParam> menuAuthParamList, Long menuId, MenuAuthParam menuAuthParam) {
         Example example = new Example(SysRoleMenu.class);
-        example.createCriteria().andEqualTo("menuId",menuId)
-                .andEqualTo("roleId",roleId);
+        example.createCriteria().andEqualTo("menuId", menuId)
+                .andEqualTo("roleId", roleId);
         List<SysRoleMenu> sysRoleMenuList = sysRoleMenuMapper.selectByExample(example);
-        SysRoleMenu  sysRoleMenu = CommonUtil.getFirstElement(sysRoleMenuList);
+        SysRoleMenu sysRoleMenu = CommonUtil.getFirstElement(sysRoleMenuList);
+        // 访问权限
         menuAuthParam.setAuthorizeLevel(sysRoleMenu.getAuthorizeLevel());
+        // 带单名称
+        SysMenu sysMenu = sysMenuMapper.selectByPrimaryKey(menuId);
+        if (!ObjectUtils.isEmpty(sysMenu)) {
+            menuAuthParam.setMenuName(sysMenu.getMenuName());
+        }
         menuAuthParamList.add(menuAuthParam);
     }
 
@@ -98,10 +106,10 @@ public class SysRoleManagerImpl implements SysRoleManager {
     }
 
     @Override
-    public List<SysRoleExt> roleNameFilter(List<SysRoleExt> list,String roleName) {
+    public List<SysRoleExt> roleNameFilter(List<SysRoleExt> list, String roleName) {
         List<SysRoleExt> nameFilterLiist = new Page<SysRoleExt>();
-        for (SysRoleExt sysRoleExt:list) {
-            if (sysRoleExt.getRoleName().contains(roleName)){
+        for (SysRoleExt sysRoleExt : list) {
+            if (sysRoleExt.getRoleName().contains(roleName)) {
                 nameFilterLiist.add(sysRoleExt);
             }
         }
