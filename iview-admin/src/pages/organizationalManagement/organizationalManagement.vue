@@ -230,6 +230,7 @@ export default {
     clickTreeNodeChange (e) {
       console.log('e', e)
       const self = this
+      self.searchValue = ''
       self.nodeDeptId = e[0].deptId
       self.filter.pageNo = 1
       self.filter.pageSize = 10
