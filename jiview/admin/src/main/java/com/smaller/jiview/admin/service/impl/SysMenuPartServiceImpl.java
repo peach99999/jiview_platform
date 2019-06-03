@@ -39,11 +39,12 @@ public class SysMenuPartServiceImpl implements SysMenuPartService {
         if (count == 1) {
             // 如果只有menuId不为空 则表示部件全部删除
             SysMenuPartParam sysMenuPartParam = CommonUtil.getFirstElement(sysMenuPartSaveOrupdateParam.getMenuPartList());
-            if (ObjectUtils.isEmpty(sysMenuPartParam.getCmpId()) && ObjectUtils.isEmpty(sysMenuPartParam.getCmpType())) {
-                if (!ObjectUtils.isEmpty(sysMenuPartParam.getMenuId())) {
-                    sysMenuPartManager.remove(sysMenuPartParam.getMenuId());
-                    return result;
-                }
+            if (sysMenuPartParam == null) {
+                return result;
+            }
+            if (ObjectUtils.isEmpty(sysMenuPartParam.getCmpId()) && ObjectUtils.isEmpty(sysMenuPartParam.getCmpType()) && !ObjectUtils.isEmpty(sysMenuPartParam.getMenuId())) {
+                sysMenuPartManager.remove(sysMenuPartParam.getMenuId());
+                return result;
             }
         }
         List<Long> newPartIdList = new ArrayList<>();
