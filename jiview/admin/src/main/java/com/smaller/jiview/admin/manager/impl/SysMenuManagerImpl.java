@@ -181,7 +181,7 @@ public class SysMenuManagerImpl implements SysMenuManager {
     @Override
     public Integer update(SysMenu sysMenu, LoginUserDTO loginUserDTO) {
         sysMenu.setCreateUserId(loginUserDTO.getLoginUserPkid());
-        return sysMenuMapper.updateByPrimaryKeySelective(sysMenu);
+        return sysMenuMapper.updateByPrimaryKey(sysMenu);
     }
 
     @Override
