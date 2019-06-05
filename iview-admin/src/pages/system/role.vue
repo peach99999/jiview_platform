@@ -65,10 +65,10 @@
       <Modal v-model="showUpdateRoleMenuAuthorizationFlg" :closable='true' :mask-closable=false :width="500">
         <h3 slot="header" style="color:#2D8CF0">配置菜单权限</h3>
         <div class="menu-tree">
-          <div v-for="(item, index) in menuTree" :key="item.menuId">
+          <div v-for="(item) in menuTree" :key="item.menuId">
             <div v-if="!item.parentId && item.children && item.children.length > 0">
               <span>{{item.menuName}}</span>
-              <div v-for="(childItem, childIndex) in item.children" :key="childItem.menuId">
+              <div v-for="(childItem) in item.children" :key="childItem.menuId">
                 <div v-if="!childItem.children || childItem.children.length === 0">
                   <Row class="child-item-menu-name">
                     <Col span="8" offset="1">
@@ -91,7 +91,7 @@
                       <span>{{childItem.menuName}}</span>
                     </Col>
                   </Row>
-                  <div v-for="(grandChildItem, grandChildIndex) in childItem.children" :key="grandChildItem.menuId">
+                  <div v-for="(grandChildItem) in childItem.children" :key="grandChildItem.menuId">
                     <Row class="grand-child-item-menu-name">
                       <Col span="8" offset="2">
                         <span class="menu-tree-title">{{grandChildItem.menuName}}</span>
@@ -475,7 +475,7 @@ export default {
             }
           }
           if (menuItem.children && menuItem.children.length > 0) {
-            self.matchMenuPermissions (menuItem.children, roleMenuTree)
+            self.matchMenuPermissions(menuItem.children, roleMenuTree)
           }
         }
       }
@@ -665,10 +665,10 @@ export default {
       const menuId = this.currentInfo.menuId
       const checked = e.target.checked
       if (checked) {
-        self.searchAndChangeMenuAuthority (self.menuTree, menuId, 1)
+        self.searchAndChangeMenuAuthority(self.menuTree, menuId, 1)
       }
       if (!checked) {
-        self.searchAndChangeMenuAuthority (self.menuTree, menuId, 0)
+        self.searchAndChangeMenuAuthority(self.menuTree, menuId, 0)
       }
     },
     changeChecked (e) {
@@ -676,10 +676,10 @@ export default {
       const menuId = this.currentInfo.menuId
       const checked = e.target.checked
       if (checked) {
-        self.searchAndChangeMenuAuthority (self.menuTree, menuId, 2)
+        self.searchAndChangeMenuAuthority(self.menuTree, menuId, 2)
       }
       if (!checked) {
-        self.searchAndChangeMenuAuthority (self.menuTree, menuId, 0)
+        self.searchAndChangeMenuAuthority(self.menuTree, menuId, 0)
       }
     },
     changeVisitInfo (item) {
@@ -695,7 +695,7 @@ export default {
           value.authorizeLevel = authority
         }
         if (value.children && value.children.length > 0) {
-          self.searchAndChangeMenuAuthority (value.children, menuId, authority)
+          self.searchAndChangeMenuAuthority(value.children, menuId, authority)
         }
       }
       self.menuTree = [...self.menuTree]
@@ -703,7 +703,7 @@ export default {
     },
     getMenuPartAuthDetail (menuId) {
       console.log('getMenuPartAuthDetail menuId:', menuId)
-      const self = this
+      // const self = this
       sysUserManagementApi.getMenuPartAuth(menuId).then(res => {
       // self.showUpdateRoleMenuAuthorizationFlg = true
       // if (res.data.row) {

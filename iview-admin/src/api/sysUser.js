@@ -1,9 +1,9 @@
 import axios from '@/libs/api.request'
-import * as constData from '@/libs/const-data';
+import * as constData from '@/libs/const-data'
 
 export const getMenuPartAuth = (menuId) => {
   return axios.request({
-    url: constData.API_BEGIN_POINT + '/sys-user/menu-part-auth/'+ menuId,
+    url: constData.API_BEGIN_POINT + '/sys-user/menu-part-auth/' + menuId,
     method: 'get'
   })
 }
