@@ -92,6 +92,15 @@ export const appRouter = [{
         title: '角色管理'
       },
       component: () => import('@/pages/system/role.vue')
+    },
+    {
+      path: 'user',
+      name: 'user',
+      meta: {
+        // icon: 'md-notifications',
+        title: '用户管理'
+      },
+      component: () => import('@/pages/system/user.vue')
     }
   ]
 }]

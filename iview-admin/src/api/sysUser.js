@@ -1,6 +1,22 @@
 import axios from '@/libs/api.request'
 import * as constData from '@/libs/const-data'
 
+// 获取用户列表
+export const getUserList = ({ account, userName, deptId, pageNo, pageSize }) => {
+  return axios.request({
+    url: constData.API_BEGIN_POINT + '/sys-user',
+    params: {
+      account,
+      userName,
+      deptId,
+      pageNo,
+      pageSize
+    },
+    method: 'get'
+  })
+}
+
+// 查询用户菜单部件权限
 export const getMenuPartAuth = (menuId) => {
   return axios.request({
     url: constData.API_BEGIN_POINT + '/sys-user/menu-part-auth/' + menuId,
@@ -8,86 +24,28 @@ export const getMenuPartAuth = (menuId) => {
   })
 }
 
-// export const login = ({ userName, password }) => {
-//   const loginParam = {
-//     userLogin:userName,
-//     userPwd:password
-//   }
-//   return axios.request({
-//     url: constData.API_BEGIN_POINT + '/login',
-//     // url: 'login',
-//     data:loginParam,
-//     method: 'post'
-//   })
-// }
+// 批量删除用户
+export const removeUserInfo = (params) => {
+  return axios.request({
+    url: constData.API_BEGIN_POINT + '/sys-user/remove',
+    data: params,
+    method: 'post'
+  })
+}
 
-// export const getUserInfo = (token) => {
-//   return axios.request({
-//     url: 'get_info',
-//     params: {
-//       token
-//     },
-//     method: 'get'
-//   })
-// }
+// 保存更新用户信息
+export const addAndUpdateUserInfo = (params) => {
+  return axios.request({
+    url: constData.API_BEGIN_POINT + '/sys-user/save-or-update-user',
+    data: params,
+    method: 'post'
+  })
+}
 
-// export const logout = (token) => {
-//   return axios.request({
-//     url: 'logout',
-//     method: 'post'
-//   })
-// }
-
-// export const getUnreadCount = () => {
-//   return axios.request({
-//     url: 'message/count',
-//     method: 'get'
-//   })
-// }
-
-// export const getMessage = () => {
-//   return axios.request({
-//     url: 'message/init',
-//     method: 'get'
-//   })
-// }
-
-// export const getContentByMsgId = msg_id => {
-//   return axios.request({
-//     url: 'message/content',
-//     method: 'get',
-//     params: {
-//       msg_id
-//     }
-//   })
-// }
-
-// export const hasRead = msg_id => {
-//   return axios.request({
-//     url: 'message/has_read',
-//     method: 'post',
-//     data: {
-//       msg_id
-//     }
-//   })
-// }
-//
-// export const removeReaded = msg_id => {
-//   return axios.request({
-//     url: 'message/remove_readed',
-//     method: 'post',
-//     data: {
-//       msg_id
-//     }
-//   })
-// }
-//
-// export const restoreTrash = msg_id => {
-//   return axios.request({
-//     url: 'message/restore',
-//     method: 'post',
-//     data: {
-//       msg_id
-//     }
-//   })
-// }
+// 根据userId获取用户信息
+export const getUserInfoDetail = (userId) => {
+  return axios.request({
+    url: constData.API_BEGIN_POINT + '/sys-user/' + userId,
+    method: 'get'
+  })
+}

@@ -47,5 +47,6 @@ export default {
   management: 'System Management',
   menu: 'Menu Management',
   partsManagement: 'Component Management',
-  role: 'Role Management'
+  role: 'Role Management',
+  user: 'User Management'
 }
