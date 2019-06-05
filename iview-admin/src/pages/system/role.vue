@@ -35,7 +35,6 @@
           <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
           <div>加载中...</div>
       </Spin>
-
       <Modal v-model="addOrEditRoleFlg" scrollable title="新增/编辑角色" @on-visible-change="restTest" :mask-closable="false">
         <Form ref="role" :label-width="120" :model="role" inline :rules="inforValidate">
           <FormItem label="所属部门：" prop="deptId">
@@ -65,7 +64,70 @@
       </Modal>
       <Modal v-model="showUpdateRoleMenuAuthorizationFlg" :closable='true' :mask-closable=false :width="500">
         <h3 slot="header" style="color:#2D8CF0">配置菜单权限</h3>
-        <Tree :data="menuTree" show-checkbox multiple ref="menuTree"></Tree>
+        <div class="menu-tree">
+          <div v-for="(item, index) in menuTree" :key="item.menuId">
+            <div v-if="!item.parentId && item.children && item.children.length > 0">
+              <span>{{item.menuName}}</span>
+              <div v-for="(childItem, childIndex) in item.children" :key="childItem.menuId">
+                <div v-if="!childItem.children || childItem.children.length === 0">
+                  <Row class="child-item-menu-name">
+                    <Col span="8" offset="1">
+                      <span class="menu-tree-title">{{childItem.menuName}}</span>
+                    </Col>
+                    <Col span="9">
+                      <input type="checkbox" :checked="childItem.authorizeLevel === 1" @change="changeVisitChecked" @click="changeVisitInfo(childItem)">
+                      <label>访问权限</label>
+                      <input type="checkbox" :checked="childItem.authorizeLevel === 2" @change="changeChecked" @click="changeVisitInfo(childItem)">
+                      <label>管理权限</label>
+                    </Col>
+                    <Col span="5">
+                      <Button type="dashed" size="small" v-if="childItem.authorizeLevel === 2" @click="getMenuPartAuthDetail(childItem.menuId)">部件权限</Button>
+                    </Col>
+                  </Row>
+                </div>
+                <div v-if="childItem.children && childItem.children.length > 0">
+                  <Row class="child-item-menu-name">
+                    <Col span="8" offset="1">
+                      <span>{{childItem.menuName}}</span>
+                    </Col>
+                  </Row>
+                  <div v-for="(grandChildItem, grandChildIndex) in childItem.children" :key="grandChildItem.menuId">
+                    <Row class="grand-child-item-menu-name">
+                      <Col span="8" offset="2">
+                        <span class="menu-tree-title">{{grandChildItem.menuName}}</span>
+                      </Col>
+                      <Col span="9">
+                      <input type="checkbox" :checked="grandChildItem.authorizeLevel === 1" @change="changeVisitChecked" @click="changeVisitInfo(grandChildItem)">
+                      <label>访问权限</label>
+                      <input type="checkbox" :checked="grandChildItem.authorizeLevel === 2" @change="changeChecked" @click="changeVisitInfo(grandChildItem)">
+                      <label>管理权限</label>
+                      </Col>
+                      <Col span="5">
+                        <Button type="dashed" size="small" v-if="grandChildItem.authorizeLevel === 2">部件权限</Button>
+                      </Col>
+                    </Row>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="!item.parentId && (!item.children || item.children.length === 0)">
+              <Row>
+                <Col span="10">
+                  <span class="menu-tree-title">{{item.menuName}}</span>
+                </Col>
+                <Col span="9">
+                <input type="checkbox" :checked="item.authorizeLevel === 1" @change="changeVisitChecked" @click="changeVisitInfo(item)">
+                <label>访问权限</label>
+                <input type="checkbox" :checked="item.authorizeLevel === 2" @change="changeChecked" @click="changeVisitInfo(item)">
+                <label>管理权限</label>
+                </Col>
+                <Col span="5">
+                  <Button type="dashed" size="small" v-if="item.authorizeLevel === 2">部件权限</Button>
+                </Col>
+              </Row>
+            </div>
+          </div>
+        </div>
         <div slot="footer">
           <Button type="text" @click="menuCfgCancelHandle">取消</Button>
           <Button type="primary" :loading="saveLoading" @click="menuCfgConfirmHandle">保存</Button>
@@ -79,9 +141,13 @@
 // import * as util from '@/libs/util'
 import * as roleManagementApi from '@/api/role'
 import * as menuManagementApi from '@/api/menu'
+import * as sysUserManagementApi from '@/api/sysUser'
 import { getDepartmentList } from '@/api/organizationalManagement'
-import {list} from "../../api/menu";
+// import { list } from '../../api/menu'
 export default {
+  components: {
+
+  },
   data () {
     return {
       value1: '1',
@@ -89,7 +155,7 @@ export default {
       loading: false,
       showUpdateRoleMenuAuthorizationFlg: false,
       saveLoading: false,
-//      menuTreeOrig: [],
+      // menuTreeOrig: [],
       menuTree: [],
       currentRow: {},
       filter: {
@@ -160,22 +226,23 @@ export default {
                 },
                 on: {
                   click: () => {
-                    const self = this
-                    self.currentRow = params.row
-                    roleManagementApi.getRoleInfo(self.currentRow.roleId)
-                      .then(response => {
-                        self.showUpdateRoleMenuAuthorizationFlg = true
-                        self.listMenuTree()
-//                        self.menuTree = JSON.parse(JSON.stringify(self.menuTreeOrig))
-//                        for (let i in self.menuTree) {
-//                          self.$set(self.menuTree[i], 'expand', true)
-//                        }
-//                        let roleMenus = (response.data.row && response.data.row.menuPkids) || []
-//                        self.restoreMenuCheckedStatus(roleMenus)
-                      })
-                      .catch(err => {
-                        console.log('err', err)
-                      })
+                    this.changeMenuPermissions(params.row.roleId)
+                    // const self = this
+                    // self.currentRow = params.row
+                    // roleManagementApi.getRoleInfo(self.currentRow.roleId)
+                    // .then(response => {
+                    // self.showUpdateRoleMenuAuthorizationFlg = true
+                    // self.listMenuTree()
+                    // // self.menuTree = JSON.parse(JSON.stringify(self.menuTreeOrig))
+                    // // for (let i in self.menuTree) {
+                    // // self.$set(self.menuTree[i], 'expand', true)
+                    // // }
+                    // // let roleMenus = (response.data.row && response.data.row.menuPkids) || []
+                    // // self.restoreMenuCheckedStatus(roleMenus)
+                    // })
+                    // .catch(err => {
+                    // console.log('err', err)
+                    // })
                   }
                 }
               }, '菜单权限')
@@ -231,7 +298,8 @@ export default {
           lockedStatus: '激活'
         }
       ],
-      deptIdList: []
+      deptIdList: [],
+      currentInfo: {}
     }
   },
   mounted () {
@@ -240,6 +308,7 @@ export default {
     // this.filter = this.$store.state.app.listPageParams.get(this.$route.name);
     // }
     self.init()
+    self.listMenuTree()
   },
   methods: {
     init () {
@@ -280,19 +349,6 @@ export default {
       self.filter.pageNo = 1
       self.listForInit()
     },
-    // listMenuTree () {
-    // const self = this;
-    // menuManagementApi.listMenuTree()
-    // .then(function (response) {
-    // if (response.data.rows) {
-    // self.menuTreeOrig = JSON.parse(JSON.stringify(response.data.rows));
-    // }
-    // })
-    // .catch(function (error) {
-    // console.log(error);
-    // // self.$Message.error('系统错误,请联系管理员!');
-    // });
-    // },
     // 重置
     reset () {
       const self = this
@@ -323,7 +379,7 @@ export default {
         roletype: self.role.roleType,
         locked: self.role.locked
       }
-      if(self.role.roleId){
+      if (self.role.roleId) {
         param.roleId = self.role.roleId
       }
       roleManagementApi.updateRoleInfo(param)
@@ -364,17 +420,17 @@ export default {
     // 详情按钮单击
     queryRoleDetail (pkid) {
       const self = this
-      self.addOrEditRoleFlg = true
       self.deptIdList = []
       // 调用获取角色信息接口
       roleManagementApi.getRoleInfo(pkid).then(res => {
-        self.foreachAndSearchDeptParentNode(self.cascaderData,res.data.row.deptId)
+        self.addOrEditRoleFlg = true
+        self.foreachAndSearchDeptParentNode(self.cascaderData, res.data.row.deptId)
         if (res.data.row) {
           self.role.deptId = self.deptIdList
           self.role.roleName = res.data.row.roleName
           self.role.roleType = res.data.row.roletype
           self.role.roleId = res.data.row.roleId
-          if(res.data.row.remark){
+          if (res.data.row.remark) {
             self.role.remark = res.data.row.remark
           }
           if (res.data.row.locked) {
@@ -389,6 +445,40 @@ export default {
         console.log('err', err)
         // self.$Message.error(message['1001']);
       })
+    },
+    // 点击菜单权限
+    changeMenuPermissions (pkid) {
+      const self = this
+      roleManagementApi.getRoleInfo(pkid).then(res => {
+        self.showUpdateRoleMenuAuthorizationFlg = true
+        if (res.data.row) {
+          self.role.menuIds = res.data.row.menuIds || []
+        }
+        self.matchMenuPermissions(self.menuTree, self.role.menuIds)
+        console.log('self.menuTree:', self.menuTree)
+        console.log('self.role.menuIds:', self.role.menuIds)
+      }).catch(err => {
+        console.log('err', err)
+        // self.$Message.error(message['1001']);
+      })
+    },
+    // 匹配菜单权限
+    matchMenuPermissions (menuTree, roleMenuTree) {
+      const self = this
+      if (menuTree && roleMenuTree) {
+        for (const menuItem of menuTree) {
+          menuItem.authorizeLevel = 0
+          for (const roleMenuItem of roleMenuTree) {
+            if (menuItem.menuId === roleMenuItem.menuId) {
+              console.log('roleMenuItem.menuName', roleMenuItem.menuName)
+              menuItem.authorizeLevel = roleMenuItem.authorizeLevel
+            }
+          }
+          if (menuItem.children && menuItem.children.length > 0) {
+            self.matchMenuPermissions (menuItem.children, roleMenuTree)
+          }
+        }
+      }
     },
     // 选中项发生变化
     changeSelect (value) {
@@ -446,66 +536,37 @@ export default {
       this.menuTree = []
     },
     menuCfgConfirmHandle () {
-      const self = this
-      let checkedNodes = self.$refs.menuTree.getCheckedNodes()
-      let menuPkids = []
-      for (let i in checkedNodes) {
-        menuPkids.push(checkedNodes[i].pkid)
-      }
-      let data = {
-        pkid: self.currentRow.pkid,
-        menuPkids: menuPkids
-      }
-      self.saveLoading = true
-      roleManagementApi.updateRoleMenuAuthorization(data)
-        .then(res => {
-          self.$Message.success('配置成功')
-          self.showUpdateRoleMenuAuthorizationFlg = false
-          self.init()
-          self.saveLoading = false
-        })
-        .catch(err => {
-          console.log('err', err)
-          self.saveLoading = false
-          // self.$Message.error(message['1001']);
-        })
+      console.log('menuCfgConfirmHandle', this.menuTree)
+      // const self = this
+      // let checkedNodes = self.$refs.menuTree.getCheckedNodes()
+      // let menuPkids = []
+      // for (let i in checkedNodes) {
+      // menuPkids.push(checkedNodes[i].pkid)
+      // }
+      // let data = {
+      // pkid: self.currentRow.pkid,
+      // menuPkids: menuPkids
+      // }
+      // self.saveLoading = true
+      // roleManagementApi.updateRoleMenuAuthorization(data)
+      // .then(res => {
+      // self.$Message.success('配置成功')
+      // self.showUpdateRoleMenuAuthorizationFlg = false
+      // self.init()
+      // self.saveLoading = false
+      // })
+      // .catch(err => {
+      // console.log('err', err)
+      // self.saveLoading = false
+      // // self.$Message.error(message['1001']);
+      // })
     },
-    restoreMenuCheckedStatus (roleMenus) {
-      this.menuTree.forEach(menu => {
-        // menu.expand = true
-        for (let i in roleMenus) {
-          if (roleMenus[i] === menu.pkid) {
-            this.$set(menu, 'checked', true)
-          }
-        }
-        for (let j in menu.children) {
-        // menu.children[j].expand = true
-          for (let k in roleMenus) {
-            if (menu.children[j].pkid === roleMenus[k]) {
-              this.$set(menu.children[j], 'checked', true)
-            }
-          }
-          for (let m in menu.children[j].children) {
-            for (let n in roleMenus) {
-              if (menu.children[j].children[m].pkid === roleMenus[n]) {
-                this.$set(menu.children[j].children[m], 'checked', true)
-              }
-            }
-          }
-        }
-      })
-    },
-    // 菜单
-    listMenuTree (menuPkidsToExpand) {
+    // 获取全部菜单（树型）
+    listMenuTree () {
       const self = this
       menuManagementApi.listMenuTree()
         .then(function (response) {
-          self.menuTree =  JSON.parse(JSON.stringify(response.data.rows))
-          console.log('self.menuTree:', self.menuTree)
-//          self.cascaderData = JSON.parse(JSON.stringify(self.menuTree))
-//          self.formatForCascader()
-          // self.formatForMenuTree()
-          // self.expandMenuTreeByIds(menuPkidsToExpand)
+          self.menuTree = JSON.parse(JSON.stringify(response.data.rows))
         })
         .catch(function (error) {
           console.log('menuManagementApi.listMenuTree→error:', error)
@@ -514,28 +575,28 @@ export default {
     },
     formatForCascader (list) {
       const self = this
-      for(let item of list){
+      for (let item of list) {
         item.label = item.title
         item.value = item.deptId
-        if(item.children && item.children.length > 0){
+        if (item.children && item.children.length > 0) {
           self.formatForCascader(item.children)
         }
       }
     },
     // 遍历数组 查找部门的父部门
-    foreachAndSearchDeptParentNode (deptList,deptId) {
+    foreachAndSearchDeptParentNode (deptList, deptId) {
       const self = this
       if (deptList) {
-        for (let value of deptList ) {
+        for (let value of deptList) {
           if (deptId === value.deptId) {
             if (value.parentId) {
-              self.foreachAndSearchDeptParentNode (self.cascaderData,value.parentId)
+              self.foreachAndSearchDeptParentNode(self.cascaderData, value.parentId)
             }
             self.deptIdList.push(value.deptId)
           }
-          if (deptId !== value.deptId){
+          if (deptId !== value.deptId) {
             if (value.children) {
-              self.foreachAndSearchDeptParentNode (value.children,deptId)
+              self.foreachAndSearchDeptParentNode(value.children, deptId)
             }
           }
         }
@@ -599,6 +660,81 @@ export default {
       }
       return treeTmpData
     },
+    changeVisitChecked (e) {
+      const self = this
+      const menuId = this.currentInfo.menuId
+      const checked = e.target.checked
+      if (checked) {
+        self.searchAndChangeMenuAuthority (self.menuTree, menuId, 1)
+      }
+      if (!checked) {
+        self.searchAndChangeMenuAuthority (self.menuTree, menuId, 0)
+      }
+    },
+    changeChecked (e) {
+      const self = this
+      const menuId = this.currentInfo.menuId
+      const checked = e.target.checked
+      if (checked) {
+        self.searchAndChangeMenuAuthority (self.menuTree, menuId, 2)
+      }
+      if (!checked) {
+        self.searchAndChangeMenuAuthority (self.menuTree, menuId, 0)
+      }
+    },
+    changeVisitInfo (item) {
+      console.log('changeVisitInfo', item)
+      this.currentInfo = item
+    },
+    // 搜索菜单并修改权限
+    searchAndChangeMenuAuthority (menuTree, menuId, authority) {
+      console.log('authority', authority)
+      const self = this
+      for (const value of menuTree) {
+        if (value.menuId === menuId) {
+          value.authorizeLevel = authority
+        }
+        if (value.children && value.children.length > 0) {
+          self.searchAndChangeMenuAuthority (value.children, menuId, authority)
+        }
+      }
+      self.menuTree = [...self.menuTree]
+      console.log('self.menuTree', self.menuTree)
+    },
+    getMenuPartAuthDetail (menuId) {
+      console.log('getMenuPartAuthDetail menuId:', menuId)
+      const self = this
+      sysUserManagementApi.getMenuPartAuth(menuId).then(res => {
+      // self.showUpdateRoleMenuAuthorizationFlg = true
+      // if (res.data.row) {
+      // self.role.menuIds = res.data.row.menuIds || []
+      // }
+      }).catch(err => {
+        console.log('err', err)
+        // self.$Message.error(message['1001']);
+      })
+    }
   }
 }
 </script>
+
+<style>
+  .child-item-menu-name {
+    /*margin-left: 20px;*/
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+  }
+  .grand-child-item-menu-name {
+    /*margin-left: 40px;*/
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+  }
+  .menu-tree {
+    padding: 10px 10px 20px 10px;
+  }
+  .menu-tree-title {
+    font-weight: bold;
+  }
+</style>
