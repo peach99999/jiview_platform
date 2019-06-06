@@ -4,7 +4,6 @@ import com.smaller.jiview.admin.manager.*;
 import com.smaller.jiview.admin.platform.system.mapper.SysRoleMapper;
 import com.smaller.jiview.admin.platform.system.mapper.SysRoleMenuPartMapper;
 import com.smaller.jiview.admin.platform.system.model.SysRole;
-import com.smaller.jiview.admin.platform.system.model.SysRoleMenuPart;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
 import com.smaller.jiview.admin.pojo.param.*;
 import com.smaller.jiview.admin.service.SysRoleService;
@@ -109,9 +108,9 @@ public class SysRoleServiceImpl implements SysRoleService {
         // 角色新的菜单权限id
         List<Long> newMenuPkids = new ArrayList<>();
         // 角色菜单部件集
-        roleUpdateMenuAuthParam.getSysRoleMenuParams().forEach(sysRoleMenuParam -> {
-            newMenuPkids.add(sysRoleMenuParam.getMenuId());
-        });
+        roleUpdateMenuAuthParam.getSysRoleMenuParams().forEach(sysRoleMenuParam ->
+            newMenuPkids.add(sysRoleMenuParam.getMenuId())
+        );
         // 角色旧的菜单权限id
         List<Long> oldMenuPkids = sysRoleMenuManager.list(roleId);
 
