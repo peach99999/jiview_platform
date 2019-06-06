@@ -133,6 +133,31 @@
           <Button type="primary" :loading="saveLoading" @click="menuCfgConfirmHandle">保存</Button>
         </div>
       </Modal>
+      <Modal v-model="showUpdatePartAuthorizationFlg" :closable='false' :mask-closable=false :width="780" >
+        <h3 slot="header" style="color:#2D8CF0">配置部件权限</h3>
+        <div v-for="(item) in partsAuthList " :key="item.partId">
+          <Row style="display: flex;align-items: center;margin-top: 10px;">
+            <Col span="6">
+              <span>组件Id：{{item.cmpId}}</span>
+            </Col>
+            <Col span="5">
+              <span>组件类型：{{item.cmpType}}</span>
+            </Col>
+            <Col span="5">
+              <span>备注：{{item.remark}}</span>
+            </Col>
+            <Col span="8">
+              <span>权限类型：</span>
+              <Select v-model="item.partAuthType" style="width:150px;" placeholder="请选择锁定状态" clearable filterable :transfer="true">
+                <Option v-for="(partItem,index) in partAuthTypeList" :value="partItem.partAuthType" :key="index">{{ partItem.partAuthTypeName }}</Option>
+              </Select>
+            </Col>
+          </Row>
+        </div>
+        <div slot="footer">
+          <Button type="primary" :loading="partAuthLoading" @click="cancelPartAuthorization">确定</Button>
+        </div>
+      </Modal>
     </Card>
   </div>
 </template>
@@ -142,6 +167,7 @@
 import * as roleManagementApi from '@/api/role'
 import * as menuManagementApi from '@/api/menu'
 import * as sysUserManagementApi from '@/api/sysUser'
+import * as partsManagementApi from '@/api/partsManagement'
 import { getDepartmentList } from '@/api/organizationalManagement'
 // import { list } from '../../api/menu'
 export default {
@@ -154,7 +180,9 @@ export default {
       addOrEditRoleFlg: false,
       loading: false,
       showUpdateRoleMenuAuthorizationFlg: false,
+      showUpdatePartAuthorizationFlg: false,
       saveLoading: false,
+      partAuthLoading: false,
       // menuTreeOrig: [],
       menuTree: [],
       currentRow: {},
@@ -299,7 +327,38 @@ export default {
         }
       ],
       deptIdList: [],
-      currentInfo: {}
+      currentInfo: {},
+      partsAuthList: [],
+      partAuthTypeList: [
+        {
+          partAuthType: 1,
+          partAuthTypeName: '禁用'
+        },
+        {
+          partAuthType: 2,
+          partAuthTypeName: '只读'
+        },
+        {
+          partAuthType: 3,
+          partAuthTypeName: '编辑'
+        },
+        {
+          partAuthType: 4,
+          partAuthTypeName: '显示'
+        },
+        {
+          partAuthType: 5,
+          partAuthTypeName: '隐藏'
+        },
+        {
+          partAuthType: 6,
+          partAuthTypeName: '挂起'
+        },
+        {
+          partAuthType: 7,
+          partAuthTypeName: '激活'
+        }
+      ]
     }
   },
   mounted () {
@@ -701,18 +760,63 @@ export default {
       self.menuTree = [...self.menuTree]
       console.log('self.menuTree', self.menuTree)
     },
+    // 部件权限详情
     getMenuPartAuthDetail (menuId) {
       console.log('getMenuPartAuthDetail menuId:', menuId)
-      // const self = this
+      const self = this
+      self.partsAuthList = []
+      partsManagementApi.getMenuPartDetail(menuId)
+        .then(function (response) {
+          console.log('getMenuPartAuthDetail response:', response)
+          const partAuthList = response.data.rows || []
+          self.matchMenuPartAuthDetail(partAuthList, menuId)
+        })
+        .catch(function (error) {
+          console.log('partsManagementApi.getMenuPartDetail→error:', error)
+        })
+    },
+    // 匹配菜单权限
+    matchMenuPartAuthDetail (partAuthList, menuId) {
+      console.log('partAuthList:', partAuthList)
+      const self = this
       sysUserManagementApi.getMenuPartAuth(menuId).then(res => {
-      // self.showUpdateRoleMenuAuthorizationFlg = true
-      // if (res.data.row) {
-      // self.role.menuIds = res.data.row.menuIds || []
-      // }
+        self.showUpdatePartAuthorizationFlg = true
+        self.showUpdateRoleMenuAuthorizationFlg = false
+        const partAuthMatchList = res.data.rows || []
+        for (const item of partAuthList) {
+          let param = {
+            cmpId: item.cmpId,
+            // cmpType: item.cmpType,
+            createTime: item.createTime,
+            createUserId: item.createUserId,
+            menuId: item.menuId,
+            partId: item.partId,
+            remark: item.remark,
+            partAuthType: null
+          }
+          if (item.cmpType === 1) {
+            param.cmpType = '按钮组件'
+          }
+          for (const value of partAuthMatchList) {
+            if (item.partId === value.partId) {
+              param.partAuthType = value.partAuthType
+            }
+          }
+          self.partsAuthList.push(param)
+        }
+        console.log('self.partsAuthList', self.partsAuthList)
+        console.log('matchMenuPartAuthDetail res', res)
       }).catch(err => {
         console.log('err', err)
         // self.$Message.error(message['1001']);
       })
+    },
+    cancelPartAuthorization () {
+      const self = this
+      self.partAuthLoading = true
+      self.showUpdatePartAuthorizationFlg = false
+      self.showUpdateRoleMenuAuthorizationFlg = true
+      self.partAuthLoading = false
     }
   }
 }
