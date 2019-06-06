@@ -8,7 +8,7 @@
         <result column="authorize_id" jdbcType="BIGINT" property="authorizeId"/>
         <result column="role_id" jdbcType="BIGINT" property="roleId"/>
         <result column="menu_id" jdbcType="BIGINT" property="menuId"/>
-        <result column="part_id" jdbcType="VARCHAR" property="partId"/>
+        <result column="part_id" jdbcType="BIGINT" property="partId"/>
         <result column="part_auth_type" jdbcType="TINYINT" property="partAuthType"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="create_user_id" jdbcType="BIGINT" property="createUserId"/>

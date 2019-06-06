@@ -33,7 +33,7 @@ public class SysRoleMenuPart implements Serializable {
      * 组件ID
      */
     @Column(name = "part_id")
-    private String partId;
+    private Long partId;
 
     /**
      * UI组件权限类型(1:禁用;2:只读;3:编辑;4:显示;5:隐藏;6:挂起;7:激活;)
@@ -114,7 +114,7 @@ public class SysRoleMenuPart implements Serializable {
      *
      * @return part_id - 组件ID
      */
-    public String getPartId() {
+    public Long getPartId() {
         return partId;
     }
 
@@ -123,8 +123,8 @@ public class SysRoleMenuPart implements Serializable {
      *
      * @param partId 组件ID
      */
-    public void setPartId(String partId) {
-        this.partId = partId == null ? null : partId.trim();
+    public void setPartId(Long partId) {
+        this.partId = partId;
     }
 
     /**
