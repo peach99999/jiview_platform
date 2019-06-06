@@ -52,10 +52,10 @@ public class SysRoleMenuManagerImpl implements SysRoleMenuManager {
         example.createCriteria().andEqualTo("roleId", roleId);
         sysRoleMenuMapper.deleteByExample(example);
 
-        // 2.删除角色菜单部件权限
-        Example example1 = new Example(SysRoleMenuPart.class);
-        example1.createCriteria().andEqualTo("roleId", roleId);
-        sysRoleMenuPartMapper.deleteByExample(example1);
+        // 2.删除角色菜单部件权限 modify 20190605 菜单部件权限单独保存
+//        Example example1 = new Example(SysRoleMenuPart.class);
+//        example1.createCriteria().andEqualTo("roleId", roleId);
+//        sysRoleMenuPartMapper.deleteByExample(example1);
 
         // 3.保存新增菜单权限
         list.forEach(sysRoleMenuParam -> {
@@ -65,11 +65,11 @@ public class SysRoleMenuManagerImpl implements SysRoleMenuManager {
             sysRoleMenu.setAuthorizeLevel(sysRoleMenuParam.getAuthorizeLevel());
             sysRoleMenu.setCreateUserId(loginUserDTO.getLoginUserPkid());
             sysRoleMenuMapper.insertSelective(sysRoleMenu);
-            if (!CollectionUtils.isEmpty(sysRoleMenuParam.getMenuPartList())) {
-                // 保存角色菜单部件权限
-                sysRoleMenuPartManager.save(sysRoleMenuParam.getMenuPartList(), roleId, loginUserDTO.getLoginUserPkid());
-                logger.info("保存角色菜单部件权限");
-            }
+//            if (!CollectionUtils.isEmpty(sysRoleMenuParam.getMenuPartList())) {
+//                // 保存角色菜单部件权限
+//                sysRoleMenuPartManager.save(sysRoleMenuParam.getMenuPartList(), roleId, loginUserDTO.getLoginUserPkid());
+//                logger.info("保存角色菜单部件权限");
+//            }
         });
     }
 

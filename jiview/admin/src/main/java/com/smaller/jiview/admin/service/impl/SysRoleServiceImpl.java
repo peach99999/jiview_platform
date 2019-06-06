@@ -5,10 +5,7 @@ import com.smaller.jiview.admin.platform.system.mapper.SysRoleMapper;
 import com.smaller.jiview.admin.platform.system.model.SysRole;
 import com.smaller.jiview.admin.platform.system.model.SysRoleMenuPart;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
-import com.smaller.jiview.admin.pojo.param.SysRoleListParam;
-import com.smaller.jiview.admin.pojo.param.SysRoleRemoveParam;
-import com.smaller.jiview.admin.pojo.param.SysRoleSaveOrUpdateParam;
-import com.smaller.jiview.admin.pojo.param.SysRoleUpdateMenuAuthParam;
+import com.smaller.jiview.admin.pojo.param.*;
 import com.smaller.jiview.admin.service.SysRoleService;
 import com.smaller.jiview.core.constant.Constants;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
@@ -130,5 +127,18 @@ public class SysRoleServiceImpl implements SysRoleService {
 
         result.setOpResult(Constants.OP_RESULT_SUCCESS);
         return result;
+    }
+
+    @Override
+    public ResultBO updateMenuPartAuth(SysRoleMenuPartSaveParam sysRoleMenuPartSaveParam) {
+        ResultBO resultBO = new ResultBO();
+        List<Long> menuIdsForRemove = new ArrayList<>();
+        menuIdsForRemove.add(sysRoleMenuPartSaveParam.getMenuId());
+        // 删除角色菜单部件权限
+        sysRoleMenuPartManager.remove(sysRoleMenuPartSaveParam.getRoleId(), menuIdsForRemove);
+        // 新增角色菜单部件权限
+        sysRoleMenuPartManager.save(sysRoleMenuPartSaveParam.getMenuPartList(), sysRoleMenuPartSaveParam.getRoleId(), sysRoleMenuPartSaveParam.getLoginUserDTO().getLoginUserPkid(), sysRoleMenuPartSaveParam.getMenuId());
+        resultBO.setMsg("保存成功！");
+        return resultBO;
     }
 }

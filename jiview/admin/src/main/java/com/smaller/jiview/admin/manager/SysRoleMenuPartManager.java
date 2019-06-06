@@ -1,6 +1,7 @@
 package com.smaller.jiview.admin.manager;
 
 import com.smaller.jiview.admin.platform.system.model.SysRoleMenuPart;
+import com.smaller.jiview.admin.pojo.param.SysRoleMenuPartAuthParam;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public interface SysRoleMenuPartManager {
      * @param list
      * @param roleId
      * @param userId
+     * @param menuId
      */
-    void save(List<SysRoleMenuPart> list, Long roleId, Long userId);
+    void save(List<SysRoleMenuPartAuthParam> list, Long roleId, Long userId, Long menuId);
 }

@@ -1,10 +1,7 @@
 package com.smaller.jiview.admin.service;
 
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
-import com.smaller.jiview.admin.pojo.param.SysRoleListParam;
-import com.smaller.jiview.admin.pojo.param.SysRoleRemoveParam;
-import com.smaller.jiview.admin.pojo.param.SysRoleSaveOrUpdateParam;
-import com.smaller.jiview.admin.pojo.param.SysRoleUpdateMenuAuthParam;
+import com.smaller.jiview.admin.pojo.param.*;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
 
 /**
@@ -54,4 +51,12 @@ public interface SysRoleService {
      * @return
      */
     ResultBO updateMenuAuth(SysRoleUpdateMenuAuthParam sysRoleUpdateMenuAuthParam);
+
+    /**
+     * 角色菜单部件权限
+     *
+     * @param sysRoleMenuPartSaveParam
+     * @return
+     */
+    ResultBO updateMenuPartAuth(SysRoleMenuPartSaveParam sysRoleMenuPartSaveParam);
 }
