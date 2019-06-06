@@ -2,6 +2,7 @@ package com.smaller.jiview.admin.service.impl;
 
 import com.smaller.jiview.admin.manager.*;
 import com.smaller.jiview.admin.platform.system.mapper.SysRoleMapper;
+import com.smaller.jiview.admin.platform.system.mapper.SysRoleMenuPartMapper;
 import com.smaller.jiview.admin.platform.system.model.SysRole;
 import com.smaller.jiview.admin.platform.system.model.SysRoleMenuPart;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
@@ -44,6 +45,9 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Autowired
     private SysDeptManager sysDeptManager;
+
+    @Autowired
+    private SysRoleMenuPartMapper sysRoleMenuPartMapper;
 
     @Override
     public ResultBO<SysRoleExt> list(SysRoleListParam sysRoleListParam) {
@@ -137,6 +141,13 @@ public class SysRoleServiceImpl implements SysRoleService {
         // 新增角色菜单部件权限
         sysRoleMenuPartManager.save(sysRoleMenuPartSaveParam.getMenuPartList(), sysRoleMenuPartSaveParam.getRoleId(), sysRoleMenuPartSaveParam.getLoginUserDTO().getLoginUserPkid(), sysRoleMenuPartSaveParam.getMenuId());
         resultBO.setMsg("保存成功！");
+        return resultBO;
+    }
+
+    @Override
+    public ResultBO listRoleMenuPart(Long menuId, Long roleId) {
+        ResultBO resultBO = new ResultBO();
+        resultBO.setRows(sysRoleMenuPartMapper.listRoleMenuPart(menuId, roleId));
         return resultBO;
     }
 }

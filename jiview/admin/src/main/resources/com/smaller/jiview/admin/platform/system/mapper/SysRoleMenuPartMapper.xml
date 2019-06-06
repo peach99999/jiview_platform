@@ -46,4 +46,17 @@
       AND srm.authorize_level = '${@com.smaller.jiview.core.constant.Constants@SYS_ROLE_MENU_AUTHORIZE_LEVEL_2}'
       GROUP BY srmp.menu_id,srmp.part_id
   </select>
+
+  <select id="listRoleMenuPart" resultType="com.smaller.jiview.admin.platform.system.model.SysRoleMenuPart">
+      SELECT
+          srmp.menu_id,
+          srmp.part_id,
+          srmp.part_auth_type
+      FROM
+      sys_role_menu_part srmp
+      WHERE
+      1 = 1
+      AND role_id = #{roleId}
+      AND menu_id = #{menuId}
+  </select>
 </mapper>

@@ -59,4 +59,13 @@ public interface SysRoleService {
      * @return
      */
     ResultBO updateMenuPartAuth(SysRoleMenuPartSaveParam sysRoleMenuPartSaveParam);
+
+    /**
+     * 查询角色设置的菜单权限
+     *
+     * @param menuId
+     * @param roleId
+     * @return
+     */
+    ResultBO listRoleMenuPart(Long menuId, Long roleId);
 }

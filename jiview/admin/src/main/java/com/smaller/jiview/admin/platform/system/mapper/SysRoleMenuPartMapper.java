@@ -29,4 +29,13 @@ public interface SysRoleMenuPartMapper extends Mapper<SysRoleMenuPart>, MySqlMap
      * @return
      */
     List<SysRoleMenuPartExt> listUserRoleMenuPart(@Param("menuId") Long menuId, @Param("userId") Long userId);
+
+    /**
+     * 查询角色菜单部件权限
+     *
+     * @param menuId
+     * @param roleId
+     * @return
+     */
+    List<SysRoleMenuPart> listRoleMenuPart(@Param("menuId") Long menuId, @Param("roleId") Long roleId);
 }
