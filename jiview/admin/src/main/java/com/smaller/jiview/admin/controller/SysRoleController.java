@@ -95,7 +95,7 @@ public class SysRoleController {
     @ApiOperation(value = "更新菜单权限", httpMethod = "POST")
     @PostMapping(value = "/update-menu-auth")
     public ResultBO updateMenuAuth(
-            @RequestBody SysRoleUpdateMenuAuthParam sysRoleUpdateMenuAuthParam
+            @RequestBody @Validated SysRoleUpdateMenuAuthParam sysRoleUpdateMenuAuthParam
     ) {
         sysRoleUpdateMenuAuthParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
 
@@ -110,7 +110,7 @@ public class SysRoleController {
     @ApiOperation(value = "更新菜单部件权限", httpMethod = "POST")
     @PostMapping(value = "/update-menu-part-auth")
     public ResultBO updateMenuPartAuth(
-            @RequestBody SysRoleMenuPartSaveParam SysRoleMenuPartSaveParam
+            @RequestBody @Validated SysRoleMenuPartSaveParam SysRoleMenuPartSaveParam
     ) {
         SysRoleMenuPartSaveParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
 

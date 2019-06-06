@@ -4,6 +4,7 @@ import com.smaller.jiview.core.pojo.param.BaseParam;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -13,6 +14,7 @@ import java.util.List;
 public class SysRoleUpdateMenuAuthParam extends BaseParam {
 
     @ApiModelProperty("roleId")
+    @NotNull(message = "角色id不能为空")
     private Long roleId;
 
     @ApiModelProperty("菜单权限以及权限级别")
