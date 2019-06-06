@@ -129,7 +129,7 @@ public class SysRoleController {
             @ApiImplicitParam(name = "menuId", value = "菜单id", dataType = "long", paramType = "query", required = true),
             @ApiImplicitParam(name = "roleId", value = "角色id", dataType = "long", paramType = "query", required = true)
     })
-    @GetMapping(value = "role_menu-part-auth")
+    @GetMapping(value = "role-menu-part-auth")
     public ResultBO<SysRoleMenuPart> getRoleMenuPartAuth(
             @RequestParam(required = false) Long menuId,
             @RequestParam(required = false) Long roleId
