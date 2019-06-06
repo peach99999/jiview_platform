@@ -103,7 +103,7 @@
                       <label>管理权限</label>
                       </Col>
                       <Col span="5">
-                        <Button type="dashed" size="small" v-if="grandChildItem.authorizeLevel === 2">部件权限</Button>
+                        <Button type="dashed" size="small" v-if="grandChildItem.authorizeLevel === 2" @click="getMenuPartAuthDetail(grandChildItem.menuId)">部件权限</Button>
                       </Col>
                     </Row>
                   </div>
@@ -116,13 +116,13 @@
                   <span class="menu-tree-title">{{item.menuName}}</span>
                 </Col>
                 <Col span="9">
-                <input type="checkbox" :checked="item.authorizeLevel === 1" @change="changeVisitChecked" @click="changeVisitInfo(item)">
+                  <input type="checkbox" :checked="item.authorizeLevel === 1" @change="changeVisitChecked" @click="changeVisitInfo(item)">
                 <label>访问权限</label>
-                <input type="checkbox" :checked="item.authorizeLevel === 2" @change="changeChecked" @click="changeVisitInfo(item)">
+                  <input type="checkbox" :checked="item.authorizeLevel === 2" @change="changeChecked" @click="changeVisitInfo(item)">
                 <label>管理权限</label>
                 </Col>
                 <Col span="5">
-                  <Button type="dashed" size="small" v-if="item.authorizeLevel === 2">部件权限</Button>
+                  <Button type="dashed" size="small" v-if="item.authorizeLevel === 2" @click="getMenuPartAuthDetail(item.menuId)">部件权限</Button>
                 </Col>
               </Row>
             </div>
@@ -155,7 +155,8 @@
           </Row>
         </div>
         <div slot="footer">
-          <Button type="primary" :loading="partAuthLoading" @click="cancelPartAuthorization">确定</Button>
+          <Button type="text" @click="cancelPartAuthorization">取消</Button>
+          <Button type="primary" :loading="partAuthLoading" @click="submitPartAuthorization">确定</Button>
         </div>
       </Modal>
     </Card>
@@ -512,6 +513,7 @@ export default {
         self.showUpdateRoleMenuAuthorizationFlg = true
         if (res.data.row) {
           self.role.menuIds = res.data.row.menuIds || []
+          self.role.roleId = res.data.row.roleId
         }
         self.matchMenuPermissions(self.menuTree, self.role.menuIds)
         console.log('self.menuTree:', self.menuTree)
@@ -596,29 +598,48 @@ export default {
     },
     menuCfgConfirmHandle () {
       console.log('menuCfgConfirmHandle', this.menuTree)
-      // const self = this
-      // let checkedNodes = self.$refs.menuTree.getCheckedNodes()
-      // let menuPkids = []
-      // for (let i in checkedNodes) {
-      // menuPkids.push(checkedNodes[i].pkid)
-      // }
-      // let data = {
-      // pkid: self.currentRow.pkid,
-      // menuPkids: menuPkids
-      // }
-      // self.saveLoading = true
-      // roleManagementApi.updateRoleMenuAuthorization(data)
-      // .then(res => {
-      // self.$Message.success('配置成功')
-      // self.showUpdateRoleMenuAuthorizationFlg = false
-      // self.init()
-      // self.saveLoading = false
-      // })
-      // .catch(err => {
-      // console.log('err', err)
-      // self.saveLoading = false
-      // // self.$Message.error(message['1001']);
-      // })
+      const self = this
+      self.saveLoading = true
+      let sysRoleUpdateMenuAuthParam = {}
+      if (self.role.roleId) {
+        sysRoleUpdateMenuAuthParam.roleId = self.role.roleId
+      }
+      sysRoleUpdateMenuAuthParam.sysRoleMenuParams = []
+      for (const item of self.menuTree) {
+        let param = {
+          authorizeLevel: item.authorizeLevel,
+          menuId: item.menuId
+        }
+        sysRoleUpdateMenuAuthParam.sysRoleMenuParams.push(param)
+        if (item.children && item.children.length > 0) {
+          for (const childItem of item.children) {
+            let childParam = {
+              authorizeLevel: childItem.authorizeLevel,
+              menuId: childItem.menuId
+            }
+            sysRoleUpdateMenuAuthParam.sysRoleMenuParams.push(childParam)
+            if (childItem.children && childItem.children.length > 0) {
+              for (const grandChildItem of childItem.children) {
+                let grandChildParam = {
+                  authorizeLevel: grandChildItem.authorizeLevel,
+                  menuId: grandChildItem.menuId
+                }
+                sysRoleUpdateMenuAuthParam.sysRoleMenuParams.push(grandChildParam)
+              }
+            }
+          }
+        }
+      }
+      console.log('sysRoleUpdateMenuAuthParam', sysRoleUpdateMenuAuthParam)
+      roleManagementApi.updateMenuAuthorize(sysRoleUpdateMenuAuthParam)
+        .then(function (response) {
+          console.log('getMenuPartAuthDetail response:', response)
+          self.saveLoading = false
+          self.showUpdateRoleMenuAuthorizationFlg = false
+        })
+        .catch(function (error) {
+          console.log('partsManagementApi.getMenuPartDetail→error:', error)
+        })
     },
     // 获取全部菜单（树型）
     listMenuTree () {
@@ -779,7 +800,11 @@ export default {
     matchMenuPartAuthDetail (partAuthList, menuId) {
       console.log('partAuthList:', partAuthList)
       const self = this
-      sysUserManagementApi.getMenuPartAuth(menuId).then(res => {
+      let param = {
+        menuId: menuId,
+        roleId:  self.role.roleId
+      }
+      roleManagementApi.getMenuPartAuthorize(param).then(res => {
         self.showUpdatePartAuthorizationFlg = true
         self.showUpdateRoleMenuAuthorizationFlg = false
         const partAuthMatchList = res.data.rows || []
@@ -817,6 +842,37 @@ export default {
       self.showUpdatePartAuthorizationFlg = false
       self.showUpdateRoleMenuAuthorizationFlg = true
       self.partAuthLoading = false
+    },
+    submitPartAuthorization () {
+      const self = this
+      self.partAuthLoading = true
+      console.log('self.partsAuthList', self.partsAuthList)
+      let SysRoleMenuPartSaveParam = {}
+      if (self.partsAuthList && self.partsAuthList.length > 0) {
+        SysRoleMenuPartSaveParam.menuId = self.partsAuthList[0].menuId
+      }
+      console.log('self.role.roleId', self.role.roleId)
+      if (self.role.roleId) {
+        SysRoleMenuPartSaveParam.roleId = self.role.roleId
+      }
+      SysRoleMenuPartSaveParam.menuPartList = []
+      for (const item of self.partsAuthList) {
+        let param = {
+          partAuthType: item.partAuthType,
+          partId: item.partId
+        }
+        SysRoleMenuPartSaveParam.menuPartList.push(param)
+      }
+      roleManagementApi.updateMenuPartAuthorize(SysRoleMenuPartSaveParam)
+        .then(function (response) {
+          console.log('getMenuPartAuthDetail response:', response)
+          self.showUpdatePartAuthorizationFlg = false
+          self.showUpdateRoleMenuAuthorizationFlg = true
+          self.partAuthLoading = false
+        })
+        .catch(function (error) {
+          console.log('partsManagementApi.getMenuPartDetail→error:', error)
+        })
     }
   }
 }

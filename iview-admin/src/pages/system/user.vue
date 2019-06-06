@@ -26,7 +26,7 @@
     <Card class="margin-top-10">
       <Row>
         <ButtonGroup class="margin-bottom-10">
-          <Button type="success" icon="ios-add-circle-outline" @click="addOrEditRoleFlg = true">新增</Button>
+          <Button type="success" icon="ios-add-circle-outline" @click="addOrEditRoleFlg = true;showPassword=true">新增</Button>
           <Button type="warning" icon="ios-trash-outline" @click="deleteBatch">删除</Button>
         </ButtonGroup>
         <Table :columns="tableTitle" :data="tableData" @on-selection-change="changeSelect"></Table>
@@ -43,7 +43,7 @@
           <FormItem label="账号：" prop="account">
             <Input v-model.trim="user.account" style="width:300px;" placeholder="请输入账号"/>
           </FormItem>
-          <FormItem label="密码：" prop="password">
+          <FormItem label="密码：" prop="password" v-if="showPassword">
             <Input v-model.trim="user.password" style="width:300px;" placeholder="请输入密码"/>
           </FormItem>
           <FormItem label="所属部门：" prop="deptId">
@@ -283,7 +283,8 @@ export default {
         }
       ],
       deptIdList: [],
-      currentInfo: {}
+      currentInfo: {},
+      showPassword: false
     }
   },
   mounted () {
@@ -367,7 +368,7 @@ export default {
         enabled: self.user.enabled
       }
       if (self.user.id) {
-        param.id = self.role.id
+        param.id = self.user.id
       }
       sysUserManagementApi.addAndUpdateUserInfo(param)
         .then(res => {
@@ -407,6 +408,7 @@ export default {
     // 详情按钮单击
     queryRoleDetail (pkid) {
       const self = this
+      self.showPassword = false
       self.deptIdList = []
       // 调用获取角色信息接口
       sysUserManagementApi.getUserInfoDetail(pkid).then(res => {
@@ -414,7 +416,6 @@ export default {
         self.foreachAndSearchDeptParentNode(self.cascaderData, res.data.row.deptId)
         if (res.data.row) {
           self.user.deptId = self.deptIdList
-          self.user.account = res.data.row.account
           self.user.account = res.data.row.account
           self.user.email = res.data.row.email
           self.user.mobile = res.data.row.mobile

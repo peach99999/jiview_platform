@@ -42,6 +42,27 @@ export const updateMenuAuthorize = (params) => {
   })
 }
 
+// 更新菜单部件权限
+export const updateMenuPartAuthorize = (params) => {
+  return axios.request({
+    url: constData.API_BEGIN_POINT + '/sys-role/update-menu-part-auth',
+    data: params,
+    method: 'post'
+  })
+}
+
+//查询角色设置的菜单部件权限
+export const getMenuPartAuthorize = ({ menuId , roleId }) => {
+  return axios.request({
+    url: constData.API_BEGIN_POINT + '/sys-role/role-menu-part-auth',
+    params: {
+      menuId ,
+      roleId
+    },
+    method: 'get'
+  })
+}
+
 // 获取单条角色
 export const getRoleInfo = (roleId) => {
   return axios.request({
