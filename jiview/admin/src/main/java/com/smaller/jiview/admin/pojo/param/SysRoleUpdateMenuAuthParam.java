@@ -15,6 +15,6 @@ public class SysRoleUpdateMenuAuthParam extends BaseParam {
     @ApiModelProperty("roleId")
     private Long roleId;
 
-    @ApiModelProperty("菜单权限以及菜单部件权限")
+    @ApiModelProperty("菜单权限以及权限级别")
     private List<SysRoleMenuParam> sysRoleMenuParams;
 }

@@ -105,10 +105,8 @@ public class SysRoleServiceImpl implements SysRoleService {
         // 角色新的菜单权限id
         List<Long> newMenuPkids = new ArrayList<>();
         // 角色菜单部件集
-        List<SysRoleMenuPart> sysRoleMenuPartList = new ArrayList<>();
         roleUpdateMenuAuthParam.getSysRoleMenuParams().forEach(sysRoleMenuParam -> {
             newMenuPkids.add(sysRoleMenuParam.getMenuId());
-            sysRoleMenuPartList.addAll(sysRoleMenuParam.getMenuPartList());
         });
         // 角色旧的菜单权限id
         List<Long> oldMenuPkids = sysRoleMenuManager.list(roleId);
