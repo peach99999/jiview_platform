@@ -5,6 +5,7 @@ import com.smaller.jiview.admin.pojo.model.ext.SysUserExt;
 import com.smaller.jiview.admin.pojo.param.SysUserListParam;
 import com.smaller.jiview.admin.pojo.param.SysUserRemoveParam;
 import com.smaller.jiview.admin.pojo.param.SysUserSaveOrUpdateParam;
+import com.smaller.jiview.admin.pojo.param.SysUserMenuAuthParam;
 import com.smaller.jiview.admin.service.SysUserService;
 import com.smaller.jiview.core.config.security.JwtHelper;
 import com.smaller.jiview.core.constant.UrlConstants;
@@ -108,4 +109,53 @@ public class SysUserController {
         //主处理
         return sysUserService.remove(sysUserRemoveParam);
     }
+
+    /**
+     * @Description:用户配置资源
+     * @author xiagf
+     * @date 2019-06-10
+     */
+    @ApiOperation(value = "配置用户菜单权限", httpMethod = "POST")
+    @PostMapping(value = "/update-menu-auth")
+    public ResultBO updateMenuAuth(
+            @RequestBody @Validated SysUserMenuAuthParam sysUserMenuAuthParam
+    ) {
+        sysUserMenuAuthParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
+
+        return sysUserService.updateUserMenuAuth(sysUserMenuAuthParam);
+    }
+
+//    /**
+//     * @Description:配置角色菜单部件权限(admin)
+//     * @author xiagf
+//     * @date 2019-05-10
+//     */
+//    @ApiOperation(value = "更新菜单部件权限", httpMethod = "POST")
+//    @PostMapping(value = "/update-menu-part-auth")
+//    public ResultBO updateMenuPartAuth(
+//            @RequestBody @Validated SysRoleMenuPartSaveParam SysRoleMenuPartSaveParam
+//    ) {
+//        SysRoleMenuPartSaveParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
+//
+//        return sysRoleService.updateMenuPartAuth(SysRoleMenuPartSaveParam);
+//    }
+//
+//    /**
+//     * @Description: 查询角色设置的菜单部件权限
+//     * @author xiagf
+//     * @date 2019-06-06
+//     */
+//    @ApiOperation(value = "查询角色设置的菜单部件权限", httpMethod = "GET")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "menuId", value = "菜单id", dataType = "long", paramType = "query", required = true),
+//            @ApiImplicitParam(name = "roleId", value = "角色id", dataType = "long", paramType = "query", required = true)
+//    })
+//    @GetMapping(value = "role-menu-part-auth")
+//    public ResultBO<SysRoleMenuPart> getRoleMenuPartAuth(
+//            @RequestParam(required = false) Long menuId,
+//            @RequestParam(required = false) Long roleId
+//    ) {
+//        //主处理
+//        return sysRoleService.listRoleMenuPart(menuId, roleId);
+//    }
 }

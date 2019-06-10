@@ -41,8 +41,10 @@ public class SysRoleMenuManagerImpl implements SysRoleMenuManager {
         // 1.删除菜单权限
         Example example = new Example(SysRoleMenu.class);
         example.createCriteria().andEqualTo("roleId", roleId);
-        sysRoleMenuMapper.deleteByExample(example);
-
+        int count = sysRoleMenuMapper.selectCountByExample(example);
+        if (count > 0) {
+            sysRoleMenuMapper.deleteByExample(example);
+        }
         // 2.保存新增菜单权限
         list.forEach(sysRoleMenuParam -> {
             SysRoleMenu sysRoleMenu = new SysRoleMenu();

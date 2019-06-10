@@ -20,4 +20,13 @@ public interface SysUserMenuPartMapper extends Mapper<SysUserMenuPart>, MySqlMap
      * @return
      */
     List<SysUserMenuPartExt> listUserMenuPart(@Param("menuId") Long menuId, @Param("userId") Long userId);
+
+    /**
+     * 删除用户菜单部件信息
+     *
+     * @param userId
+     * @param menuIds
+     * @return
+     */
+    Integer remove(@Param("userId") Long userId, @Param("menuIds") List<Long> menuIds);
 }
