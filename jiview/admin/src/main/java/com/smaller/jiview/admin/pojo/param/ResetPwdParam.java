@@ -12,7 +12,7 @@ import lombok.Data;
 public class ResetPwdParam {
 
     @ApiModelProperty("账号")
-    private String login;
+    private String account;
 
     @ApiModelProperty("密码")
     private String password;

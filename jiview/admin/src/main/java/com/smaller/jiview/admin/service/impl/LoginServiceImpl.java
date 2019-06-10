@@ -37,7 +37,7 @@ public class LoginServiceImpl implements LoginService {
     public ResultBO<UserForReturnDTO> login(LoginParam loginParam, HttpServletRequest request) {
         ResultBO<UserForReturnDTO> bo = new ResultBO<>();
 
-        String userLogin = loginParam.getUserLogin();
+        String userLogin = loginParam.getAccount();
         String userPwd = loginParam.getUserPwd();
 
         SysUser sysUser = sysUserManager.getForAdminLogin(userLogin, userPwd);
@@ -71,7 +71,7 @@ public class LoginServiceImpl implements LoginService {
         ResultBO bo = new ResultBO();
         SysUser orgUser = new SysUser();
 
-        orgUser.setAccount(resetPwdParam.getLogin());
+        orgUser.setAccount(resetPwdParam.getAccount());
         orgUser.setPassword(resetPwdParam.getPassword());
 
         String encodePwd = SecurityUtil.encodePwd(orgUser.getPassword());

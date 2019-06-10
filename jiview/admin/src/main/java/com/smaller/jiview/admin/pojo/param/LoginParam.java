@@ -12,7 +12,7 @@ import lombok.Data;
 public class LoginParam {
 
     @ApiModelProperty("admin管理员登录用账号")
-    private String userLogin;
+    private String account;
 
     @ApiModelProperty("admin管理员登录密码")
     private String userPwd;
