@@ -256,22 +256,6 @@ export default {
                 on: {
                   click: () => {
                     this.changeMenuPermissions(params.row.roleId)
-                    // const self = this
-                    // self.currentRow = params.row
-                    // roleManagementApi.getRoleInfo(self.currentRow.roleId)
-                    // .then(response => {
-                    // self.showUpdateRoleMenuAuthorizationFlg = true
-                    // self.listMenuTree()
-                    // // self.menuTree = JSON.parse(JSON.stringify(self.menuTreeOrig))
-                    // // for (let i in self.menuTree) {
-                    // // self.$set(self.menuTree[i], 'expand', true)
-                    // // }
-                    // // let roleMenus = (response.data.row && response.data.row.menuPkids) || []
-                    // // self.restoreMenuCheckedStatus(roleMenus)
-                    // })
-                    // .catch(err => {
-                    // console.log('err', err)
-                    // })
                   }
                 }
               }, '菜单权限')
@@ -869,7 +853,6 @@ export default {
       }
       roleManagementApi.updateMenuPartAuthorize(SysRoleMenuPartSaveParam)
         .then(function (response) {
-          console.log('getMenuPartAuthDetail response:', response)
           self.showUpdatePartAuthorizationFlg = false
           self.showUpdateRoleMenuAuthorizationFlg = true
           self.partAuthLoading = false

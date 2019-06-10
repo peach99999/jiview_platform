@@ -15,6 +15,14 @@ export const getRoleList = ({ roleName, deptId, pageNo, pageSize }) => {
   })
 }
 
+// 查询全部有效角色
+export const getAllValidRoles = () => {
+  return axios.request({
+    url: constData.API_BEGIN_POINT + '/sys-role/all-valid-roles',
+    method: 'get'
+  })
+}
+
 // 删除角色
 export const removeRoleInfo = (params) => {
   return axios.request({

@@ -63,6 +63,11 @@
               <Option v-for="(item,index) in userTypeList" :value="item.userType" :key="index">{{ item.userTypeName }}</Option>
             </Select>
           </FormItem>
+          <FormItem label="角色类型：" prop="roleId">
+            <Select v-model="user.roleId" style="width:300px;" multiple placeholder="请选择角色类型" clearable filterable :transfer="true">
+              <Option v-for="(item,index) in roleSelectList" :value="item.roleId" :key="index">{{ item.roleName }}</Option>
+            </Select>
+          </FormItem>
           <FormItem label="性别：" prop="sex">
             <Select v-model="user.sex" style="width:300px;" placeholder="请选择用户类型" clearable filterable :transfer="true">
               <Option v-for="(item,index) in sexList" :value="item.sex" :key="index">{{ item.sexName }}</Option>
@@ -87,18 +92,44 @@
           <Button type="primary" :loading="save_loading" @click="saveOrUpdateConfirmHandle">保存</Button>
         </div>
       </Modal>
+      <Modal v-model="showChangePwdFlg" scrollable title="修改密码" :mask-closable="false">
+        <Row>
+          <Form ref="account" :model="account" :label-width="100" label-position="right"
+                :rules="passwordValidate">
+            <FormItem label="新密码" prop="newPwd">
+              <Input v-model="account.newPwd" placeholder="请输入新密码，至少6位字符" style="width:300px;" />
+            </FormItem>
+            <FormItem label="确认新密码" prop="confirmNewPwd">
+              <Input v-model="account.confirmNewPwd" placeholder="请再次输入新密码" style="width:300px;" />
+            </FormItem>
+          </Form>
+        </Row>
+        <div slot="footer">
+          <Button type="text" @click="changePwdCancelHandle">取消</Button>
+          <Button type="primary" :loading="changePwd_loading" @click="changePwdConfirmHandle">保存</Button>
+        </div>
+      </Modal>
     </Card>
   </div>
 </template>
 
 <script>
 import * as sysUserManagementApi from '@/api/sysUser'
+import * as roleManagementApi from '@/api/role'
+import * as userManagementApi from '@/api/user'
 import { getDepartmentList } from '@/api/organizationalManagement'
 export default {
   components: {
 
   },
   data () {
+    const valideRePassword = (rule, value, callback) => {
+      if (value !== this.account.newPwd) {
+        callback(new Error('两次输入密码不一致'));
+      } else {
+        callback();
+      }
+    };
     return {
       value1: '1',
       addOrEditRoleFlg: false,
@@ -116,8 +147,10 @@ export default {
         mobile: '',
         userName: '',
         userType: null,
+        roleId: [],
         sex: null,
         locked: null,
+        enabled: null,
         remark: ''
       },
       save_loading: false,
@@ -142,6 +175,9 @@ export default {
         ],
         userType: [
           { required: true, message: '请选择用户类型', trigger: 'change', type: 'number' }
+        ],
+        roleId: [
+          { required: true, message: '请选择角色类型', trigger: 'change', type: 'array' }
         ],
         sex: [
           { required: true, message: '请选择性别', trigger: 'change', type: 'number' }
@@ -169,7 +205,7 @@ export default {
           key: 'action',
           fixed: 'left',
           align: 'center',
-          width: 120,
+          width: 170,
           render: (h, params) => {
             return h('div', [
               h('Button', {
@@ -183,7 +219,28 @@ export default {
                     this.queryRoleDetail(params.row.id)
                   }
                 }
-              }, '详情')
+              }, '详情'),
+              h('Button', {
+                props: {
+                  type: 'success',
+                  size: 'small',
+                  ghost: ''
+                },
+                style: {
+                  marginLeft: '10px'
+                },
+                on: {
+                  click: () => {
+                    console.log('params:', params)
+                    this.account = {
+                      account: params.row.account,
+                      newPwd: '',
+                      confirmNewPwd: ''
+                    };
+                    this.showChangePwdFlg = true;
+                  }
+                }
+              }, '修改密码')
             ])
           }
         },
@@ -191,7 +248,7 @@ export default {
           title: '部门名称',
           key: 'deptName',
           align: 'center',
-          width: 280,
+          width: 260,
           render: function (h, params) {
             return h('div', params.row.deptName ? params.row.deptName : '----')
           }
@@ -200,7 +257,7 @@ export default {
           title: '账号',
           key: 'account',
           align: 'center',
-          width: 280,
+          width: 260,
           render: function (h, params) {
             return h('div', params.row.account ? params.row.account : '----')
           }
@@ -209,7 +266,7 @@ export default {
           title: '用户名',
           key: 'userName',
           align: 'center',
-          width: 280,
+          width: 260,
           render: function (h, params) {
             return h('div', params.row.userName ? params.row.userName : '----')
           }
@@ -218,7 +275,7 @@ export default {
           title: '人员类型',
           key: 'userType',
           align: 'center',
-          width: 280,
+          width: 260,
           render: function (h, params) {
             if (params.row.userType === 1) {
               return h('div', '业务人员')
@@ -284,7 +341,25 @@ export default {
       ],
       deptIdList: [],
       currentInfo: {},
-      showPassword: false
+      showPassword: false,
+      roleSelectList: [],
+      showChangePwdFlg: false,
+      account: {
+        newPwd: '',
+        confirmNewPwd: ''
+      },
+      passwordValidate: {
+        newPwd: [
+          { required: true, message: '请输入新密码', trigger: 'blur' },
+          { min: 6, message: '请至少输入6个字符', trigger: 'blur' },
+          { max: 32, message: '最多输入32个字符', trigger: 'blur' }
+        ],
+        confirmNewPwd: [
+          { required: true, message: '请再次输入新密码', trigger: 'blur' },
+          { validator: valideRePassword, trigger: 'blur' }
+        ]
+      },
+      changePwd_loading: false
     }
   },
   mounted () {
@@ -296,6 +371,7 @@ export default {
       const self = this
       self.doQuery()
       self.getDepartmentList()
+      self.getRoleSelectList()
     },
     listForInit () {
       const self = this
@@ -362,6 +438,7 @@ export default {
         mobile: self.user.mobile,
         userName: self.user.userName,
         userType: self.user.userType,
+        roleIdList: self.user.roleId,
         sex: self.user.sex,
         locked: self.user.locked,
         remark: self.user.remark,
@@ -422,6 +499,14 @@ export default {
           self.user.sex = res.data.row.sex
           self.user.userType = res.data.row.userType
           self.user.userName = res.data.row.userName
+          self.user.id = res.data.row.id
+          if (res.data.row.sysUserRoleExtList && res.data.row.sysUserRoleExtList.length > 0) {
+            let list = []
+            for (const value of res.data.row.sysUserRoleExtList) {
+              list.push(value.roleId)
+            }
+            self.user.roleId = list
+          }
           if (res.data.row.remark) {
             self.user.remark = res.data.row.remark
           }
@@ -438,7 +523,7 @@ export default {
             self.user.enabled = 0
           }
         }
-        console.log('queryRoleDetail self.role', self.role)
+        console.log('queryRoleDetail self.user', self.user)
       }).catch(err => {
         console.log('err', err)
         // self.$Message.error(message['1001']);
@@ -580,6 +665,56 @@ export default {
           self.formatForCascader(item.children)
         }
       }
+    },
+    // 角色列表
+    getRoleSelectList () {
+      roleManagementApi.getAllValidRoles().then(res => {
+        const self = this
+        self.roleSelectList = []
+        console.log('getRoleSelectList res:', res)
+        let list = res.data.rows || []
+        if (list && list.length > 0) {
+          for(const value of list){
+            let param = {
+              roleId: value.roleId,
+              roleName: value.roleName
+            }
+            self.roleSelectList.push(param)
+          }
+        }
+        console.log('self.roleSelectList', self.roleSelectList)
+      }).catch(err => {
+        console.log('err', err)
+        // self.$Message.error(message['1001']);
+      })
+    },
+    // 修改密码Modal
+    changePwdCancelHandle () {
+      this.showChangePwdFlg = false;
+      this.$refs.account.resetFields();
+    },
+    changePwdConfirmHandle () {
+      const self = this;
+      this.$refs.account.validate((valid) => {
+        if (valid) {
+          this.changePwd_loading = true;
+          let param = {
+            account: self.account.account,
+            password: self.account.newPwd
+          }
+          userManagementApi.changeUserPwd(param)
+            .then(res => {
+              self.$Message.success('密码修改成功');
+              self.changePwd_loading = false;
+              self.showChangePwdFlg = false;
+            })
+            .catch(err => {
+              console.log('err', err);
+              self.changePwd_loading = false;
+              // self.$Message.error(message['1001']);
+            });
+        }
+      });
     }
   }
 }
