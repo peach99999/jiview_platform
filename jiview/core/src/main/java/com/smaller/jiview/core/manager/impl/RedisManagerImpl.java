@@ -129,24 +129,4 @@ public class RedisManagerImpl implements RedisManager {
         return deletedValue;
     }
 
-    @Override
-    public String generateOrderNo() {
-        String redisKey = RedisKeyConstant.INCREASE_KEY_ORDER_NO;
-
-        RedisAtomicLong redisAtomicLong = new RedisAtomicLong(redisKey, redisTemplate.getConnectionFactory());
-        redisAtomicLong.expireAt(DateUtil.getEndTime(new Date()));
-        Long incrementValue = redisAtomicLong.incrementAndGet();
-        String strIncrementValue = "";
-
-        if(incrementValue <= 1000){
-            strIncrementValue = NumberUtil.leftPad(incrementValue,"000");
-        } else{
-            strIncrementValue = String.valueOf(incrementValue);
-        }
-
-        StringBuilder sbIncrement = new StringBuilder();
-        String valuePrefix = DateUtil.date2string(new Date(), "yyMMdd");
-        sbIncrement.append(("WT")).append(valuePrefix).append(strIncrementValue);
-        return sbIncrement.toString();
-    }
 }

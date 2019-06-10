@@ -93,8 +93,4 @@ public interface RedisManager {
      */
     String removeByHash(String key, String hashKey);
 
-    /**
-     * 生成订单号，规则（yyyyMMdd_每日0点重置的自增数）
-     */
-    String generateOrderNo();
 }
