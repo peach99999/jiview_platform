@@ -26,7 +26,7 @@
           <Button type="success" icon="ios-add-circle-outline" @click="addOrEditRoleFlg = true">新增</Button>
           <Button type="warning" icon="ios-trash-outline" @click="deleteBatch">删除</Button>
         </ButtonGroup>
-        <Table :columns="tableTitle" :data="tableData" @on-selection-change="changeSelect"></Table>
+        <Table :columns="tableTitle" :loading="tableLoading" :data="tableData" @on-selection-change="changeSelect"></Table>
       </Row>
       <Row class="margin-top-10" style="text-align: center">
         <Page :current="filter.pageNo" :total="total" show-elevator show-sizer show-total @on-change="pageChangeHandle" @on-page-size-change="pageSizeChangeHandle"/>
@@ -148,7 +148,7 @@
             </Col>
             <Col span="8">
               <span>权限类型：</span>
-              <Select v-model="item.partAuthType" style="width:150px;" placeholder="请选择锁定状态" clearable filterable :transfer="true">
+              <Select v-model="item.partAuthType" style="width:150px;" placeholder="请选择锁定状态" filterable :transfer="true">
                 <Option v-for="(partItem,index) in partAuthTypeList" :value="partItem.partAuthType" :key="index">{{ partItem.partAuthTypeName }}</Option>
               </Select>
             </Col>
@@ -167,7 +167,7 @@
 // import * as util from '@/libs/util'
 import * as roleManagementApi from '@/api/role'
 import * as menuManagementApi from '@/api/menu'
-import * as sysUserManagementApi from '@/api/sysUser'
+// import * as sysUserManagementApi from '@/api/sysUser'
 import * as partsManagementApi from '@/api/partsManagement'
 import { getDepartmentList } from '@/api/organizationalManagement'
 // import { list } from '../../api/menu'
@@ -359,7 +359,8 @@ export default {
           partAuthType: 7,
           partAuthTypeName: '激活'
         }
-      ]
+      ],
+      tableLoading: false
     }
   },
   mounted () {
@@ -368,13 +369,13 @@ export default {
     // this.filter = this.$store.state.app.listPageParams.get(this.$route.name);
     // }
     self.init()
-    self.listMenuTree()
   },
   methods: {
     init () {
       const self = this
       self.doQuery()
       self.getDepartmentList()
+      self.listMenuTree()
     },
     listForInit () {
       const self = this
@@ -481,9 +482,11 @@ export default {
     queryRoleDetail (pkid) {
       const self = this
       self.deptIdList = []
+      self.tableLoading = true
       // 调用获取角色信息接口
       roleManagementApi.getRoleInfo(pkid).then(res => {
         self.addOrEditRoleFlg = true
+        self.tableLoading = false
         self.foreachAndSearchDeptParentNode(self.cascaderData, res.data.row.deptId)
         if (res.data.row) {
           self.role.deptId = self.deptIdList
@@ -500,7 +503,6 @@ export default {
             self.role.locked = 0
           }
         }
-        console.log('queryRoleDetail self.role', self.role)
       }).catch(err => {
         console.log('err', err)
         // self.$Message.error(message['1001']);
@@ -509,15 +511,16 @@ export default {
     // 点击菜单权限
     changeMenuPermissions (pkid) {
       const self = this
+      self.tableLoading = true
+      self.listMenuTree()
       roleManagementApi.getRoleInfo(pkid).then(res => {
+        self.tableLoading = false
         self.showUpdateRoleMenuAuthorizationFlg = true
         if (res.data.row) {
           self.role.menuIds = res.data.row.menuIds || []
           self.role.roleId = res.data.row.roleId
         }
         self.matchMenuPermissions(self.menuTree, self.role.menuIds)
-        console.log('self.menuTree:', self.menuTree)
-        console.log('self.role.menuIds:', self.role.menuIds)
       }).catch(err => {
         console.log('err', err)
         // self.$Message.error(message['1001']);
@@ -594,7 +597,6 @@ export default {
     // 配置菜单权限
     menuCfgCancelHandle () {
       this.showUpdateRoleMenuAuthorizationFlg = false
-      this.menuTree = []
     },
     menuCfgConfirmHandle () {
       console.log('menuCfgConfirmHandle', this.menuTree)
@@ -802,7 +804,7 @@ export default {
       const self = this
       let param = {
         menuId: menuId,
-        roleId:  self.role.roleId
+        roleId: self.role.roleId
       }
       roleManagementApi.getMenuPartAuthorize(param).then(res => {
         self.showUpdatePartAuthorizationFlg = true
@@ -857,11 +859,13 @@ export default {
       }
       SysRoleMenuPartSaveParam.menuPartList = []
       for (const item of self.partsAuthList) {
-        let param = {
-          partAuthType: item.partAuthType,
-          partId: item.partId
+        if (item.partAuthType) {
+          let param = {
+            partAuthType: item.partAuthType,
+            partId: item.partId
+          }
+          SysRoleMenuPartSaveParam.menuPartList.push(param)
         }
-        SysRoleMenuPartSaveParam.menuPartList.push(param)
       }
       roleManagementApi.updateMenuPartAuthorize(SysRoleMenuPartSaveParam)
         .then(function (response) {

@@ -51,12 +51,12 @@ export const updateMenuPartAuthorize = (params) => {
   })
 }
 
-//查询角色设置的菜单部件权限
-export const getMenuPartAuthorize = ({ menuId , roleId }) => {
+// 查询角色设置的菜单部件权限
+export const getMenuPartAuthorize = ({ menuId, roleId }) => {
   return axios.request({
     url: constData.API_BEGIN_POINT + '/sys-role/role-menu-part-auth',
     params: {
-      menuId ,
+      menuId,
       roleId
     },
     method: 'get'
