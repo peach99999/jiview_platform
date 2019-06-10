@@ -3,10 +3,7 @@ package com.smaller.jiview.admin.service;
 
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleMenuPartExt;
 import com.smaller.jiview.admin.pojo.model.ext.SysUserExt;
-import com.smaller.jiview.admin.pojo.param.SysUserListParam;
-import com.smaller.jiview.admin.pojo.param.SysUserMenuAuthParam;
-import com.smaller.jiview.admin.pojo.param.SysUserRemoveParam;
-import com.smaller.jiview.admin.pojo.param.SysUserSaveOrUpdateParam;
+import com.smaller.jiview.admin.pojo.param.*;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
 import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
 
@@ -66,4 +63,12 @@ public interface SysUserService {
      * @return
      */
     ResultBO updateUserMenuAuth(SysUserMenuAuthParam sysUserMenuAuthParam);
+
+    /**
+     * 配置用户菜单部件权限
+     *
+     * @param sysUserMenuPartSaveParam
+     * @return
+     */
+    ResultBO updateUserMenuPartAuth(SysUserMenuPartSaveParam sysUserMenuPartSaveParam);
 }

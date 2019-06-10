@@ -23,6 +23,7 @@ public interface SysUserMenuPartManager {
      * @param list
      * @param userId
      * @param menuId
+     * @param creatUserId
      */
-    void save(List<SysRoleMenuPartAuthParam> list, Long userId,Long menuId);
+    void save(List<SysRoleMenuPartAuthParam> list, Long userId, Long menuId, Long creatUserId);
 }

@@ -2,6 +2,7 @@ package com.smaller.jiview.admin.manager.impl;
 
 import com.smaller.jiview.admin.manager.SysUserMenuPartManager;
 import com.smaller.jiview.admin.platform.system.mapper.SysUserMenuPartMapper;
+import com.smaller.jiview.admin.platform.system.model.SysUserMenuPart;
 import com.smaller.jiview.admin.pojo.param.SysRoleMenuPartAuthParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * @author xigf 2019/05/23
+ * @author xigf 2019/06/10
  */
 @Service
 public class SysUserMenuPartManagerImpl implements SysUserMenuPartManager {
@@ -23,7 +24,16 @@ public class SysUserMenuPartManagerImpl implements SysUserMenuPartManager {
     }
 
     @Override
-    public void save(List<SysRoleMenuPartAuthParam> list, Long userId, Long menuId) {
-
+    public void save(List<SysRoleMenuPartAuthParam> list, Long userId, Long menuId, Long creatUserId) {
+        list.forEach(sysRoleMenuPartAuthParam -> {
+            SysUserMenuPart sysUserMenuPart = new SysUserMenuPart();
+            sysUserMenuPart.setUserId(userId);
+            sysUserMenuPart.setMenuId(menuId);
+            sysUserMenuPart.setPartId(sysRoleMenuPartAuthParam.getPartId());
+            sysUserMenuPart.setPartAuthType(sysRoleMenuPartAuthParam.getPartAuthType());
+            sysUserMenuPart.setCreateUserId(creatUserId);
+            sysUserMenuPartMapper.insertSelective(sysUserMenuPart);
+        });
     }
+
 }

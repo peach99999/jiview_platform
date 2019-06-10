@@ -186,7 +186,7 @@ CREATE TABLE `sys_user_menu_part` (
   `authorize_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '权限ID',
   `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
   `menu_id` bigint(20) DEFAULT NULL COMMENT '菜单ID',
-  `part_id` varchar(50) COLLATE utf8_bin DEFAULT '0' COMMENT '组件ID',
+  `part_id` bigint(20) DEFAULT NULL COMMENT '组件ID',
   `part_auth_type` tinyint(4) DEFAULT NULL COMMENT 'UI组件权限类型(1:禁用;2:只读;3:编辑;4:显示;5:隐藏;6:挂起;7:激活;)',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   `create_user_id` bigint(20) DEFAULT NULL COMMENT '创建人ID',

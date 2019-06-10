@@ -1,0 +1,29 @@
+package com.smaller.jiview.admin.pojo.param;
+
+import com.smaller.jiview.core.pojo.param.BaseParam;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
+/**
+ * @author xigf on 2019/06/10.
+ */
+@Data
+@ApiModel("用户菜单部件权限参数")
+public class SysUserMenuPartSaveParam extends BaseParam {
+    private static final long serialVersionUID = 7978658826359801278L;
+
+    @ApiModelProperty("菜单Id")
+    @NotNull(message = "菜单Id不能为空")
+    private Long menuId;
+
+    @ApiModelProperty("角色Id")
+    @NotNull(message = "角色Id不能为空")
+    private Long userId;
+
+    @ApiModelProperty("菜单组件权限集")
+    private List<SysRoleMenuPartAuthParam> menuPartList;
+}

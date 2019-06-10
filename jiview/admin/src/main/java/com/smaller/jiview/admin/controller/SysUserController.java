@@ -2,10 +2,7 @@ package com.smaller.jiview.admin.controller;
 
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleMenuPartExt;
 import com.smaller.jiview.admin.pojo.model.ext.SysUserExt;
-import com.smaller.jiview.admin.pojo.param.SysUserListParam;
-import com.smaller.jiview.admin.pojo.param.SysUserRemoveParam;
-import com.smaller.jiview.admin.pojo.param.SysUserSaveOrUpdateParam;
-import com.smaller.jiview.admin.pojo.param.SysUserMenuAuthParam;
+import com.smaller.jiview.admin.pojo.param.*;
 import com.smaller.jiview.admin.service.SysUserService;
 import com.smaller.jiview.core.config.security.JwtHelper;
 import com.smaller.jiview.core.constant.UrlConstants;
@@ -125,20 +122,20 @@ public class SysUserController {
         return sysUserService.updateUserMenuAuth(sysUserMenuAuthParam);
     }
 
-//    /**
-//     * @Description:配置角色菜单部件权限(admin)
-//     * @author xiagf
-//     * @date 2019-05-10
-//     */
-//    @ApiOperation(value = "更新菜单部件权限", httpMethod = "POST")
-//    @PostMapping(value = "/update-menu-part-auth")
-//    public ResultBO updateMenuPartAuth(
-//            @RequestBody @Validated SysRoleMenuPartSaveParam SysRoleMenuPartSaveParam
-//    ) {
-//        SysRoleMenuPartSaveParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
-//
-//        return sysRoleService.updateMenuPartAuth(SysRoleMenuPartSaveParam);
-//    }
+    /**
+     * @Description:配置用户菜单部件权限
+     * @author xiagf
+     * @date 2019-05-10
+     */
+    @ApiOperation(value = "配置用户菜单部件权限", httpMethod = "POST")
+    @PostMapping(value = "/update-menu-part-auth")
+    public ResultBO updateMenuPartAuth(
+            @RequestBody @Validated SysUserMenuPartSaveParam sysUserMenuPartSaveParam
+    ) {
+        sysUserMenuPartSaveParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
+
+        return sysUserService.updateUserMenuPartAuth(sysUserMenuPartSaveParam);
+    }
 //
 //    /**
 //     * @Description: 查询角色设置的菜单部件权限
