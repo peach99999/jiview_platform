@@ -2,7 +2,6 @@ package com.smaller.jiview.admin.controller;
 
 import com.smaller.jiview.admin.platform.system.model.SysRoleMenuPart;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
-import com.smaller.jiview.admin.pojo.model.ext.SysRoleMenuPartExt;
 import com.smaller.jiview.admin.pojo.param.*;
 import com.smaller.jiview.admin.service.SysRoleService;
 import com.smaller.jiview.core.config.security.JwtHelper;
@@ -112,11 +111,11 @@ public class SysRoleController {
     @ApiOperation(value = "更新菜单部件权限", httpMethod = "POST")
     @PostMapping(value = "/update-menu-part-auth")
     public ResultBO updateMenuPartAuth(
-            @RequestBody @Validated SysRoleMenuPartSaveParam SysRoleMenuPartSaveParam
+            @RequestBody @Validated SysRoleMenuPartSaveParam sysRoleMenuPartSaveParam
     ) {
-        SysRoleMenuPartSaveParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
+        sysRoleMenuPartSaveParam.setLoginUserDTO(jwtHelper.getLoginUserDTO());
 
-        return sysRoleService.updateMenuPartAuth(SysRoleMenuPartSaveParam);
+        return sysRoleService.updateMenuPartAuth(sysRoleMenuPartSaveParam);
     }
 
     /**
