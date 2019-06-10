@@ -6,6 +6,7 @@ import com.smaller.jiview.admin.platform.system.mapper.SysUserMapper;
 import com.smaller.jiview.admin.platform.system.mapper.SysUserMenuPartMapper;
 import com.smaller.jiview.admin.platform.system.mapper.SysUserRoleMapper;
 import com.smaller.jiview.admin.platform.system.model.SysUser;
+import com.smaller.jiview.admin.platform.system.model.SysUserMenuPart;
 import com.smaller.jiview.admin.platform.system.model.SysUserRole;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleMenuPartExt;
 import com.smaller.jiview.admin.pojo.model.ext.SysUserExt;
@@ -179,6 +180,17 @@ public class SysUserServiceImpl implements SysUserService {
         // 新增角色菜单部件权限
         sysUserMenuPartManager.save(sysUserMenuPartSaveParam.getMenuPartList(), sysUserMenuPartSaveParam.getUserId(), sysUserMenuPartSaveParam.getMenuId(), sysUserMenuPartSaveParam.getLoginUserDTO().getLoginUserPkid());
         resultBO.setMsg("保存成功！");
+        return resultBO;
+    }
+
+    @Override
+    public ResultBO listUserMenuPart(Long menuId, Long userId) {
+        ResultBO resultBO = new ResultBO();
+        Example example = new Example(SysUserMenuPart.class);
+        example.createCriteria().andEqualTo("menuId",menuId)
+                .andEqualTo("userId",userId);
+        List<SysUserMenuPart> list = sysUserMenuPartMapper.selectByExample(example);
+        resultBO.setRows(list);
         return resultBO;
     }
 

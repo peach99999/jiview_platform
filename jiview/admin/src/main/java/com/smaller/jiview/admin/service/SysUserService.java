@@ -71,4 +71,13 @@ public interface SysUserService {
      * @return
      */
     ResultBO updateUserMenuPartAuth(SysUserMenuPartSaveParam sysUserMenuPartSaveParam);
+
+    /**
+     * 查询用户设置的菜单部件权限
+     *
+     * @param menuId
+     * @param userId
+     * @return
+     */
+    ResultBO listUserMenuPart(Long menuId, Long userId);
 }
