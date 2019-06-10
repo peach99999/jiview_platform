@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,6 +148,15 @@ public class SysRoleServiceImpl implements SysRoleService {
     public ResultBO listRoleMenuPart(Long menuId, Long roleId) {
         ResultBO resultBO = new ResultBO();
         resultBO.setRows(sysRoleMenuPartMapper.listRoleMenuPart(menuId, roleId));
+        return resultBO;
+    }
+
+    @Override
+    public ResultBO listAllRoles() {
+        ResultBO resultBO = new ResultBO();
+        Example example = new Example(SysRole.class);
+        example.createCriteria().andEqualTo("locked",Constants.SYS_ROLE_LOCKED_0);
+        resultBO.setRows(sysRoleMapper.selectByExample(example));
         return resultBO;
     }
 }

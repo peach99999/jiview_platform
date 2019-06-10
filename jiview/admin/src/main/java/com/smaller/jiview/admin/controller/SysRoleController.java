@@ -43,6 +43,18 @@ public class SysRoleController {
     }
 
     /**
+     * @Description:查询全部有效角色
+     * @author xiagf
+     * @date 2019-06-10
+     */
+    @ApiOperation(value = "查询全部有效角色", httpMethod = "GET")
+    @GetMapping(value = "/all-valid-roles")
+    public ResultBO<SysRoleExt> listAllRoles(
+    ) {
+        return sysRoleService.listAllRoles();
+    }
+
+    /**
      * @Description:获取单条角色
      * @author xiagf
      * @date 2019-05-10

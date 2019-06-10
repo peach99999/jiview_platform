@@ -68,4 +68,11 @@ public interface SysRoleService {
      * @return
      */
     ResultBO listRoleMenuPart(Long menuId, Long roleId);
+
+    /**
+     * 查询全部有效角色
+     *
+     * @return
+     */
+    ResultBO listAllRoles();
 }
