@@ -72,6 +72,7 @@
 </template>
 <script>
 import { getDepartmentList, deleteDepartmentList, getSelectDepartmentList, addDepartmentList, getDepartmentDetail } from '@/api/organizationalManagement'
+import { getMenuId } from '@/libs/util'
 export default {
   data () {
     return {
@@ -135,10 +136,18 @@ export default {
     }
   },
   mounted () {
-    this.getDepartmentList()
-    this.getSelectDepartmentList()
+    const self = this
+    self.getDepartmentList()
+    self.getSelectDepartmentList()
+    self.getMenuId(self.$store.state.app.menuList, self.$route.meta.title)
   },
   methods: {
+    getMenuId (list, name) {
+      if (getMenuId(list, name)) {
+        localStorage.setItem("menuId", getMenuId(list, name))
+      }
+      console.log('menuId:', localStorage.getItem("menuId"))
+    },
     // 获取部门列表信息
     getDepartmentList (param, flag) {
       const self = this
@@ -228,7 +237,6 @@ export default {
     },
     // 点击树节点（部门）触发事件
     clickTreeNodeChange (e) {
-      console.log('e', e)
       const self = this
       self.searchValue = ''
       self.nodeDeptId = e[0].deptId
@@ -347,9 +355,7 @@ export default {
     traverseTreeNode (treeList) {
       const self = this
       let flag = false
-      console.log('treeList', treeList)
       if (treeList && treeList.deptId) {
-        console.log('treeList.deptId', treeList.deptId)
         for (let value of self.deleteSeletionList) {
           if (value === treeList.deptId) {
             flag = true
@@ -388,7 +394,6 @@ export default {
     addOrChangeDepartmentInfo (param) {
       const self = this
       self.loading = true
-      console.log('param', param)
       addDepartmentList(param).then(res => {
         self.refreshDepartmentInfo(true)
         self.loading = false
@@ -413,8 +418,6 @@ export default {
       }
       // 验证数据来源后调用接口
       self.$refs['formValidate'].validate((valid) => {
-        console.log('valid', valid)
-        console.log('self', self)
         if (valid) {
           self.addOrChangeDepartmentInfo(param)
         }

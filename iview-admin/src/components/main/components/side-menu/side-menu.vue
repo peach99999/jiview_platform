@@ -78,14 +78,11 @@ export default {
       this.$emit('on-select', name)
     },
     getOpenedNamesByActiveName (name) {
-      console.log('getOpenedNamesByActiveName this', this)
-      console.log('getOpenedNamesByActiveName name', name)
       return this.$route.matched.map(item => item.name).filter(item => item !== name)
     },
     updateOpenName (name) {
       if (name === this.$config.homeName) this.openedNames = []
       else this.openedNames = this.getOpenedNamesByActiveName(name)
-      console.log('this.openedNames:', this.openedNames)
     }
   },
   computed: {

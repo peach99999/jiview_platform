@@ -99,6 +99,13 @@ export default {
       self.listMenu()
       self.listMenuTree(menuPkidsToExpand)
       self.cancelSaveHandle()
+      self.getMenuId(self.$store.state.app.menuList, self.$route.meta.title)
+    },
+    getMenuId (list, name) {
+      if (util.getMenuId(list, name)) {
+        localStorage.setItem("menuId", util.getMenuId(list, name))
+      }
+      console.log('menuId:', localStorage.getItem("menuId"))
     },
     expandMenuTreeById (menuPkidToExpand) {
       const self = this
@@ -150,7 +157,6 @@ export default {
       menuManagementApi.listMenuTree()
         .then(function (response) {
           self.menuTree = response.data.rows
-          console.log('listMenuTree self.menuTree:', self.menuTree)
           self.cascaderData = JSON.parse(JSON.stringify(self.menuTree))
           self.formatForCascader()
           self.formatForMenuTree()
@@ -187,7 +193,6 @@ export default {
           // self.menuTree[i] = data
         }
       }
-      console.log('formatForMenuTree menuTree:', self.menuTree)
     },
     // 格式化父级菜单下拉选内容
     formatForCascader () {
@@ -324,7 +329,6 @@ export default {
       return ++maxOrderNum
     },
     gotoSaveHandle () {
-      console.log('新增菜单', this.menu)
       const self = this
       let selectedNode = self.getSelectedNode()
       let selectedMenuId = selectedNode && selectedNode.pkid
@@ -445,21 +449,17 @@ export default {
         self.$Message.warning('请勾选要删除的菜单')
         return
       }
-      console.log('checkedMenuList:', checkedMenuList)
       for (let i = 0; i < checkedMenuList.length; i++) {
         let row = checkedMenuList[i]
         console.log('checkedMenuList row:', row)
         menuPkidsToRemove.push(row.menuId)
         menuPkidsToExpand.push(row.parentId)
       }
-      console.log('menuPkidsToRemove:', menuPkidsToRemove)
-      console.log('menuPkidsToExpand:', menuPkidsToExpand)
       if (menuPkidsToRemove && menuPkidsToRemove.length > 0) {
         self.remove(menuPkidsToRemove, menuPkidsToExpand)
       }
     },
     renderContent (h, { root, node, data }) {
-      console.log('data:', data)
       return h('span', {
         style: {
           display: 'inline-block',

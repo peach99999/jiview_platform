@@ -118,6 +118,7 @@ import * as sysUserManagementApi from '@/api/sysUser'
 import * as roleManagementApi from '@/api/role'
 import * as userManagementApi from '@/api/user'
 import { getDepartmentList } from '@/api/organizationalManagement'
+import { getMenuId } from '@/libs/util'
 export default {
   components: {
 
@@ -177,7 +178,7 @@ export default {
           { required: true, message: '请选择用户类型', trigger: 'change', type: 'number' }
         ],
         roleId: [
-          { required: true, message: '请选择角色类型', trigger: 'change', type: 'array' }
+          { required: false, message: '请选择角色类型', trigger: 'change', type: 'array' }
         ],
         sex: [
           { required: true, message: '请选择性别', trigger: 'change', type: 'number' }
@@ -372,6 +373,13 @@ export default {
       self.doQuery()
       self.getDepartmentList()
       self.getRoleSelectList()
+      self.getMenuId(self.$store.state.app.menuList, self.$route.meta.title)
+    },
+    getMenuId (list, name) {
+      if (getMenuId(list, name)) {
+        localStorage.setItem("menuId", getMenuId(list, name))
+      }
+      console.log('menuId:', localStorage.getItem("menuId"))
     },
     listForInit () {
       const self = this
@@ -391,7 +399,6 @@ export default {
       if (self.filter.userName) {
         param.userName = self.filter.userName
       }
-      console.log('Query Param:', param)
       sysUserManagementApi.getUserList(param).then(res => {
         self.total = res.data.count
         self.tableData = res.data.rows || []
@@ -428,7 +435,6 @@ export default {
     saveOrUpdateRole () {
       const self = this
       self.save_loading = true
-      console.log('saveOrUpdateRole user', self.user)
       let index = self.user.deptId.length - 1
       let param = {
         account: self.user.account,
@@ -523,7 +529,6 @@ export default {
             self.user.enabled = 0
           }
         }
-        console.log('queryRoleDetail self.user', self.user)
       }).catch(err => {
         console.log('err', err)
         // self.$Message.error(message['1001']);
@@ -671,7 +676,6 @@ export default {
       roleManagementApi.getAllValidRoles().then(res => {
         const self = this
         self.roleSelectList = []
-        console.log('getRoleSelectList res:', res)
         let list = res.data.rows || []
         if (list && list.length > 0) {
           for(const value of list){
@@ -682,7 +686,6 @@ export default {
             self.roleSelectList.push(param)
           }
         }
-        console.log('self.roleSelectList', self.roleSelectList)
       }).catch(err => {
         console.log('err', err)
         // self.$Message.error(message['1001']);

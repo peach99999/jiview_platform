@@ -168,7 +168,6 @@ export default {
     this.setTagNavList()
     this.setHomeRoute(routers)
     // 获取动态菜单
-    console.log('动态获取菜单  调好$store:', this.$store)
     this.$store.commit('updateMenulist', '')
     const { name, params, query, meta } = this.$route
     this.addTag({

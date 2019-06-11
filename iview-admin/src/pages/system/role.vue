@@ -164,7 +164,7 @@
 </template>
 
 <script>
-// import * as util from '@/libs/util'
+import { getMenuId } from '@/libs/util'
 import * as roleManagementApi from '@/api/role'
 import * as menuManagementApi from '@/api/menu'
 // import * as sysUserManagementApi from '@/api/sysUser'
@@ -360,6 +360,13 @@ export default {
       self.doQuery()
       self.getDepartmentList()
       self.listMenuTree()
+      self.getMenuId(self.$store.state.app.menuList, self.$route.meta.title)
+    },
+    getMenuId (list, name) {
+      if (getMenuId(list, name)) {
+        localStorage.setItem("menuId", getMenuId(list, name))
+      }
+      console.log('menuId:', localStorage.getItem("menuId"))
     },
     listForInit () {
       const self = this

@@ -420,3 +420,19 @@ export const inArray = (ele, arr) => {
   }
   return false
 }
+
+/**
+ * 路径名匹配菜单获取menuId
+ */
+export const getMenuId = (menuList, routeName) => {
+  if (menuList && menuList.length > 0) {
+    for (const value of menuList) {
+      if (value.children && value.children.length > 0) {
+        return getMenuId(value.children, routeName)
+      }
+      if (value.menuName === routeName) {
+        return value.menuId
+      }
+    }
+  }
+}
