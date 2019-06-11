@@ -26,6 +26,9 @@ public class SysUserSaveOrUpdateParam extends BaseParam {
     @ApiModelProperty("管理员登录用账号")
     private String account;
 
+    @ApiModelProperty("登录密码")
+    private String password;
+
     @NotBlank(message = "用户姓名不能为空")
     @ApiModelProperty("用户姓名")
     private String userName;
