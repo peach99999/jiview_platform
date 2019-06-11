@@ -26,7 +26,7 @@
       SELECT
           srmp.menu_id,
           srmp.part_id,
-          srmp.part_auth_type,
+          min(srmp.part_auth_type) as partAuthType,
           smp.cmp_id as cmpId
       FROM
       sys_role_menu_part srmp
