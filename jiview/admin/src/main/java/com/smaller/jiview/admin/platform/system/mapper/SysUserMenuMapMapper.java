@@ -21,6 +21,14 @@ public interface SysUserMenuMapMapper extends Mapper<SysUserMenuMap>, MySqlMappe
     List<SysMenuExt> listForUserMenu(Long userId);
 
     /**
+     * 查询用户菜单列表
+     *
+     * @param userId
+     * @return
+     */
+    List<SysMenuExt> listForUserMenuMap(Long userId);
+
+    /**
      * 删除角色菜单信息
      *
      * @param userId

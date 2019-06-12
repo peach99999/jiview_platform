@@ -80,4 +80,11 @@ public interface SysUserService {
      * @return
      */
     ResultBO listUserMenuPart(Long menuId, Long userId);
+
+    /**
+     * 根据userId查询用户的菜单权限
+     * @param userId
+     * @return
+     */
+    ResultBO listUserMenuMap(Long userId);
 }

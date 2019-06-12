@@ -12,6 +12,8 @@ import java.util.List;
 public class SysMenuExt extends SysMenu {
     private String routerName;
 
+    private Byte authorizeLevel;
+
     private List<SysMenuExt> children;
 
     public List<SysMenuExt> getChildren() {

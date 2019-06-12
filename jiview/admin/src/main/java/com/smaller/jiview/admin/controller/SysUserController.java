@@ -156,4 +156,21 @@ public class SysUserController {
         //主处理
         return sysUserService.listUserMenuPart(menuId, userId);
     }
+
+    /**
+     * @Description: 查询用户设置的菜单信息
+     * @author xiagf
+     * @date 2019-06-12
+     */
+    @ApiOperation(value = "查询用户设置的菜单信息", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户id", dataType = "long", paramType = "path", required = true)
+    })
+    @GetMapping(value = "/list-user-menu{userId}")
+    public ResultBO listUserMenu(
+            @PathVariable Long userId
+    ) {
+        //主处理
+        return sysUserService.listUserMenuMap(userId);
+    }
 }

@@ -1,17 +1,11 @@
 package com.smaller.jiview.admin.service.impl;
 
 import com.smaller.jiview.admin.manager.*;
-import com.smaller.jiview.admin.platform.system.mapper.SysRoleMenuPartMapper;
-import com.smaller.jiview.admin.platform.system.mapper.SysUserMapper;
-import com.smaller.jiview.admin.platform.system.mapper.SysUserMenuPartMapper;
-import com.smaller.jiview.admin.platform.system.mapper.SysUserRoleMapper;
+import com.smaller.jiview.admin.platform.system.mapper.*;
 import com.smaller.jiview.admin.platform.system.model.SysUser;
 import com.smaller.jiview.admin.platform.system.model.SysUserMenuPart;
 import com.smaller.jiview.admin.platform.system.model.SysUserRole;
-import com.smaller.jiview.admin.pojo.model.ext.SysRoleMenuPartExt;
-import com.smaller.jiview.admin.pojo.model.ext.SysUserExt;
-import com.smaller.jiview.admin.pojo.model.ext.SysUserMenuPartExt;
-import com.smaller.jiview.admin.pojo.model.ext.SysUserRoleExt;
+import com.smaller.jiview.admin.pojo.model.ext.*;
 import com.smaller.jiview.admin.pojo.param.*;
 import com.smaller.jiview.admin.service.SysUserService;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
@@ -62,6 +56,8 @@ public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysUserMenuPartManager sysUserMenuPartManager;
 
+    @Autowired
+    private SysUserMenuMapMapper sysUserMenuMapMapper;
 
     @Override
     public ResultBO<SysUserExt> list(SysUserListParam sysUserListParam) {
@@ -190,6 +186,14 @@ public class SysUserServiceImpl implements SysUserService {
         example.createCriteria().andEqualTo("menuId",menuId)
                 .andEqualTo("userId",userId);
         List<SysUserMenuPart> list = sysUserMenuPartMapper.selectByExample(example);
+        resultBO.setRows(list);
+        return resultBO;
+    }
+
+    @Override
+    public ResultBO listUserMenuMap(Long userId) {
+        ResultBO resultBO = new ResultBO();
+        List<SysMenuExt> list = sysUserMenuMapMapper.listForUserMenuMap(userId);
         resultBO.setRows(list);
         return resultBO;
     }
