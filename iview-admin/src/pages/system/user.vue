@@ -17,8 +17,8 @@
             </Form>
           </Row>
           <Row>
-            <Button type="primary" icon="ios-search" :loading="loading" @click="doQuery">查询</Button>
-            <Button class="margin-left-10" type="default" icon="ios-document-outline" @click="reset" >重置</Button>
+            <Button type="primary" :loading="loading" @click="doQuery">查询</Button>
+            <Button type="default" @click="reset" >重置</Button>
           </Row>
         </Row>
       </Panel>
@@ -26,8 +26,10 @@
     <Card class="margin-top-10">
       <Row>
         <ButtonGroup class="margin-bottom-10">
-          <Button type="success" icon="ios-add-circle-outline" @click="addOrEditRoleFlg = true;showPassword=true">新增</Button>
-          <Button type="warning" icon="ios-trash-outline" @click="deleteBatch">删除</Button>
+          <!--<Button type="success" @click="addOrEditRoleFlg = true;showPassword=true">新增</Button>-->
+          <!--<Button type="warning" @click="deleteBatch">删除</Button>-->
+          <button-custom :buttonStyle="addObj.type" :buttonText="addObj.text" :partType="addObj.partType" @click.native="addOrEditRoleFlg = true;showPassword=true;" />
+          <button-custom :buttonStyle="deleteObj.type" :buttonText="deleteObj.text" :partType="deleteObj.partType" @click.native="deleteBatch" />
         </ButtonGroup>
         <Table :columns="tableTitle" :data="tableData" @on-selection-change="changeSelect"></Table>
       </Row>
@@ -119,9 +121,10 @@ import * as roleManagementApi from '@/api/role'
 import * as userManagementApi from '@/api/user'
 import { getDepartmentList } from '@/api/organizationalManagement'
 import { getMenuId } from '@/libs/util'
+import ButtonCustom from '@/components/button-custom/button-custom.vue'
 export default {
   components: {
-
+    ButtonCustom
   },
   data () {
     const valideRePassword = (rule, value, callback) => {
@@ -209,28 +212,32 @@ export default {
           width: 170,
           render: (h, params) => {
             return h('div', [
-              h('Button', {
+              h(ButtonCustom, {
                 props: {
-                  type: 'primary',
-                  size: 'small',
-                  ghost: ''
+                  buttonStyle: this.detailObj.type,
+                  btnSize: 'small',
+                  btnGhost: true,
+                  partType: this.detailObj.partType,
+                  buttonText: this.detailObj.text,
                 },
-                on: {
+                nativeOn: {
                   click: () => {
                     this.queryRoleDetail(params.row.id)
                   }
                 }
               }, '详情'),
-              h('Button', {
+              h(ButtonCustom, {
                 props: {
-                  type: 'success',
-                  size: 'small',
-                  ghost: ''
+                  buttonStyle: this.ChangeObj.type,
+                  btnSize: 'small',
+                  btnGhost: true,
+                  partType: this.ChangeObj.partType,
+                  buttonText: this.ChangeObj.text,
                 },
                 style: {
                   marginLeft: '10px'
                 },
-                on: {
+                nativeOn: {
                   click: () => {
                     console.log('params:', params)
                     this.account = {
@@ -360,7 +367,31 @@ export default {
           { validator: valideRePassword, trigger: 'blur' }
         ]
       },
-      changePwd_loading: false
+      changePwd_loading: false,
+      addObj: {
+        type: 'success',
+        text: '新增',
+        partType: 4,
+        partId: 'user_add'
+      },
+      deleteObj: {
+        type: 'warning',
+        text: '删除',
+        partType: 4,
+        partId: 'user_delete'
+      },
+      detailObj: {
+        type: 'primary',
+        text: '详情',
+        partType: 4,
+        partId: 'user_detail'
+      },
+      ChangeObj: {
+        type: 'success',
+        text: '修改密码',
+        partType: 4,
+        partId: 'user_change_password'
+      }
     }
   },
   mounted () {
@@ -380,6 +411,31 @@ export default {
         localStorage.setItem('menuId', getMenuId(list, name))
       }
       console.log('menuId:', localStorage.getItem('menuId'))
+      const menuId = localStorage.getItem('menuId')
+      this.getPagePartAuth(menuId)
+    },
+    // 获取页面部件权限
+    getPagePartAuth (menuId) {
+      sysUserManagementApi.getMenuPartAuth(menuId).then(res => {
+        console.log('getMenuPartDetail res:', res)
+        const partAuthList = res.data.rows || []
+        for (const value of partAuthList) {
+          if (value.cmpId === this.addObj.partId) {
+            this.addObj.partType = value.partAuthType
+          }
+          if (value.cmpId === this.deleteObj.partId) {
+            this.deleteObj.partType = value.partAuthType
+          }
+          if (value.cmpId === this.detailObj.partId) {
+            this.detailObj.partType = value.partAuthType
+          }
+          if (value.cmpId === this.ChangeObj.partId) {
+            this.ChangeObj.partType = value.partAuthType
+          }
+        }
+      }).catch(err => {
+        console.log('err', err)
+      })
     },
     listForInit () {
       const self = this
