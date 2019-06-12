@@ -39,8 +39,11 @@
       1 = 1
       AND srmp.role_id IN (
         SELECT
-          role_id
-          FROM sys_user_role where user_id = #{userId}
+          sur.role_id
+          FROM sys_user_role sur
+          JOIN sys_role sr
+          on sur.role_id = sr.role_id
+          where sur.user_id = #{userId}
         )
       AND srmp.menu_id = #{menuId}
       AND srm.authorize_level = '${@com.smaller.jiview.core.constant.Constants@SYS_ROLE_MENU_AUTHORIZE_LEVEL_2}'
