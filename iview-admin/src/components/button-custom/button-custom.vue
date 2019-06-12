@@ -1,5 +1,14 @@
 <template>
-  <Button v-if="showValue" :disabled="disabledValue" :type="buttonStyle" :loading="btnLoading">{{ buttonText }}</Button>
+  <Button
+    v-if="showValue"
+    :disabled="disabledValue"
+    :type="buttonStyle"
+    :loading="btnLoading"
+    :size="btnSize"
+    :ghost="btnGhost"
+  >
+    {{ buttonText }}
+  </Button>
 </template>
 
 <script>
@@ -19,6 +28,13 @@ export default {
       type: Number
     },
     btnLoading: {
+      type: Boolean,
+      default: false
+    },
+    btnSize: {
+      type: String
+    },
+    btnGhost: {
       type: Boolean,
       default: false
     }

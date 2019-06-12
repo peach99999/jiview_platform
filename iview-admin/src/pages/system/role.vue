@@ -14,8 +14,8 @@
             </Form>
           </Row>
           <Row>
-            <Button type="primary" icon="ios-search" :loading="loading" @click="doQuery">查询</Button>
-            <Button class="margin-left-10" type="default" icon="ios-document-outline" @click="reset" >重置</Button>
+            <Button type="primary" :loading="loading" @click="doQuery">查询</Button>
+            <Button class="margin-left-10" type="default" @click="reset" >重置</Button>
           </Row>
         </Row>
       </Panel>
@@ -23,8 +23,10 @@
     <Card class="margin-top-10">
       <Row>
         <ButtonGroup class="margin-bottom-10">
-          <Button type="success" icon="ios-add-circle-outline" @click="addOrEditRoleFlg = true">新增</Button>
-          <Button type="warning" icon="ios-trash-outline" @click="deleteBatch">删除</Button>
+          <!--<Button type="success" @click="addOrEditRoleFlg = true">新增</Button>-->
+          <button-custom :buttonStyle="addObj.type" :buttonText="addObj.text" :partType="addObj.partType" @click.native="addOrEditRoleFlg = true" />
+          <button-custom :buttonStyle="deleteObj.type" :buttonText="deleteObj.text" :partType="deleteObj.partType" @click.native="deleteBatch" />
+          <!--<Button type="warning" @click="deleteBatch">删除</Button>-->
         </ButtonGroup>
         <Table :columns="tableTitle" :loading="tableLoading" :data="tableData" @on-selection-change="changeSelect"></Table>
       </Row>
@@ -171,9 +173,11 @@ import * as menuManagementApi from '@/api/menu'
 import * as partsManagementApi from '@/api/partsManagement'
 import { getDepartmentList } from '@/api/organizationalManagement'
 // import { list } from '../../api/menu'
+import { getMenuPartAuth } from '@/api/sysUser'
+import ButtonCustom from '@/components/button-custom/button-custom.vue'
 export default {
   components: {
-
+    ButtonCustom
   },
   data () {
     return {
@@ -232,28 +236,32 @@ export default {
           width: 200,
           render: (h, params) => {
             return h('div', [
-              h('Button', {
+              h(ButtonCustom, {
                 props: {
-                  type: 'primary',
-                  size: 'small',
-                  ghost: ''
+                  buttonStyle: 'primary',
+                  btnSize: 'small',
+                  btnGhost: true,
+                  partType: this.detailObj.partType,
+                  buttonText: '详情'
                 },
-                on: {
+                nativeOn: {
                   click: () => {
                     this.queryRoleDetail(params.row.roleId)
                   }
                 }
               }, '详情'),
-              h('Button', {
+              h(ButtonCustom, {
                 props: {
-                  type: 'success',
-                  size: 'small',
-                  ghost: ''
+                  buttonStyle: 'success',
+                  btnSize: 'small',
+                  btnGhost: true,
+                  partType: this.menuAuthObj.partType,
+                  buttonText: '菜单权限'
                 },
                 style: {
                   marginLeft: '10px'
                 },
-                on: {
+                nativeOn: {
                   click: () => {
                     this.changeMenuPermissions(params.row.roleId)
                   }
@@ -344,14 +352,35 @@ export default {
           partAuthTypeName: '激活'
         }
       ],
-      tableLoading: false
+      tableLoading: false,
+      addObj: {
+        type: 'success',
+        text: '新增',
+        partType: 4,
+        partId: 'role_add'
+      },
+      deleteObj: {
+        type: 'warning',
+        text: '删除',
+        partType: 4,
+        partId: 'role_delete'
+      },
+      detailObj: {
+        type: 'primary',
+        text: '详情',
+        partType: 4,
+        partId: 'role_detail'
+      },
+      menuAuthObj: {
+        type: 'success',
+        text: '菜单权限',
+        partType: 4,
+        partId: 'role_menu_auth'
+      }
     }
   },
   mounted () {
     const self = this
-    // if (this.$store.state.app.listPageParams.has(this.$route.name)) {
-    // this.filter = this.$store.state.app.listPageParams.get(this.$route.name);
-    // }
     self.init()
   },
   methods: {
@@ -367,6 +396,31 @@ export default {
         localStorage.setItem('menuId', getMenuId(list, name))
       }
       console.log('menuId:', localStorage.getItem('menuId'))
+      const menuId = localStorage.getItem('menuId')
+      this.getPagePartAuth(menuId)
+    },
+    // 获取页面部件权限
+    getPagePartAuth (menuId) {
+      getMenuPartAuth(menuId).then(res => {
+        console.log('getMenuPartDetail res:', res)
+        const partAuthList = res.data.rows || []
+        for (const value of partAuthList) {
+          if (value.cmpId === this.addObj.partId) {
+            this.addObj.partType = value.partAuthType
+          }
+          if (value.cmpId === this.deleteObj.partId) {
+            this.deleteObj.partType = value.partAuthType
+          }
+          if (value.cmpId === this.detailObj.partId) {
+            this.detailObj.partType = value.partAuthType
+          }
+          if (value.cmpId === this.menuAuthObj.partId) {
+            this.menuAuthObj.partType = value.partAuthType
+          }
+        }
+      }).catch(err => {
+        console.log('err', err)
+      })
     },
     listForInit () {
       const self = this
