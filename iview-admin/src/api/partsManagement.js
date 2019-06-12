@@ -9,7 +9,7 @@ export const getMenuPartDetail = (menuId) => {
   })
 }
 
-//新增或修改菜单部件
+// 新增或修改菜单部件
 export const saveOrUpdateMenuPart = (params) => {
   return axios.request({
     url: constData.API_BEGIN_POINT + '/sys-menu-part/save-or-update-menu-part',

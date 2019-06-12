@@ -364,9 +364,9 @@ export default {
     },
     getMenuId (list, name) {
       if (getMenuId(list, name)) {
-        localStorage.setItem("menuId", getMenuId(list, name))
+        localStorage.setItem('menuId', getMenuId(list, name))
       }
-      console.log('menuId:', localStorage.getItem("menuId"))
+      console.log('menuId:', localStorage.getItem('menuId'))
     },
     listForInit () {
       const self = this

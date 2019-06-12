@@ -103,9 +103,9 @@ export default {
     },
     getMenuId (list, name) {
       if (util.getMenuId(list, name)) {
-        localStorage.setItem("menuId", util.getMenuId(list, name))
+        localStorage.setItem('menuId', util.getMenuId(list, name))
       }
-      console.log('menuId:', localStorage.getItem("menuId"))
+      console.log('menuId:', localStorage.getItem('menuId'))
     },
     expandMenuTreeById (menuPkidToExpand) {
       const self = this

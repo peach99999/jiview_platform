@@ -16,15 +16,20 @@
               <Input v-model="searchValue" placeholder="请输入部门名称" class="table-search-input"  @on-change="searchValueChange"/>
             </div>
             <div class="search-button-group">
-              <Button @click="searchDepartmentInfo" type="success">查询</Button>
-              <Button @click="refreshDepartmentInfo" type="info">重置</Button>
+              <!--<Button @click="searchDepartmentInfo" type="success">查询</Button>-->
+              <!--<Button @click="refreshDepartmentInfo" type="info">重置</Button>-->
+              <button-custom :buttonStyle="searchObj.type" :buttonText="searchObj.text" :partType="searchObj.partType" @click.native="searchDepartmentInfo" />
+              <button-custom :buttonStyle="resetObj.type" :buttonText="resetObj.text" :partType="resetObj.partType" @click.native="refreshDepartmentInfo" />
             </div>
           </Card>
           <Card>
             <div class="table-button-group">
-              <Button @click="addSelectedInfo" type="primary">新增</Button>
-              <Button @click="changeSelectedInfo" type="warning">修改</Button>
-              <Button @click="deleteSelectedInfo" type="error">删除</Button>
+              <button-custom :buttonStyle="addObj.type" :buttonText="addObj.text" :partType="addObj.partType" @click.native="addSelectedInfo" />
+              <button-custom :buttonStyle="changeObj.type" :buttonText="changeObj.text" :partType="changeObj.partType" @click.native="changeSelectedInfo" />
+              <button-custom :buttonStyle="deleteObj.type" :buttonText="deleteObj.text" :partType="deleteObj.partType" @click.native="deleteSelectedInfo" />
+              <!--<Button @click="addSelectedInfo" type="primary">新增</Button>-->
+              <!--<Button @click="changeSelectedInfo" type="warning">修改</Button>-->
+              <!--<Button @click="deleteSelectedInfo" type="error">删除</Button>-->
             </div>
             <div>
               <Table ref="selection" :columns="column" :data="tableData" @on-selection-change="handleSelectChange"></Table>
@@ -73,7 +78,12 @@
 <script>
 import { getDepartmentList, deleteDepartmentList, getSelectDepartmentList, addDepartmentList, getDepartmentDetail } from '@/api/organizationalManagement'
 import { getMenuId } from '@/libs/util'
+import { getMenuPartAuth } from '@/api/sysUser'
+import ButtonCustom from '@/components/button-custom/button-custom.vue'
 export default {
+  components: {
+    ButtonCustom
+  },
   data () {
     return {
       loading: false, // 树型结构列表 loading
@@ -132,21 +142,82 @@ export default {
       },
       selectDeptList: [],
       deleteModal: false,
-      nodeDeptId: ''
+      nodeDeptId: '',
+      resetObj: {
+        type: 'info',
+        text: '重置',
+        partType: 4,
+        partId: 'organizationa_reset'
+      },
+      searchObj: {
+        type: 'success',
+        text: '查询',
+        partType: 4,
+        partId: 'organizationa_search'
+      },
+      addObj: {
+        type: 'primary',
+        text: '新增',
+        partType: 4,
+        partId: 'organizationa_add'
+      },
+      changeObj: {
+        type: 'warning',
+        text: '修改',
+        partType: 4,
+        partId: 'organizationa_modify'
+      },
+      deleteObj: {
+        type: 'error',
+        text: '删除',
+        partType: 4,
+        partId: 'organizationa_delete'
+      }
     }
   },
   mounted () {
     const self = this
     self.getDepartmentList()
     self.getSelectDepartmentList()
+  },
+  created () {
+    const self = this
     self.getMenuId(self.$store.state.app.menuList, self.$route.meta.title)
   },
   methods: {
     getMenuId (list, name) {
       if (getMenuId(list, name)) {
-        localStorage.setItem("menuId", getMenuId(list, name))
+        localStorage.setItem('menuId', getMenuId(list, name))
       }
-      console.log('menuId:', localStorage.getItem("menuId"))
+      console.log('menuId:', localStorage.getItem('menuId'))
+      const menuId = localStorage.getItem('menuId')
+      this.getPagePartAuth(menuId)
+    },
+    // 获取页面部件权限
+    getPagePartAuth (menuId) {
+      getMenuPartAuth(menuId).then(res => {
+        console.log('getMenuPartDetail res:', res)
+        const partAuthList = res.data.rows || []
+        for (const value of partAuthList) {
+          if (value.cmpId === this.resetObj.partId) {
+            this.resetObj.partType = value.partAuthType
+          }
+          if (value.cmpId === this.searchObj.partId) {
+            this.searchObj.partType = value.partAuthType
+          }
+          if (value.cmpId === this.addObj.partId) {
+            this.addObj.partType = value.partAuthType
+          }
+          if (value.cmpId === this.changeObj.partId) {
+            this.changeObj.partType = value.partAuthType
+          }
+          if (value.cmpId === this.deleteObj.partId) {
+            this.deleteObj.partType = value.partAuthType
+          }
+        }
+      }).catch(err => {
+        console.log('err', err)
+      })
     },
     // 获取部门列表信息
     getDepartmentList (param, flag) {
@@ -269,6 +340,7 @@ export default {
     },
     // 刷新按钮
     refreshDepartmentInfo (flag) {
+      console.log('重置')
       const self = this
       self.filter.pageNo = 1
       self.filter.pageSize = 10

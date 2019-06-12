@@ -126,11 +126,11 @@ export default {
   data () {
     const valideRePassword = (rule, value, callback) => {
       if (value !== this.account.newPwd) {
-        callback(new Error('两次输入密码不一致'));
+        callback(new Error('两次输入密码不一致'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       value1: '1',
       addOrEditRoleFlg: false,
@@ -237,8 +237,8 @@ export default {
                       account: params.row.account,
                       newPwd: '',
                       confirmNewPwd: ''
-                    };
-                    this.showChangePwdFlg = true;
+                    }
+                    this.showChangePwdFlg = true
                   }
                 }
               }, '修改密码')
@@ -377,9 +377,9 @@ export default {
     },
     getMenuId (list, name) {
       if (getMenuId(list, name)) {
-        localStorage.setItem("menuId", getMenuId(list, name))
+        localStorage.setItem('menuId', getMenuId(list, name))
       }
-      console.log('menuId:', localStorage.getItem("menuId"))
+      console.log('menuId:', localStorage.getItem('menuId'))
     },
     listForInit () {
       const self = this
@@ -678,7 +678,7 @@ export default {
         self.roleSelectList = []
         let list = res.data.rows || []
         if (list && list.length > 0) {
-          for(const value of list){
+          for (const value of list) {
             let param = {
               roleId: value.roleId,
               roleName: value.roleName
@@ -693,31 +693,31 @@ export default {
     },
     // 修改密码Modal
     changePwdCancelHandle () {
-      this.showChangePwdFlg = false;
-      this.$refs.account.resetFields();
+      this.showChangePwdFlg = false
+      this.$refs.account.resetFields()
     },
     changePwdConfirmHandle () {
-      const self = this;
+      const self = this
       this.$refs.account.validate((valid) => {
         if (valid) {
-          this.changePwd_loading = true;
+          this.changePwd_loading = true
           let param = {
             account: self.account.account,
             password: self.account.newPwd
           }
           userManagementApi.changeUserPwd(param)
             .then(res => {
-              self.$Message.success('密码修改成功');
-              self.changePwd_loading = false;
-              self.showChangePwdFlg = false;
+              self.$Message.success('密码修改成功')
+              self.changePwd_loading = false
+              self.showChangePwdFlg = false
             })
             .catch(err => {
-              console.log('err', err);
-              self.changePwd_loading = false;
-              // self.$Message.error(message['1001']);
-            });
+              console.log('err', err)
+              self.changePwd_loading = false
+              // self.$Message.error(message['1001'])
+            })
         }
-      });
+      })
     }
   }
 }
