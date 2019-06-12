@@ -166,7 +166,7 @@ public class SysUserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户id", dataType = "long", paramType = "path", required = true)
     })
-    @GetMapping(value = "/list-user-menu{userId}")
+    @GetMapping(value = "/list-user-menu-map{userId}")
     public ResultBO listUserMenu(
             @PathVariable Long userId
     ) {
