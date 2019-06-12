@@ -179,9 +179,6 @@ export default {
     const self = this
     self.getDepartmentList()
     self.getSelectDepartmentList()
-  },
-  created () {
-    const self = this
     self.getMenuId(self.$store.state.app.menuList, self.$route.meta.title)
   },
   methods: {

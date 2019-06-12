@@ -6,12 +6,14 @@
     <Row>
       <Card>
         <ButtonGroup class="margin-bottom-10">
-          <Button type="info" icon="plus" @click="gotoSaveHandle()">
-            新增菜单
-          </Button>
-          <Button type="error" icon="trash-a" @click="removeHandle()">
-            删除勾选的菜单
-          </Button>
+          <!--<Button type="info" @click="gotoSaveHandle()">-->
+            <!--新增菜单-->
+          <!--</Button>-->
+          <button-custom :buttonStyle="addObj.type" :buttonText="addObj.text" :partType="addObj.partType" @click.native="gotoSaveHandle" />
+          <button-custom :buttonStyle="deleteObj.type" :buttonText="deleteObj.text" :partType="deleteObj.partType" @click.native="removeHandle" />
+          <!--<Button type="error" @click="removeHandle()">-->
+            <!--删除勾选的菜单-->
+          <!--</Button>-->
         </ButtonGroup>
         <Row>
           <Col span="8">
@@ -50,9 +52,10 @@
                 <Button @click="cancelSaveHandle" style="margin-right: 10px;">
                   取消
                 </Button>
-                <Button type="primary" :loading="saveLoading" @click="saveOrUpdateHandle">
-                  保存
-                </Button>
+                <!--<Button type="primary" :loading="saveLoading" @click="saveOrUpdateHandle">-->
+                  <!--保存-->
+                <!--</Button>-->
+                <button-custom :buttonStyle="saveObj.type" :buttonText="saveObj.text" :partType="saveObj.partType" :btnLoading="saveLoading" @click.native="saveOrUpdateHandle" />
               </div>
             </Card>
           </Col>
@@ -65,7 +68,12 @@
 <script>
 import * as util from '@/libs/util'
 import * as menuManagementApi from '@/api/menu'
+import { getMenuPartAuth } from '@/api/sysUser'
+import ButtonCustom from '@/components/button-custom/button-custom.vue'
 export default {
+  components: {
+    ButtonCustom
+  },
   data () {
     return {
       menuTree: [],
@@ -85,7 +93,25 @@ export default {
       saveLoading: false,
       menus: [],
       spinShow: false,
-      lastSelectedNode: null
+      lastSelectedNode: null,
+      addObj: {
+        type: 'info',
+        text: '新增菜单',
+        partType: 4,
+        partId: 'menu_add'
+      },
+      deleteObj: {
+        type: 'error',
+        text: '删除勾选的菜单',
+        partType: 4,
+        partId: 'menu_delete'
+      },
+      saveObj: {
+        type: 'primary',
+        text: '保存',
+        partType: 4,
+        partId: 'menu_save'
+      }
     }
   },
   computed: {},
@@ -105,7 +131,29 @@ export default {
       if (util.getMenuId(list, name)) {
         localStorage.setItem('menuId', util.getMenuId(list, name))
       }
+      const menuId = localStorage.getItem('menuId')
+      this.getPagePartAuth(menuId)
       console.log('menuId:', localStorage.getItem('menuId'))
+    },
+    // 获取页面部件权限
+    getPagePartAuth (menuId) {
+      getMenuPartAuth(menuId).then(res => {
+        console.log('getMenuPartDetail res:', res)
+        const partAuthList = res.data.rows || []
+        for (const value of partAuthList) {
+          if (value.cmpId === this.addObj.partId) {
+            this.addObj.partType = value.partAuthType
+          }
+          if (value.cmpId === this.deleteObj.partId) {
+            this.deleteObj.partType = value.partAuthType
+          }
+          if (value.cmpId === this.saveObj.partId) {
+            this.saveObj.partType = value.partAuthType
+          }
+        }
+      }).catch(err => {
+        console.log('err', err)
+      })
     },
     expandMenuTreeById (menuPkidToExpand) {
       const self = this

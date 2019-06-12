@@ -1,5 +1,5 @@
 <template>
-  <Button v-if="showValue" :disabled="disabledValue" :type="buttonStyle">{{ buttonText }}</Button>
+  <Button v-if="showValue" :disabled="disabledValue" :type="buttonStyle" :loading="btnLoading">{{ buttonText }}</Button>
 </template>
 
 <script>
@@ -17,12 +17,17 @@ export default {
     },
     partType: {
       type: Number
+    },
+    btnLoading: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
     return {
       disabledValue: false,
-      showValue: true
+      showValue: true,
+      loading: false
     }
   },
   provide () {
@@ -42,6 +47,10 @@ export default {
       if (val && val === 5) {
         self.showValue = false
       }
+    },
+    btnLoading (val) {
+      const self = this
+      self.loading = val
     }
   },
   mounted () {
