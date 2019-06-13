@@ -972,15 +972,12 @@ export default {
     },
     // 匹配菜单权限
     matchMenuPermissions (menuTree, userMenuTree) {
-      console.log('matchMenuPermissions menuTree', menuTree)
-      console.log('matchMenuPermissions userMenuTree', userMenuTree)
       const self = this
       if (menuTree && userMenuTree) {
         for (const menuItem of menuTree) {
           menuItem.authorizeLevel = 0
           for (const userMenuItem of userMenuTree) {
             if (menuItem.menuId === userMenuItem.menuId) {
-              console.log('userMenuItem.menuName', userMenuItem.menuName)
               menuItem.authorizeLevel = userMenuItem.authorizeLevel
             }
           }
@@ -1013,7 +1010,6 @@ export default {
       }
     },
     changeVisitInfo (item) {
-      console.log('changeVisitInfo', item)
       this.currentInfo = item
     },
     // 搜索菜单并修改权限
@@ -1029,14 +1025,12 @@ export default {
         }
       }
       self.menuTree = [...self.menuTree]
-      console.log('self.menuTree', self.menuTree)
     },
     // 配置菜单权限
     menuCfgCancelHandle () {
       this.showUpdateRoleMenuAuthorizationFlg = false
     },
     menuCfgConfirmHandle () {
-      console.log('menuCfgConfirmHandle', this.menuTree)
       const self = this
       self.saveLoading = true
       let sysUserUpdateMenuAuthParam = {}
@@ -1045,34 +1039,38 @@ export default {
       }
       sysUserUpdateMenuAuthParam.sysUserMenuParams = []
       for (const item of self.menuTree) {
-        let param = {
-          authorizeLevel: item.authorizeLevel,
-          menuId: item.menuId
+        if (item.authorizeLevel || item.children.length > 0) {
+          let param = {
+            authorizeLevel: item.authorizeLevel,
+            menuId: item.menuId
+          }
+          sysUserUpdateMenuAuthParam.sysUserMenuParams.push(param)
         }
-        sysUserUpdateMenuAuthParam.sysUserMenuParams.push(param)
         if (item.children && item.children.length > 0) {
           for (const childItem of item.children) {
-            let childParam = {
-              authorizeLevel: childItem.authorizeLevel,
-              menuId: childItem.menuId
+            if (childItem.authorizeLevel || childItem.children.length > 0) {
+              let childParam = {
+                authorizeLevel: childItem.authorizeLevel,
+                menuId: childItem.menuId
+              }
+              sysUserUpdateMenuAuthParam.sysUserMenuParams.push(childParam)
             }
-            sysUserUpdateMenuAuthParam.sysUserMenuParams.push(childParam)
             if (childItem.children && childItem.children.length > 0) {
               for (const grandChildItem of childItem.children) {
-                let grandChildParam = {
-                  authorizeLevel: grandChildItem.authorizeLevel,
-                  menuId: grandChildItem.menuId
+                if (grandChildItem.authorizeLevel) {
+                  let grandChildParam = {
+                    authorizeLevel: grandChildItem.authorizeLevel,
+                    menuId: grandChildItem.menuId
+                  }
+                  sysUserUpdateMenuAuthParam.sysUserMenuParams.push(grandChildParam)
                 }
-                sysUserUpdateMenuAuthParam.sysUserMenuParams.push(grandChildParam)
               }
             }
           }
         }
       }
-      console.log('sysUserUpdateMenuAuthParam', sysUserUpdateMenuAuthParam)
       sysUserManagementApi.updateMenuAuth(sysUserUpdateMenuAuthParam)
         .then(function (response) {
-          console.log('getMenuPartAuthDetail response:', response)
           self.saveLoading = false
           self.showUpdateRoleMenuAuthorizationFlg = false
         })
@@ -1087,7 +1085,6 @@ export default {
       self.partsAuthList = []
       partsManagementApi.getMenuPartDetail(menuId)
         .then(function (response) {
-          console.log('getMenuPartAuthDetail response:', response)
           const partAuthList = response.data.rows || []
           self.matchMenuPartAuthDetail(partAuthList, menuId)
         })
@@ -1097,7 +1094,6 @@ export default {
     },
     // 匹配菜单部件权限
     matchMenuPartAuthDetail (partAuthList, menuId) {
-      console.log('partAuthList:', partAuthList)
       const self = this
       let param = {
         menuId: menuId,
@@ -1128,8 +1124,6 @@ export default {
           }
           self.partsAuthList.push(param)
         }
-        console.log('self.partsAuthList', self.partsAuthList)
-        console.log('matchMenuPartAuthDetail res', res)
       }).catch(err => {
         console.log('err', err)
         // self.$Message.error(message['1001']);
@@ -1145,7 +1139,6 @@ export default {
     submitPartAuthorization () {
       const self = this
       self.partAuthLoading = true
-      console.log('self.partsAuthList', self.partsAuthList)
       let SysUserMenuPartSaveParam = {}
       if (self.partsAuthList && self.partsAuthList.length > 0) {
         SysUserMenuPartSaveParam.menuId = self.partsAuthList[0].menuId

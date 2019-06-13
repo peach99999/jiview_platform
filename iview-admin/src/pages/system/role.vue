@@ -653,25 +653,31 @@ export default {
       }
       sysRoleUpdateMenuAuthParam.sysRoleMenuParams = []
       for (const item of self.menuTree) {
-        let param = {
-          authorizeLevel: item.authorizeLevel,
-          menuId: item.menuId
+        if (item.authorizeLevel || item.children.length > 0) {
+          let param = {
+            authorizeLevel: item.authorizeLevel,
+            menuId: item.menuId
+          }
+          sysRoleUpdateMenuAuthParam.sysRoleMenuParams.push(param)
         }
-        sysRoleUpdateMenuAuthParam.sysRoleMenuParams.push(param)
         if (item.children && item.children.length > 0) {
           for (const childItem of item.children) {
-            let childParam = {
-              authorizeLevel: childItem.authorizeLevel,
-              menuId: childItem.menuId
+            if (childItem.authorizeLevel || childItem.children.length > 0) {
+              let childParam = {
+                authorizeLevel: childItem.authorizeLevel,
+                menuId: childItem.menuId
+              }
+              sysRoleUpdateMenuAuthParam.sysRoleMenuParams.push(childParam)
             }
-            sysRoleUpdateMenuAuthParam.sysRoleMenuParams.push(childParam)
             if (childItem.children && childItem.children.length > 0) {
               for (const grandChildItem of childItem.children) {
-                let grandChildParam = {
-                  authorizeLevel: grandChildItem.authorizeLevel,
-                  menuId: grandChildItem.menuId
+                if (grandChildItem.authorizeLevel) {
+                  let grandChildParam = {
+                    authorizeLevel: grandChildItem.authorizeLevel,
+                    menuId: grandChildItem.menuId
+                  }
+                  sysRoleUpdateMenuAuthParam.sysRoleMenuParams.push(grandChildParam)
                 }
-                sysRoleUpdateMenuAuthParam.sysRoleMenuParams.push(grandChildParam)
               }
             }
           }
