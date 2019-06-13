@@ -317,7 +317,7 @@ export default {
                   btnSize: 'small',
                   btnGhost: true,
                   partType: this.detailObj.partType,
-                  buttonText: this.detailObj.text,
+                  buttonText: this.detailObj.text
                 },
                 nativeOn: {
                   click: () => {

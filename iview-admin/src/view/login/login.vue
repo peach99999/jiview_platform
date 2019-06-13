@@ -21,31 +21,34 @@ import { mapActions } from 'vuex'
 export default {
   data () {
     return {
-      loading:false
-    };
+      loading: false
+    }
   },
   components: {
     LoginForm
   },
   methods: {
     ...mapActions([
-      'handleLogin',
-//      'getUserInfo'
+      'handleLogin'
     ]),
     handleSubmit ({ userName, password }) {
-      this.loading = true;
+      console.log('提交登录')
+      this.loading = true
       this.handleLogin({ userName, password }).then(res => {
-        this.loading = false;
+        this.loading = false
         this.$router.push({
-            name: this.$config.homeName
+          name: this.$config.homeName
         })
-        console.log('router',this.$router)
-//        this.getUserInfo().then(res => {
-//          this.loading = false;
-//          this.$router.push({
-//            name: this.$config.homeName
-//          })
-//        })
+      }).catch(err => {
+        this.loading = false
+        console.log('error==>', err)
+        if (err.response && err.response.data && err.response.data.msgCode === '1200012') {
+          this.$Message.warning('您的账号已过期')
+        } else if (String(err).indexOf('timeout') > -1) {
+          this.$Message.warning('登陆超时!')
+        } else {
+          this.$Message.warning('请输入正确的用户名或密码')
+        }
       })
     }
   }

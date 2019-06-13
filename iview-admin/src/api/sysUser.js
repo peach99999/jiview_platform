@@ -87,4 +87,3 @@ export const updateMenuPartAuth = (params) => {
     method: 'post'
   })
 }
-
