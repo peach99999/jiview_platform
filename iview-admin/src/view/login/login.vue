@@ -32,7 +32,6 @@ export default {
       'handleLogin'
     ]),
     handleSubmit ({ userName, password }) {
-      console.log('提交登录')
       this.loading = true
       this.handleLogin({ userName, password }).then(res => {
         this.loading = false

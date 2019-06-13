@@ -12,7 +12,7 @@
     <Layout>
       <Header class="header-con">
         <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
-          <user :message-unread-count="unreadCount" :user-avatar="userAvatar"/>
+          <user :message-unread-count="unreadCount" :user-avatar="userAvatar" :user-name="userName"/>
           <language v-if="$config.useI18n" @on-lang-change="setLocal" style="margin-right: 10px;" :lang="local"/>
           <error-store v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader" :has-read="hasReadErrorPage" :count="errorCount"></error-store>
           <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
@@ -66,7 +66,8 @@ export default {
       collapsed: false,
       minLogo,
       maxLogo,
-      isFullscreen: false
+      isFullscreen: false,
+      userName: ''
     }
   },
   computed: {
@@ -147,6 +148,9 @@ export default {
     },
     handleClick (item) {
       this.turnToPage(item)
+    },
+    init () {
+      this.userName = sessionStorage.getItem('user')
     }
   },
   watch: {
@@ -162,6 +166,7 @@ export default {
     }
   },
   mounted () {
+    this.init()
     /**
      * @description 初始化设置面包屑导航和标签导航
      */
