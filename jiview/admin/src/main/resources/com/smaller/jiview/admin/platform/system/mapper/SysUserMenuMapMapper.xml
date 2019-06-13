@@ -41,6 +41,7 @@
 
     <select id="listForUserMenuMap" resultType="com.smaller.jiview.admin.pojo.model.ext.SysMenuExt">
         SELECT
+        DISTINCT
         sm.menu_id,
 		sm.parent_id,
 		sm.menu_name,
@@ -53,15 +54,8 @@
         FROM sys_menu sm
         join sys_user_menu_map summ
         ON summ.menu_id = sm.menu_id
-        WHERE 1 = 1
-        AND EXISTS(
-        select
-        1
-        FROM sys_user_menu_map summ
         WHERE 1=1
         AND summ.user_id = #{userId}
-        AND summ.menu_id = sm.menu_id
-        )
     </select>
     <delete id="remove">
         delete from
