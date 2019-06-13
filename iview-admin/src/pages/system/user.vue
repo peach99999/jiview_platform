@@ -31,7 +31,7 @@
           <button-custom :buttonStyle="addObj.type" :buttonText="addObj.text" :partType="addObj.partType" @click.native="addOrEditRoleFlg = true;showPassword=true;" />
           <button-custom :buttonStyle="deleteObj.type" :buttonText="deleteObj.text" :partType="deleteObj.partType" @click.native="deleteBatch" />
         </ButtonGroup>
-        <Table :columns="tableTitle" :data="tableData" @on-selection-change="changeSelect"></Table>
+        <Table :columns="tableTitle" :loading="tableLoading" :data="tableData" @on-selection-change="changeSelect"></Table>
       </Row>
       <Row class="margin-top-10" style="text-align: center">
         <Page :current="filter.pageNo" :total="total" show-elevator show-sizer show-total @on-change="pageChangeHandle" @on-page-size-change="pageSizeChangeHandle"/>
@@ -111,6 +111,103 @@
           <Button type="primary" :loading="changePwd_loading" @click="changePwdConfirmHandle">保存</Button>
         </div>
       </Modal>
+      <Modal v-model="showUpdateRoleMenuAuthorizationFlg" :closable='true' :mask-closable=false :width="500">
+        <h3 slot="header" style="color:#2D8CF0">配置菜单权限</h3>
+        <div class="menu-tree">
+          <div v-for="(item) in menuTree" :key="item.menuId">
+            <div v-if="!item.parentId && item.children && item.children.length > 0">
+              <span>{{item.menuName}}</span>
+              <div v-for="(childItem) in item.children" :key="childItem.menuId">
+                <div v-if="!childItem.children || childItem.children.length === 0">
+                  <Row class="child-item-menu-name">
+                    <Col span="8" offset="1">
+                    <span class="menu-tree-title">{{childItem.menuName}}</span>
+                    </Col>
+                    <Col span="9">
+                    <input type="checkbox" :checked="childItem.authorizeLevel === 1" @change="changeVisitChecked" @click="changeVisitInfo(childItem)">
+                    <label>访问权限</label>
+                    <input type="checkbox" :checked="childItem.authorizeLevel === 2" @change="changeChecked" @click="changeVisitInfo(childItem)">
+                    <label>管理权限</label>
+                    </Col>
+                    <Col span="5">
+                    <Button type="dashed" size="small" v-if="childItem.authorizeLevel === 2" @click="getMenuPartAuthDetail(childItem.menuId)">部件权限</Button>
+                    </Col>
+                  </Row>
+                </div>
+                <div v-if="childItem.children && childItem.children.length > 0">
+                  <Row class="child-item-menu-name">
+                    <Col span="8" offset="1">
+                    <span>{{childItem.menuName}}</span>
+                    </Col>
+                  </Row>
+                  <div v-for="(grandChildItem) in childItem.children" :key="grandChildItem.menuId">
+                    <Row class="grand-child-item-menu-name">
+                      <Col span="8" offset="2">
+                      <span class="menu-tree-title">{{grandChildItem.menuName}}</span>
+                      </Col>
+                      <Col span="9">
+                      <input type="checkbox" :checked="grandChildItem.authorizeLevel === 1" @change="changeVisitChecked" @click="changeVisitInfo(grandChildItem)">
+                      <label>访问权限</label>
+                      <input type="checkbox" :checked="grandChildItem.authorizeLevel === 2" @change="changeChecked" @click="changeVisitInfo(grandChildItem)">
+                      <label>管理权限</label>
+                      </Col>
+                      <Col span="5">
+                      <Button type="dashed" size="small" v-if="grandChildItem.authorizeLevel === 2" @click="getMenuPartAuthDetail(grandChildItem.menuId)">部件权限</Button>
+                      </Col>
+                    </Row>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="!item.parentId && (!item.children || item.children.length === 0)">
+              <Row>
+                <Col span="10">
+                <span class="menu-tree-title">{{item.menuName}}</span>
+                </Col>
+                <Col span="9">
+                <input type="checkbox" :checked="item.authorizeLevel === 1" @change="changeVisitChecked" @click="changeVisitInfo(item)">
+                <label>访问权限</label>
+                <input type="checkbox" :checked="item.authorizeLevel === 2" @change="changeChecked" @click="changeVisitInfo(item)">
+                <label>管理权限</label>
+                </Col>
+                <Col span="5">
+                <Button type="dashed" size="small" v-if="item.authorizeLevel === 2" @click="getMenuPartAuthDetail(item.menuId)">部件权限</Button>
+                </Col>
+              </Row>
+            </div>
+          </div>
+        </div>
+        <div slot="footer">
+          <Button type="text" @click="menuCfgCancelHandle">取消</Button>
+          <Button type="primary" :loading="saveLoading" @click="menuCfgConfirmHandle">保存</Button>
+        </div>
+      </Modal>
+      <Modal v-model="showUpdatePartAuthorizationFlg" :closable='false' :mask-closable=false :width="780" >
+        <h3 slot="header" style="color:#2D8CF0">配置部件权限</h3>
+        <div v-for="(item) in partsAuthList " :key="item.partId">
+          <Row style="display: flex;align-items: center;margin-top: 10px;">
+            <Col span="6">
+            <span>组件Id：{{item.cmpId}}</span>
+            </Col>
+            <Col span="5">
+            <span>组件类型：{{item.cmpType}}</span>
+            </Col>
+            <Col span="5">
+            <span>备注：{{item.remark}}</span>
+            </Col>
+            <Col span="8">
+            <span>权限类型：</span>
+            <Select v-model="item.partAuthType" style="width:150px;" placeholder="请选择锁定状态" filterable :transfer="true">
+              <Option v-for="(partItem,index) in partAuthTypeList" :value="partItem.partAuthType" :key="index">{{ partItem.partAuthTypeName }}</Option>
+            </Select>
+            </Col>
+          </Row>
+        </div>
+        <div slot="footer">
+          <Button type="text" @click="cancelPartAuthorization">取消</Button>
+          <Button type="primary" :loading="partAuthLoading" @click="submitPartAuthorization">确定</Button>
+        </div>
+      </Modal>
     </Card>
   </div>
 </template>
@@ -119,6 +216,8 @@
 import * as sysUserManagementApi from '@/api/sysUser'
 import * as roleManagementApi from '@/api/role'
 import * as userManagementApi from '@/api/user'
+import * as menuManagementApi from '@/api/menu'
+import * as partsManagementApi from '@/api/partsManagement'
 import { getDepartmentList } from '@/api/organizationalManagement'
 import { getMenuId } from '@/libs/util'
 import ButtonCustom from '@/components/button-custom/button-custom.vue'
@@ -209,7 +308,7 @@ export default {
           key: 'action',
           fixed: 'left',
           align: 'center',
-          width: 170,
+          width: 250,
           render: (h, params) => {
             return h('div', [
               h(ButtonCustom, {
@@ -232,7 +331,7 @@ export default {
                   btnSize: 'small',
                   btnGhost: true,
                   partType: this.ChangeObj.partType,
-                  buttonText: this.ChangeObj.text,
+                  buttonText: this.ChangeObj.text
                 },
                 style: {
                   marginLeft: '10px'
@@ -248,7 +347,24 @@ export default {
                     this.showChangePwdFlg = true
                   }
                 }
-              }, '修改密码')
+              }, '修改密码'),
+              h(ButtonCustom, {
+                props: {
+                  buttonStyle: 'success',
+                  btnSize: 'small',
+                  btnGhost: true,
+                  partType: this.menuAuthObj.partType,
+                  buttonText: '菜单权限'
+                },
+                style: {
+                  marginLeft: '10px'
+                },
+                nativeOn: {
+                  click: () => {
+                    this.changeMenuPermissions(params.row.id)
+                  }
+                }
+              }, '菜单权限')
             ])
           }
         },
@@ -256,7 +372,7 @@ export default {
           title: '部门名称',
           key: 'deptName',
           align: 'center',
-          width: 260,
+          width: 235,
           render: function (h, params) {
             return h('div', params.row.deptName ? params.row.deptName : '----')
           }
@@ -265,7 +381,7 @@ export default {
           title: '账号',
           key: 'account',
           align: 'center',
-          width: 260,
+          width: 235,
           render: function (h, params) {
             return h('div', params.row.account ? params.row.account : '----')
           }
@@ -274,7 +390,7 @@ export default {
           title: '用户名',
           key: 'userName',
           align: 'center',
-          width: 260,
+          width: 235,
           render: function (h, params) {
             return h('div', params.row.userName ? params.row.userName : '----')
           }
@@ -283,7 +399,7 @@ export default {
           title: '人员类型',
           key: 'userType',
           align: 'center',
-          width: 260,
+          width: 255,
           render: function (h, params) {
             if (params.row.userType === 1) {
               return h('div', '业务人员')
@@ -387,11 +503,56 @@ export default {
         partId: 'user_detail'
       },
       ChangeObj: {
-        type: 'success',
+        type: 'warning',
         text: '修改密码',
         partType: 4,
         partId: 'user_change_password'
-      }
+      },
+      menuAuthObj: {
+        type: 'success',
+        text: '菜单权限',
+        partType: 4,
+        partId: 'role_menu_auth'
+      },
+      tableLoading: false,
+      menuTree: [],
+      menuAuthList: [],
+      showUpdateRoleMenuAuthorizationFlg: false,
+      saveLoading: false,
+      userId: '',
+      partsAuthList: [],
+      showUpdatePartAuthorizationFlg: false,
+      partAuthLoading: false,
+      partAuthTypeList: [
+        {
+          partAuthType: 1,
+          partAuthTypeName: '禁用'
+        },
+        {
+          partAuthType: 2,
+          partAuthTypeName: '只读'
+        },
+        {
+          partAuthType: 3,
+          partAuthTypeName: '编辑'
+        },
+        {
+          partAuthType: 4,
+          partAuthTypeName: '显示'
+        },
+        {
+          partAuthType: 5,
+          partAuthTypeName: '隐藏'
+        },
+        {
+          partAuthType: 6,
+          partAuthTypeName: '挂起'
+        },
+        {
+          partAuthType: 7,
+          partAuthTypeName: '激活'
+        }
+      ]
     }
   },
   mounted () {
@@ -548,10 +709,12 @@ export default {
     queryRoleDetail (pkid) {
       const self = this
       self.showPassword = false
+      self.tableLoading = true
       self.deptIdList = []
       // 调用获取角色信息接口
       sysUserManagementApi.getUserInfoDetail(pkid).then(res => {
         self.addOrEditRoleFlg = true
+        self.tableLoading = false
         self.foreachAndSearchDeptParentNode(self.cascaderData, res.data.row.deptId)
         if (res.data.row) {
           self.user.deptId = self.deptIdList
@@ -774,11 +937,261 @@ export default {
             })
         }
       })
+    },
+    // 点击菜单权限
+    changeMenuPermissions (id) {
+      const self = this
+      self.tableLoading = true
+      self.userId = id
+      self.listMenuTree()
+      sysUserManagementApi.getListUserMenu(id).then(res => {
+        self.tableLoading = false
+        console.log('getListUserMenu res', res)
+        if (res.data.rows) {
+          self.menuAuthList = res.data.rows
+        }
+        self.showUpdateRoleMenuAuthorizationFlg = true
+        self.matchMenuPermissions(self.menuTree, self.menuAuthList)
+        console.log('self.menuTree', self.menuTree)
+      }).catch(err => {
+        console.log('err', err)
+        // self.$Message.error(message['1001']);
+      })
+    },
+    // 获取全部菜单（树型）
+    listMenuTree () {
+      const self = this
+      menuManagementApi.listMenuTree()
+        .then(function (response) {
+          self.menuTree = JSON.parse(JSON.stringify(response.data.rows))
+        })
+        .catch(function (error) {
+          console.log('menuManagementApi.listMenuTree→error:', error)
+          // self.$Message.error('系统错误,请联系管理员!')
+        })
+    },
+    // 匹配菜单权限
+    matchMenuPermissions (menuTree, userMenuTree) {
+      console.log('matchMenuPermissions menuTree', menuTree)
+      console.log('matchMenuPermissions userMenuTree', userMenuTree)
+      const self = this
+      if (menuTree && userMenuTree) {
+        for (const menuItem of menuTree) {
+          menuItem.authorizeLevel = 0
+          for (const userMenuItem of userMenuTree) {
+            if (menuItem.menuId === userMenuItem.menuId) {
+              console.log('userMenuItem.menuName', userMenuItem.menuName)
+              menuItem.authorizeLevel = userMenuItem.authorizeLevel
+            }
+          }
+          if (menuItem.children && menuItem.children.length > 0) {
+            self.matchMenuPermissions(menuItem.children, userMenuTree)
+          }
+        }
+      }
+    },
+    changeVisitChecked (e) {
+      const self = this
+      const menuId = this.currentInfo.menuId
+      const checked = e.target.checked
+      if (checked) {
+        self.searchAndChangeMenuAuthority(self.menuTree, menuId, 1)
+      }
+      if (!checked) {
+        self.searchAndChangeMenuAuthority(self.menuTree, menuId, 0)
+      }
+    },
+    changeChecked (e) {
+      const self = this
+      const menuId = this.currentInfo.menuId
+      const checked = e.target.checked
+      if (checked) {
+        self.searchAndChangeMenuAuthority(self.menuTree, menuId, 2)
+      }
+      if (!checked) {
+        self.searchAndChangeMenuAuthority(self.menuTree, menuId, 0)
+      }
+    },
+    changeVisitInfo (item) {
+      console.log('changeVisitInfo', item)
+      this.currentInfo = item
+    },
+    // 搜索菜单并修改权限
+    searchAndChangeMenuAuthority (menuTree, menuId, authority) {
+      console.log('authority', authority)
+      const self = this
+      for (const value of menuTree) {
+        if (value.menuId === menuId) {
+          value.authorizeLevel = authority
+        }
+        if (value.children && value.children.length > 0) {
+          self.searchAndChangeMenuAuthority(value.children, menuId, authority)
+        }
+      }
+      self.menuTree = [...self.menuTree]
+      console.log('self.menuTree', self.menuTree)
+    },
+    // 配置菜单权限
+    menuCfgCancelHandle () {
+      this.showUpdateRoleMenuAuthorizationFlg = false
+    },
+    menuCfgConfirmHandle () {
+      console.log('menuCfgConfirmHandle', this.menuTree)
+      const self = this
+      self.saveLoading = true
+      let sysUserUpdateMenuAuthParam = {}
+      if (self.userId) {
+        sysUserUpdateMenuAuthParam.userId = self.userId
+      }
+      sysUserUpdateMenuAuthParam.sysUserMenuParams = []
+      for (const item of self.menuTree) {
+        let param = {
+          authorizeLevel: item.authorizeLevel,
+          menuId: item.menuId
+        }
+        sysUserUpdateMenuAuthParam.sysUserMenuParams.push(param)
+        if (item.children && item.children.length > 0) {
+          for (const childItem of item.children) {
+            let childParam = {
+              authorizeLevel: childItem.authorizeLevel,
+              menuId: childItem.menuId
+            }
+            sysUserUpdateMenuAuthParam.sysUserMenuParams.push(childParam)
+            if (childItem.children && childItem.children.length > 0) {
+              for (const grandChildItem of childItem.children) {
+                let grandChildParam = {
+                  authorizeLevel: grandChildItem.authorizeLevel,
+                  menuId: grandChildItem.menuId
+                }
+                sysUserUpdateMenuAuthParam.sysUserMenuParams.push(grandChildParam)
+              }
+            }
+          }
+        }
+      }
+      console.log('sysUserUpdateMenuAuthParam', sysUserUpdateMenuAuthParam)
+      sysUserManagementApi.updateMenuAuth(sysUserUpdateMenuAuthParam)
+        .then(function (response) {
+          console.log('getMenuPartAuthDetail response:', response)
+          self.saveLoading = false
+          self.showUpdateRoleMenuAuthorizationFlg = false
+        })
+        .catch(function (error) {
+          console.log('partsManagementApi.getMenuPartDetail→error:', error)
+        })
+    },
+    // 部件权限详情
+    getMenuPartAuthDetail (menuId) {
+      console.log('getMenuPartAuthDetail menuId:', menuId)
+      const self = this
+      self.partsAuthList = []
+      partsManagementApi.getMenuPartDetail(menuId)
+        .then(function (response) {
+          console.log('getMenuPartAuthDetail response:', response)
+          const partAuthList = response.data.rows || []
+          self.matchMenuPartAuthDetail(partAuthList, menuId)
+        })
+        .catch(function (error) {
+          console.log('partsManagementApi.getMenuPartDetail→error:', error)
+        })
+    },
+    // 匹配菜单部件权限
+    matchMenuPartAuthDetail (partAuthList, menuId) {
+      console.log('partAuthList:', partAuthList)
+      const self = this
+      let param = {
+        menuId: menuId,
+        userId: self.userId
+      }
+      sysUserManagementApi.getMenuPartAuthorize(param).then(res => {
+        self.showUpdatePartAuthorizationFlg = true
+        self.showUpdateRoleMenuAuthorizationFlg = false
+        const partAuthMatchList = res.data.rows || []
+        for (const item of partAuthList) {
+          let param = {
+            cmpId: item.cmpId,
+            // cmpType: item.cmpType,
+            createTime: item.createTime,
+            createUserId: item.createUserId,
+            menuId: item.menuId,
+            partId: item.partId,
+            remark: item.remark,
+            partAuthType: null
+          }
+          if (item.cmpType === 1) {
+            param.cmpType = '按钮组件'
+          }
+          for (const value of partAuthMatchList) {
+            if (item.partId === value.partId) {
+              param.partAuthType = value.partAuthType
+            }
+          }
+          self.partsAuthList.push(param)
+        }
+        console.log('self.partsAuthList', self.partsAuthList)
+        console.log('matchMenuPartAuthDetail res', res)
+      }).catch(err => {
+        console.log('err', err)
+        // self.$Message.error(message['1001']);
+      })
+    },
+    cancelPartAuthorization () {
+      const self = this
+      self.partAuthLoading = true
+      self.showUpdatePartAuthorizationFlg = false
+      self.showUpdateRoleMenuAuthorizationFlg = true
+      self.partAuthLoading = false
+    },
+    submitPartAuthorization () {
+      const self = this
+      self.partAuthLoading = true
+      console.log('self.partsAuthList', self.partsAuthList)
+      let SysUserMenuPartSaveParam = {}
+      if (self.partsAuthList && self.partsAuthList.length > 0) {
+        SysUserMenuPartSaveParam.menuId = self.partsAuthList[0].menuId
+      }
+      if (self.userId) {
+        SysUserMenuPartSaveParam.userId = self.userId
+      }
+      SysUserMenuPartSaveParam.menuPartList = []
+      for (const item of self.partsAuthList) {
+        if (item.partAuthType) {
+          let param = {
+            partAuthType: item.partAuthType,
+            partId: item.partId
+          }
+          SysUserMenuPartSaveParam.menuPartList.push(param)
+        }
+      }
+      sysUserManagementApi.updateMenuPartAuth(SysUserMenuPartSaveParam)
+        .then(function (response) {
+          self.showUpdatePartAuthorizationFlg = false
+          self.showUpdateRoleMenuAuthorizationFlg = true
+          self.partAuthLoading = false
+        })
+        .catch(function (error) {
+          console.log('sysUserManagementApi.updateMenuPartAuth→error:', error)
+        })
     }
   }
 }
 </script>
 
 <style>
-
+  .child-item-menu-name {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+  }
+  .grand-child-item-menu-name {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+  }
+  .menu-tree {
+    padding: 10px 10px 20px 10px;
+  }
+  .menu-tree-title {
+    font-weight: bold;
+  }
 </style>

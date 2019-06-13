@@ -843,7 +843,7 @@ export default {
           console.log('partsManagementApi.getMenuPartDetail→error:', error)
         })
     },
-    // 匹配菜单权限
+    // 匹配菜单部件权限
     matchMenuPartAuthDetail (partAuthList, menuId) {
       console.log('partAuthList:', partAuthList)
       const self = this
