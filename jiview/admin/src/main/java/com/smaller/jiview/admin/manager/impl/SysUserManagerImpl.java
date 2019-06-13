@@ -3,6 +3,7 @@ package com.smaller.jiview.admin.manager.impl;
 import com.smaller.jiview.admin.manager.SysUserManager;
 import com.smaller.jiview.admin.platform.system.mapper.SysUserMapper;
 import com.smaller.jiview.admin.platform.system.model.SysUser;
+import com.smaller.jiview.core.constant.Constants;
 import com.smaller.jiview.core.exception.BizException;
 import com.smaller.jiview.core.message.AdminMessage;
 import com.smaller.jiview.core.pojo.dto.LoginUserDTO;
@@ -33,7 +34,8 @@ public class SysUserManagerImpl implements SysUserManager {
         Example example = new Example(SysUser.class);
         example.createCriteria()
                 .andEqualTo("account", userLogin)
-                .andEqualTo("password", SecurityUtil.encodePwd(userPwd));
+                .andEqualTo("password", SecurityUtil.encodePwd(userPwd))
+                .andEqualTo("locked", Constants.SYS_USER_LOCKED_1);
 
         List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
         if (sysUsers.isEmpty()) {
