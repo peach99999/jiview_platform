@@ -54,6 +54,7 @@ public class LoginServiceImpl implements LoginService {
         userForReturnDTO.setUserId(userId);
         userForReturnDTO.setDeptId(sysUser.getDeptId());
         userForReturnDTO.setAccount(userLogin);
+        userForReturnDTO.setUserName(sysUser.getUserName());
         userForReturnDTO.setAuthorization(jwtHelper.createAndSaveToken(jwtDTO));
 
         bo.setRow(userForReturnDTO);

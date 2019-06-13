@@ -15,4 +15,6 @@ public class UserForReturnDTO implements Serializable {
 
     @JSONField(name = "Authorization")
     private String authorization;
+
+    private String userName;
 }
