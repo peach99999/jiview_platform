@@ -307,15 +307,19 @@ export default {
     },
     // 点击树节点（部门）触发事件
     clickTreeNodeChange (e) {
+      console.log('点击树节点（部门）触发事件', e)
       const self = this
       self.searchValue = ''
-      self.nodeDeptId = e[0].deptId
+      self.nodeDeptId = ''
+      if (e && e.length > 0 && e[0].deptId) {
+        self.nodeDeptId = e[0].deptId
+      }
       self.filter.pageNo = 1
       self.filter.pageSize = 10
       const param = {
         pageNo: self.filter.pageNo,
         pageSize: self.filter.pageSize,
-        deptId: e[0].deptId,
+        deptId: self.nodeDeptId,
         deptName: ''
       }
       self.getDepartmentList(param)
