@@ -277,7 +277,7 @@ export default {
           title: '状态',
           key: 'locked',
           align: 'center',
-          width: 130,
+          // width: 130,
           render: (h, params) => {
             return h('div', [
               h('Tag', {
@@ -288,7 +288,7 @@ export default {
                 style: {
                   cursor: 'default'
                 }
-              }, params.row.locked === false ? '激活' : (params.row.locked === true ? '锁定' : '----'))
+              }, params.row.statusName ? params.row.statusName : '----')
             ])
           }
         },
@@ -296,7 +296,7 @@ export default {
           title: '部门名称',
           key: 'deptName',
           align: 'center',
-          width: 450,
+          // width: 450,
           render: function (h, params) {
             return h('div', params.row.deptName ? params.row.deptName : '----')
           }
@@ -305,7 +305,7 @@ export default {
           title: '角色名',
           key: 'roleName',
           align: 'center',
-          width: 450,
+          // width: 450,
           render: function (h, params) {
             return h('div', params.row.roleName ? params.row.roleName : '----')
           }

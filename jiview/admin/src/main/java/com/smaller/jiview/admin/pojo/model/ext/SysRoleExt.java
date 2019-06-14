@@ -20,4 +20,7 @@ public class SysRoleExt extends SysRole {
 
     @ApiModelProperty("部门名称")
     private String deptName;
+
+    @ApiModelProperty("状态名称")
+    private String statusName;
 }

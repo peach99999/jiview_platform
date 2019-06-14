@@ -21,4 +21,7 @@ public class SysUserExt extends SysUser {
 
     @ApiModelProperty("用户角色集")
     private List<SysUserRoleExt> sysUserRoleExtList;
+
+    @ApiModelProperty("状态名称")
+    private String statusName;
 }

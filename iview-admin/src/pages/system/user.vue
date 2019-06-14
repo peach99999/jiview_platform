@@ -386,7 +386,7 @@ export default {
                 style: {
                   cursor: 'default'
                 }
-              }, params.row.locked === false ? '激活' : (params.row.locked === true ? '锁定' : '----'))
+              }, params.row.statusName ? params.row.statusName : '----')
             ])
           }
         },

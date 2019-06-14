@@ -36,10 +36,14 @@
     sr.remark,
     sr.locked,
     sr.create_time,
-    sd.dept_name as deptName
+    sd.dept_name as deptName,
+    sc.code_value as statusName
     FROM
     sys_role sr
     JOIN sys_dept sd ON sd.dept_id = sr.dept_id
+    left join sys_code sc
+    on sc.code_key = sr.locked
+    and sc.code_type = '${@com.smaller.jiview.core.constant.CodeConstants@SYS_ROLE_LOCKED}'
     <include refid="list_where" />
   </select>
 

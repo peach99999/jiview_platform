@@ -38,6 +38,9 @@
       FROM sys_user su
 	  join sys_dept sd
 	  ON su.dept_id = sd.dept_id
+	  left join sys_code sc
+      on sc.code_key = su.locked
+      and sc.code_type = '${@com.smaller.jiview.core.constant.CodeConstants@SYS_USER_LOCKED}'
   </sql>
 
   <select id="list" resultType="com.smaller.jiview.admin.pojo.model.ext.SysUserExt">
@@ -54,7 +57,8 @@
     su.user_type,
     su.enabled,
     su.create_time,
-    sd.dept_name as deptName
+    sd.dept_name as deptName,
+    sc.code_value as statusName
     <include refid="list_from"/>
     <include refid="list_where" />
     ORDER BY id
