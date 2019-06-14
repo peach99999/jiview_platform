@@ -48,11 +48,13 @@
           <FormItem label="部门名称" prop="deptName">
             <Input type="text" v-model.trim="formValidate.deptName" ></Input>
           </FormItem>
-          <FormItem label="上级部门" prop="parentId">
-            <Select v-model="formValidate.parentId" clearable >
-              <Option v-for="item in selectDeptList" :value="item.deptId" :key="item.deptId">{{ item.deptName }}</Option>
-            </Select>
-          </FormItem>
+          <div v-if="formValidate.parentId > 0">
+            <FormItem label="上级部门" prop="parentId">
+              <Select v-model="formValidate.parentId" clearable >
+                <Option v-for="item in selectDeptList" :value="item.deptId" :key="item.deptId">{{ item.deptName }}</Option>
+              </Select>
+            </FormItem>
+          </div>
           <FormItem label="排序号" prop="sortno">
             <Input v-model.trim="formValidate.sortno" ></Input>
           </FormItem>
@@ -142,7 +144,7 @@ export default {
       },
       selectDeptList: [],
       deleteModal: false,
-      nodeDeptId: '',
+      nodeDeptId: 99999,
       resetObj: {
         type: 'info',
         text: '重置',
