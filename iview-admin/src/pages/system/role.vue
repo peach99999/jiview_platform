@@ -137,6 +137,9 @@
       </Modal>
       <Modal v-model="showUpdatePartAuthorizationFlg" :closable='false' :mask-closable=false :width="780" >
         <h3 slot="header" style="color:#2D8CF0">配置部件权限</h3>
+        <div v-if="!partsAuthList || partsAuthList.length === 0">
+          <span>该菜单未设置部件信息</span>
+        </div>
         <div v-for="(item) in partsAuthList " :key="item.partId">
           <Row style="display: flex;align-items: center;margin-top: 10px;">
             <Col span="6">
