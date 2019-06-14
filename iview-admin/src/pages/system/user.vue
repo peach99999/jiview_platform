@@ -355,11 +355,11 @@ export default {
               }, '修改密码'),
               h(ButtonCustom, {
                 props: {
-                  buttonStyle: 'success',
+                  buttonStyle: this.menuAuthObj.type,
                   btnSize: 'small',
                   btnGhost: true,
                   partType: this.menuAuthObj.partType,
-                  buttonText: '菜单权限'
+                  buttonText: this.menuAuthObj.text
                 },
                 style: {
                   marginLeft: '10px'
@@ -496,7 +496,7 @@ export default {
         type: 'success',
         text: '菜单权限',
         partType: 4,
-        partId: 'role_menu_auth'
+        partId: 'user_menu_auth'
       },
       tableLoading: false,
       menuTree: [],
@@ -652,6 +652,9 @@ export default {
           }
           if (value.cmpId === this.ChangeObj.partId) {
             this.ChangeObj.partType = value.partAuthType
+          }
+          if (value.cmpId === this.menuAuthObj.partId) {
+            this.menuAuthObj.partType = value.partAuthType
           }
         }
       }).catch(err => {
