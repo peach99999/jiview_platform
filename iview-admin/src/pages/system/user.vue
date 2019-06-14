@@ -396,7 +396,7 @@ export default {
           title: '部门名称',
           key: 'deptName',
           align: 'center',
-          width: 235,
+          width: 200,
           render: function (h, params) {
             return h('div', params.row.deptName ? params.row.deptName : '----')
           }
@@ -405,7 +405,7 @@ export default {
           title: '账号',
           key: 'account',
           align: 'center',
-          width: 235,
+          width: 200,
           render: function (h, params) {
             return h('div', params.row.account ? params.row.account : '----')
           }
@@ -414,7 +414,7 @@ export default {
           title: '用户名',
           key: 'userName',
           align: 'center',
-          width: 235,
+          width: 200,
           render: function (h, params) {
             return h('div', params.row.userName ? params.row.userName : '----')
           }
@@ -423,7 +423,7 @@ export default {
           title: '人员类型',
           key: 'userType',
           align: 'center',
-          width: 255,
+          width: 230,
           render: function (h, params) {
             if (params.row.userType === 1) {
               return h('div', '业务人员')
