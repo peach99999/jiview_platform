@@ -372,6 +372,25 @@ export default {
           }
         },
         {
+          title: '状态',
+          key: 'locked',
+          align: 'center',
+          width: 130,
+          render: (h, params) => {
+            return h('div', [
+              h('Tag', {
+                props: {
+                  type: 'dot',
+                  color: params.row.locked === false ? 'success' : (params.row.locked === true ? 'warning' : 'default')
+                },
+                style: {
+                  cursor: 'default'
+                }
+              }, params.row.locked === false ? '激活' : (params.row.locked === true ? '锁定' : '----'))
+            ])
+          }
+        },
+        {
           title: '部门名称',
           key: 'deptName',
           align: 'center',
