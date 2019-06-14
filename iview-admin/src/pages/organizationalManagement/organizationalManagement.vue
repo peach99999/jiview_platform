@@ -48,7 +48,7 @@
           <FormItem label="部门名称" prop="deptName">
             <Input type="text" v-model.trim="formValidate.deptName" ></Input>
           </FormItem>
-          <div v-if="formValidate.parentId > 0">
+          <div v-if="formValidate.parentId !== 0">
             <FormItem label="上级部门" prop="parentId">
               <Select v-model="formValidate.parentId" clearable >
                 <Option v-for="item in selectDeptList" :value="item.deptId" :key="item.deptId">{{ item.deptName }}</Option>
@@ -144,7 +144,7 @@ export default {
       },
       selectDeptList: [],
       deleteModal: false,
-      nodeDeptId: 99999,
+      nodeDeptId: '',
       resetObj: {
         type: 'info',
         text: '重置',
@@ -307,7 +307,6 @@ export default {
     },
     // 点击树节点（部门）触发事件
     clickTreeNodeChange (e) {
-      console.log('点击树节点（部门）触发事件', e)
       const self = this
       self.searchValue = ''
       self.nodeDeptId = ''
@@ -450,6 +449,7 @@ export default {
     addSelectedInfo () {
       const self = this
       self.$refs['formValidate'].resetFields()
+      self.formValidate.parentId = ''
       if (self.nodeDeptId) {
         self.formValidate.parentId = self.nodeDeptId
       }
