@@ -178,6 +178,8 @@ import { getDepartmentList } from '@/api/organizationalManagement'
 // import { list } from '../../api/menu'
 import { getMenuPartAuth } from '@/api/sysUser'
 import ButtonCustom from '@/components/button-custom/button-custom.vue'
+import * as codeManagementApi from '@/api/code'
+import * as constData from '@/libs/const-data'
 export default {
   components: {
     ButtonCustom
@@ -317,63 +319,12 @@ export default {
       total: 0,
       regionCompanyList: [],
       cascaderData: [],
-      roleTypeList: [
-        {
-          roleType: 1,
-          roleTypeName: '业务角色'
-        },
-        {
-          roleType: 2,
-          roleTypeName: '管理角色'
-        },
-        {
-          roleType: 3,
-          roleTypeName: '系统内置角色'
-        }
-      ],
-      lockedStatusList: [
-        {
-          locked: 1,
-          lockedStatus: '锁定'
-        },
-        {
-          locked: 0,
-          lockedStatus: '激活'
-        }
-      ],
+      roleTypeList: [],
+      lockedStatusList: [],
       deptIdList: [],
       currentInfo: {},
       partsAuthList: [],
-      partAuthTypeList: [
-        {
-          partAuthType: 1,
-          partAuthTypeName: '禁用'
-        },
-        {
-          partAuthType: 2,
-          partAuthTypeName: '只读'
-        },
-        {
-          partAuthType: 3,
-          partAuthTypeName: '编辑'
-        },
-        {
-          partAuthType: 4,
-          partAuthTypeName: '显示'
-        },
-        {
-          partAuthType: 5,
-          partAuthTypeName: '隐藏'
-        },
-        {
-          partAuthType: 6,
-          partAuthTypeName: '挂起'
-        },
-        {
-          partAuthType: 7,
-          partAuthTypeName: '激活'
-        }
-      ],
+      partAuthTypeList: [],
       tableLoading: false,
       addObj: {
         type: 'success',
@@ -412,6 +363,69 @@ export default {
       self.getDepartmentList()
       self.listMenuTree()
       self.getMenuId(self.$store.state.app.menuList, self.$route.meta.title)
+      self.getRoleTypeList()
+      self.getLockedStatusList()
+      self.getPartAuthTypeList()
+    },
+    getRoleTypeList () {
+      const self = this
+      self.roleTypeList = []
+      codeManagementApi.getCodeList(constData.SYS_ROLE_ROLE_TYPE)
+        .then(function (response) {
+          if (response.data.rows && response.data.rows.length > 0) {
+            const list = response.data.rows
+            for (const item of list) {
+              let param = {
+                roleType: Number(item.codeKey),
+                roleTypeName: item.codeValue
+              }
+              self.roleTypeList.push(param)
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log('codeManagementApi.getCodeList→error:', error)
+        })
+    },
+    getLockedStatusList () {
+      const self = this
+      self.lockedStatusList = []
+      codeManagementApi.getCodeList(constData.SYS_ROLE_LOCKED)
+        .then(function (response) {
+          if (response.data.rows && response.data.rows.length > 0) {
+            const list = response.data.rows
+            for (const item of list) {
+              let param = {
+                locked: Number(item.codeKey),
+                lockedStatus: item.codeValue
+              }
+              self.lockedStatusList.push(param)
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log('codeManagementApi.getCodeList→error:', error)
+        })
+    },
+    getPartAuthTypeList () {
+      const self = this
+      self.partAuthTypeList = []
+      codeManagementApi.getCodeList(constData.SYS_ROLE_MENU_PART_PART_AUTH_TYPE)
+        .then(function (response) {
+          if (response.data.rows && response.data.rows.length > 0) {
+            const list = response.data.rows
+            for (const item of list) {
+              let param = {
+                partAuthType: Number(item.codeKey),
+                partAuthTypeName: item.codeValue
+              }
+              self.partAuthTypeList.push(param)
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log('codeManagementApi.getCodeList→error:', error)
+        })
     },
     getMenuId (list, name) {
       if (getMenuId(list, name)) {

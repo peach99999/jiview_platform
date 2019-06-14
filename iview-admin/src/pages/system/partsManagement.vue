@@ -60,6 +60,8 @@
 <script>
 // import * as util from '@/libs/util'
 import * as partsManagementApi from '@/api/partsManagement'
+import * as codeManagementApi from '@/api/code'
+import * as constData from '@/libs/const-data'
 export default {
   data () {
     return {
@@ -68,12 +70,7 @@ export default {
       partsObj: {
         partsList: []
       },
-      partTypeList: [
-        {
-          partTypePkid: 1,
-          partType: '按钮组件'
-        }
-      ],
+      partTypeList: [],
       sameId: ''
     }
   },
@@ -81,9 +78,31 @@ export default {
   mounted () {
     const self = this
     self.menuId = self.$route.params.menuId
+    self.getPartTypeList()
     self.getMenuPartDetail(self.menuId)
   },
   methods: {
+    getPartTypeList () {
+      const self = this
+      self.partTypeList = []
+      codeManagementApi.getCodeList(constData.SYS_MENU_PART_CMP_TYPE)
+        .then(function (response) {
+          console.log('getPartTypeList response', response)
+          if (response.data.rows && response.data.rows.length > 0) {
+            const list = response.data.rows
+            for (const item of list) {
+              let param = {
+                partTypePkid: Number(item.codeKey),
+                partType: item.codeValue
+              }
+              self.partTypeList.push(param)
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log('codeManagementApi.getCodeList→error:', error)
+        })
+    },
     getMenuPartDetail (menuid) {
       const self = this
       partsManagementApi.getMenuPartDetail(menuid)

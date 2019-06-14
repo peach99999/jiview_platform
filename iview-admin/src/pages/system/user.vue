@@ -221,6 +221,8 @@ import * as roleManagementApi from '@/api/role'
 import * as userManagementApi from '@/api/user'
 import * as menuManagementApi from '@/api/menu'
 import * as partsManagementApi from '@/api/partsManagement'
+import * as codeManagementApi from '@/api/code'
+import * as constData from '@/libs/const-data'
 import { getDepartmentList } from '@/api/organizationalManagement'
 import { getMenuId } from '@/libs/util'
 import ButtonCustom from '@/components/button-custom/button-custom.vue'
@@ -441,50 +443,10 @@ export default {
       total: 0,
       regionCompanyList: [],
       cascaderData: [],
-      userTypeList: [
-        {
-          userType: 1,
-          userTypeName: '业务人员'
-        },
-        {
-          userType: 2,
-          userTypeName: '管理员'
-        },
-        {
-          userType: 3,
-          userTypeName: '系统内置人员'
-        }
-      ],
-      sexList: [
-        {
-          sex: 1,
-          sexName: '男'
-        },
-        {
-          sex: 2,
-          sexName: '女'
-        }
-      ],
-      lockedStatusList: [
-        {
-          locked: 1,
-          lockedStatus: '锁定'
-        },
-        {
-          locked: 0,
-          lockedStatus: '激活'
-        }
-      ],
-      enabledStatusList: [
-        {
-          enabled: 1,
-          enabledStatus: '启用'
-        },
-        {
-          enabled: 0,
-          enabledStatus: '不启用'
-        }
-      ],
+      userTypeList: [],
+      sexList: [],
+      lockedStatusList: [],
+      enabledStatusList: [],
       deptIdList: [],
       currentInfo: {},
       showPassword: false,
@@ -545,36 +507,7 @@ export default {
       partsAuthList: [],
       showUpdatePartAuthorizationFlg: false,
       partAuthLoading: false,
-      partAuthTypeList: [
-        {
-          partAuthType: 1,
-          partAuthTypeName: '禁用'
-        },
-        {
-          partAuthType: 2,
-          partAuthTypeName: '只读'
-        },
-        {
-          partAuthType: 3,
-          partAuthTypeName: '编辑'
-        },
-        {
-          partAuthType: 4,
-          partAuthTypeName: '显示'
-        },
-        {
-          partAuthType: 5,
-          partAuthTypeName: '隐藏'
-        },
-        {
-          partAuthType: 6,
-          partAuthTypeName: '挂起'
-        },
-        {
-          partAuthType: 7,
-          partAuthTypeName: '激活'
-        }
-      ]
+      partAuthTypeList: []
     }
   },
   mounted () {
@@ -588,6 +521,111 @@ export default {
       self.getDepartmentList()
       self.getRoleSelectList()
       self.getMenuId(self.$store.state.app.menuList, self.$route.meta.title)
+      self.getPartAuthTypeList()
+      self.getUserTypeList()
+      self.getSexList()
+      self.getLockedStatusList()
+      self.getEnabledStatusList()
+    },
+    getUserTypeList () {
+      const self = this
+      self.userTypeList = []
+      codeManagementApi.getCodeList(constData.SYS_USER_USER_TYPE)
+        .then(function (response) {
+          if (response.data.rows && response.data.rows.length > 0) {
+            const list = response.data.rows
+            for (const item of list) {
+              let param = {
+                userType: Number(item.codeKey),
+                userTypeName: item.codeValue
+              }
+              self.userTypeList.push(param)
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log('codeManagementApi.getCodeList→error:', error)
+        })
+    },
+    getSexList () {
+      const self = this
+      self.sexList = []
+      codeManagementApi.getCodeList(constData.SYS_USER_SEX)
+        .then(function (response) {
+          if (response.data.rows && response.data.rows.length > 0) {
+            const list = response.data.rows
+            for (const item of list) {
+              let param = {
+                sex: Number(item.codeKey),
+                sexName: item.codeValue
+              }
+              self.sexList.push(param)
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log('codeManagementApi.getCodeList→error:', error)
+        })
+    },
+    getLockedStatusList () {
+      const self = this
+      self.lockedStatusList = []
+      codeManagementApi.getCodeList(constData.SYS_USER_LOCKED)
+        .then(function (response) {
+          if (response.data.rows && response.data.rows.length > 0) {
+            const list = response.data.rows
+            for (const item of list) {
+              let param = {
+                locked: Number(item.codeKey),
+                lockedStatus: item.codeValue
+              }
+              self.lockedStatusList.push(param)
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log('codeManagementApi.getCodeList→error:', error)
+        })
+    },
+    getEnabledStatusList () {
+      const self = this
+      self.enabledStatusList = []
+      codeManagementApi.getCodeList(constData.SYS_USER_ENABLED)
+        .then(function (response) {
+          if (response.data.rows && response.data.rows.length > 0) {
+            const list = response.data.rows
+            for (const item of list) {
+              let param = {
+                enabled: Number(item.codeKey),
+                enabledStatus: item.codeValue
+              }
+              self.enabledStatusList.push(param)
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log('codeManagementApi.getCodeList→error:', error)
+        })
+    },
+    getPartAuthTypeList () {
+      const self = this
+      self.partAuthTypeList = []
+      codeManagementApi.getCodeList(constData.SYS_ROLE_MENU_PART_PART_AUTH_TYPE)
+        .then(function (response) {
+          if (response.data.rows && response.data.rows.length > 0) {
+            const list = response.data.rows
+            for (const item of list) {
+              let param = {
+                partAuthType: Number(item.codeKey),
+                partAuthTypeName: item.codeValue
+              }
+              self.partAuthTypeList.push(param)
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log('codeManagementApi.getCodeList→error:', error)
+        })
     },
     getMenuId (list, name) {
       if (getMenuId(list, name)) {
