@@ -46,7 +46,7 @@
     FROM sys_user_role aur
     JOIN sys_role_menu ama ON ama.role_id = aur.role_id
     JOIN sys_role sr ON aur.role_id = sr.role_id
-    AND sr.locked = '${@com.smaller.jiview.core.constant.Constants@SYS_ROLE_LOCKED_0}'
+    AND sr.locked = '${@com.smaller.jiview.core.constant.CodeConstants@SYS_ROLE_LOCKED_0}'
     WHERE 1 = 1
     AND aur.user_id = #{userId}
     AND ama.menu_id = sm.menu_id

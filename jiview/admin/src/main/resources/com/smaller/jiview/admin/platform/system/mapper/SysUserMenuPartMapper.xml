@@ -27,7 +27,7 @@
         RIGHT JOIN sys_user_menu_map summ
         ON sump.menu_id = summ.menu_id
         AND sump.user_id = summ.user_id
-        AND summ.authorize_level = '${@com.smaller.jiview.core.constant.Constants@SYS_ROLE_MENU_AUTHORIZE_LEVEL_2}'
+        AND summ.authorize_level = '${@com.smaller.jiview.core.constant.CodeConstants@SYS_ROLE_MENU_AUTHORIZE_LEVEL_2}'
         WHERE
         1 = 1
         AND sump.menu_id = #{menuId}

@@ -27,7 +27,7 @@ public class SysCodeController {
 
     @ApiOperation(value = "获取code列表", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "codeType", value = "code type", dataType = "string", paramType = "query", required = false)
+            @ApiImplicitParam(name = "codeType", value = "codeType", dataType = "string", paramType = "query", required = false)
     })
     @GetMapping(value = "")
     public ResultBO list(

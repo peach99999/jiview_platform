@@ -10,7 +10,7 @@ import com.smaller.jiview.admin.pojo.param.MenuRemoveParam;
 import com.smaller.jiview.admin.pojo.param.MenuSaveParam;
 import com.smaller.jiview.admin.pojo.param.MenuUpdateParam;
 import com.smaller.jiview.admin.service.SysMenuService;
-import com.smaller.jiview.core.constant.Constants;
+import com.smaller.jiview.core.constant.CodeConstants;
 import com.smaller.jiview.core.exception.BizException;
 import com.smaller.jiview.core.message.AdminMessage;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
@@ -81,7 +81,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 
         // 新增菜单权限数据(给每个用户下面的角色增加该菜单访问权限)
         sysUserRoleList.forEach(sysUserRole ->
-                sysRoleMenuManager.save(sysUserRole.getAuthorizeId(), sysMenu.getMenuId(), Constants.SYS_ROLE_MENU_AUTHORIZE_LEVEL_1, loginUserDTO));
+                sysRoleMenuManager.save(sysUserRole.getAuthorizeId(), sysMenu.getMenuId(), CodeConstants.SYS_ROLE_MENU_AUTHORIZE_LEVEL_1, loginUserDTO));
 
         result.setOpResult(resultCode);
 

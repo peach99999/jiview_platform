@@ -7,6 +7,7 @@ import com.smaller.jiview.admin.platform.system.model.SysRole;
 import com.smaller.jiview.admin.pojo.model.ext.SysRoleExt;
 import com.smaller.jiview.admin.pojo.param.*;
 import com.smaller.jiview.admin.service.SysRoleService;
+import com.smaller.jiview.core.constant.CodeConstants;
 import com.smaller.jiview.core.constant.Constants;
 import com.smaller.jiview.core.pojo.bo.ResultBO;
 import com.smaller.jiview.core.pojo.dto.DiffDTO;
@@ -155,7 +156,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     public ResultBO listAllRoles() {
         ResultBO resultBO = new ResultBO();
         Example example = new Example(SysRole.class);
-        example.createCriteria().andEqualTo("locked",Constants.SYS_ROLE_LOCKED_0);
+        example.createCriteria().andEqualTo("locked", CodeConstants.SYS_ROLE_LOCKED_0);
         resultBO.setRows(sysRoleMapper.selectByExample(example));
         return resultBO;
     }
