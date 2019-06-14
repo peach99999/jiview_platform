@@ -35,7 +35,7 @@ public class SysUserManagerImpl implements SysUserManager {
         example.createCriteria()
                 .andEqualTo("account", userLogin)
                 .andEqualTo("password", SecurityUtil.encodePwd(userPwd))
-                .andEqualTo("locked", Constants.SYS_USER_LOCKED_1);
+                .andEqualTo("locked", Constants.SYS_USER_LOCKED_0);
 
         List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
         if (sysUsers.isEmpty()) {
