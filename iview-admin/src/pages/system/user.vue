@@ -297,7 +297,7 @@ export default {
           { required: true, message: '请选择启用状态', trigger: 'change', type: 'number' }
         ],
         remark: [
-          { required: true, message: '请输入备注', trigger: 'blur' }
+          { required: false, message: '请输入备注', trigger: 'blur' }
         ]
       },
       dateFormat: 'yyyy-MM-dd hh:mm:ss',
