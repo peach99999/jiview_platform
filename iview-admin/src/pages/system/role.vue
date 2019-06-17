@@ -496,6 +496,7 @@ export default {
       const self = this
       self.filter.roleName = ''
       self.filter.deptId = []
+      self.doQuery()
       // if (!self.regionCompanyFlag) {
       // self.$refs.companyObj.clearSingleSelect();
       // }
