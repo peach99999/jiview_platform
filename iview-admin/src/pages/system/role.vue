@@ -635,7 +635,7 @@ export default {
     deleteBatch () {
       const self = this
       if (self.selected.length <= 0) {
-        self.$Message.warning('请勾选要删除的菜单')
+        self.$Message.warning('请勾选要删除的角色')
         return
       }
       console.log('self.selected:', self.selected)
