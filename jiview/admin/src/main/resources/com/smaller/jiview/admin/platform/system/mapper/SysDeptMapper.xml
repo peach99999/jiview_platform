@@ -50,6 +50,6 @@
         parent_id,
         dept_name
         FROM sys_dept
-        ORDER BY parent_id
+        ORDER BY parent_id,sortno
     </select>
 </mapper>
