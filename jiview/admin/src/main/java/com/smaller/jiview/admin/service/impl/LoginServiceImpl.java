@@ -15,6 +15,7 @@ import com.smaller.jiview.core.pojo.dto.UserForReturnDTO;
 import com.smaller.jiview.core.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
@@ -70,22 +71,23 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public ResultBO resetPwd(ResetPwdParam resetPwdParam) {
         ResultBO bo = new ResultBO();
-        SysUser orgUser = new SysUser();
-
-        orgUser.setAccount(resetPwdParam.getAccount());
-        orgUser.setPassword(resetPwdParam.getPassword());
-
-        String encodePwd = SecurityUtil.encodePwd(orgUser.getPassword());
-
-        orgUser.setPassword(encodePwd);
-
-        if (sysUserManager.getByUserLogin(orgUser.getAccount()) == null) {
+        SysUser sysUser = sysUserManager.getByUserLogin(resetPwdParam.getAccount());
+        if (ObjectUtils.isEmpty(sysUser)){
             throw new BizException(AdminMessage.NO_SUCH_USER);
         }
 
+        SysUser sysUserForUpdate = new SysUser();
+        sysUserForUpdate.setAccount(resetPwdParam.getAccount());
+        sysUserForUpdate.setPassword(resetPwdParam.getPassword());
+
+        String encodePwd = SecurityUtil.encodePwd(sysUserForUpdate.getPassword());
+
+        sysUserForUpdate.setPassword(encodePwd);
+
+
         Example example = new Example(SysUser.class);
-        example.createCriteria().andEqualTo("account", orgUser.getAccount());
-        bo.setOpResult(sysUserMapper.updateByExampleSelective(orgUser, example));
+        example.createCriteria().andEqualTo("account", sysUserForUpdate.getAccount());
+        bo.setOpResult(sysUserMapper.updateByExampleSelective(sysUserForUpdate, example));
 
         return bo;
     }

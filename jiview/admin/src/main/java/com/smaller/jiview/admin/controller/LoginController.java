@@ -9,6 +9,7 @@ import com.smaller.jiview.core.pojo.dto.UserForReturnDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,7 +49,7 @@ public class LoginController {
      */
     @ApiOperation(value = "重置Admin密码", httpMethod = "POST")
     @PostMapping(value = "/reset-pwd")
-    public ResultBO resetAdminPwd(@RequestBody final ResetPwdParam resetPwdParam) {
+    public ResultBO resetAdminPwd(@RequestBody @Validated final ResetPwdParam resetPwdParam) {
         return loginService.resetPwd(resetPwdParam);
     }
 }
