@@ -35,6 +35,7 @@ export default {
       this.loading = true
       this.handleLogin({ userName, password }).then(res => {
         this.loading = false
+        localStorage.setItem('account', userName)
         this.$router.push({
           name: this.$config.homeName
         })

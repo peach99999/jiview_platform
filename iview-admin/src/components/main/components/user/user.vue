@@ -92,11 +92,12 @@ export default {
     },
     changePwdConfirmHandle () {
       const self = this
+      const account = localStorage.getItem('account')
       this.$refs.account.validate((valid) => {
         if (valid) {
           this.changePwd_loading = true
           let params = {
-            account: self.account.account,
+            account: account,
             password: self.account.newPwd
           }
           userManagementApi.changeUserPwd(params)
