@@ -61,4 +61,20 @@
     where 1=1
     and sr.role_id = #{roleId}
   </select>
+
+  <select id="listAllRoles" resultType="com.smaller.jiview.admin.platform.system.model.SysRole">
+    SELECT
+    sr.role_id,
+    sr.role_name,
+    sr.dept_id,
+    sr.roletype,
+    sr.remark,
+    sr.locked,
+    sr.create_time
+    FROM
+    sys_role sr
+    JOIN sys_dept sd ON sd.dept_id = sr.dept_id
+    where 1=1
+    and sr.locked = '${@com.smaller.jiview.core.constant.CodeConstants@SYS_ROLE_LOCKED_0}'
+  </select>
 </mapper>

@@ -155,9 +155,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public ResultBO listAllRoles() {
         ResultBO resultBO = new ResultBO();
-        Example example = new Example(SysRole.class);
-        example.createCriteria().andEqualTo("locked", CodeConstants.SYS_ROLE_LOCKED_0);
-        resultBO.setRows(sysRoleMapper.selectByExample(example));
+        resultBO.setRows(sysRoleMapper.listAllRoles());
         return resultBO;
     }
 }

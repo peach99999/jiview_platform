@@ -28,4 +28,11 @@ public interface SysRoleMapper extends Mapper<SysRole>, MySqlMapper<SysRole> {
      * @return
      */
     List<SysRoleExt> get(Long roleId);
+
+    /**
+     * 查询所有的有效角色
+     *
+     * @return
+     */
+    List<SysRole> listAllRoles();
 }
