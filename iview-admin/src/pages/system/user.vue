@@ -702,6 +702,7 @@ export default {
       self.filter.deptId = []
       self.filter.account = ''
       self.filter.userName = ''
+      self.doQuery()
     },
     // 新增或更新保存
     saveOrUpdateConfirmHandle () {
