@@ -50,13 +50,13 @@
           </FormItem>
           <div v-if="formValidate.parentId !== 0">
             <FormItem label="上级部门" prop="parentId">
-              <Select v-model="formValidate.parentId" clearable >
+              <Select v-model="formValidate.parentId" clearable>
                 <Option v-for="item in selectDeptList" :value="item.deptId" :key="item.deptId">{{ item.deptName }}</Option>
               </Select>
             </FormItem>
           </div>
           <FormItem label="排序号" prop="sortno">
-            <Input v-model.trim="formValidate.sortno" ></Input>
+            <Input v-model.trim="formValidate.sortno" type="number" ></Input>
           </FormItem>
           <FormItem label="备注"  prop="remark">
             <Input v-model.trim="formValidate.remark" ></Input>
@@ -124,6 +124,7 @@ export default {
       selectedList: [],
       modelVisible: false,
       formValidate: {
+        deptId: '',
         deptName: '',
         parentId: '',
         sortno: ''
@@ -450,6 +451,7 @@ export default {
       const self = this
       self.$refs['formValidate'].resetFields()
       self.formValidate.parentId = ''
+      self.formValidate.deptId = ''
       if (self.nodeDeptId) {
         self.formValidate.parentId = self.nodeDeptId
       }
@@ -488,8 +490,8 @@ export default {
         remark: self.formValidate.remark,
         sortno: self.formValidate.sortno
       }
-      if (self.selectedList[0]) {
-        param.deptId = self.selectedList[0]
+      if (self.formValidate.deptId) {
+        param.deptId = self.formValidate.deptId
       }
       // 验证数据来源后调用接口
       self.$refs['formValidate'].validate((valid) => {
@@ -524,6 +526,7 @@ export default {
       getDepartmentDetail(id).then(res => {
         let data = res.data.row || {}
         self.formValidate.deptName = data.deptName
+        self.formValidate.deptId = data.deptId
         self.formValidate.parentId = data.parentId
         self.formValidate.sortno = String(data.sortno)
         self.formValidate.remark = data.remark
