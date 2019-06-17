@@ -41,7 +41,7 @@
       LEFT JOIN sys_dept b
       on a.parent_id = b.dept_id
       <include refid="list_where" />
-      ORDER BY a.dept_id,a.sortno
+      ORDER BY a.parent_id,a.sortno
   </select>
 
   <select id="listDept" resultType="com.smaller.jiview.admin.platform.system.model.SysDept">
