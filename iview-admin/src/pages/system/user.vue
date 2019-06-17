@@ -844,8 +844,8 @@ export default {
     deleteBatch () {
       const self = this
       if (self.selected.length <= 0) {
-        // self.$Message.warning(message['4001']);
-        return false
+        self.$Message.warning('请勾选要删除的菜单')
+        return
       }
       console.log('self.selected:', self.selected)
       self.$Modal.confirm({

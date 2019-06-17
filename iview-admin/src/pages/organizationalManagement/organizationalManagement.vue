@@ -368,6 +368,10 @@ export default {
     // 判断删除部门是否有子部门
     deleteSelectedInfo () {
       const self = this
+      if (self.selectedList.length < 1) {
+        self.$Message.warning('请勾选要删除的菜单')
+        return
+      }
       self.loading = true
       self.deleteSeletionList = []
       self.handleDeleteInfoList(self.selectedList)
