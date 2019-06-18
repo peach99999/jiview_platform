@@ -64,7 +64,7 @@
         </Form>
         <div slot="footer">
           <Button type="text" size="large" @click="modelVisible=false">取消</Button>
-          <Button type="primary" size="large" @click="addOrChangeDepartmentInfoBtn">确定</Button>
+          <Button type="primary" size="large" @click="addOrChangeDepartmentInfoBtn" :loading="saveLoading">确定</Button>
         </div>
       </Modal>
       <Modal
@@ -180,7 +180,8 @@ export default {
       resetLoading: false,
       addLoading: false,
       changeLoading: false,
-      deleteLoading: false
+      deleteLoading: false,
+      saveLoading: false
     }
   },
   mounted () {
@@ -490,10 +491,12 @@ export default {
     addOrChangeDepartmentInfo (param) {
       const self = this
       self.loading = true
+      self.saveLoading = true
       addDepartmentList(param).then(res => {
         self.refreshDepartmentInfo(true)
         self.loading = false
         self.modelVisible = false
+        self.saveLoading = false
       }).catch(err => {
         console.log('err', err)
         self.loading = false
