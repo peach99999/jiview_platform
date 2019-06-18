@@ -759,10 +759,8 @@ export default {
         .catch(err => {
           console.log('err', err)
           self.save_loading = false
-          if (self.role.pkid) {
-            // self.$Message.error(message['3002']);
-          } else {
-            // self.$Message.error(message['3004']);
+          if (err.response && err.response.data && err.response.data.msgCode === '1200031') {
+            this.$Message.warning(err.response.data.msg)
           }
         })
     },
