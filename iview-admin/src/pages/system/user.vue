@@ -726,7 +726,6 @@ export default {
       let index = self.user.deptId.length - 1
       let param = {
         account: self.user.account,
-        password: self.user.password,
         deptId: self.user.deptId[index],
         email: self.user.email,
         mobile: self.user.mobile,
@@ -737,6 +736,9 @@ export default {
         locked: self.user.locked,
         remark: self.user.remark,
         enabled: self.user.enabled
+      }
+      if (self.user.password) {
+        param.password = self.user.password
       }
       if (self.user.id) {
         param.id = self.user.id
