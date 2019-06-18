@@ -33,7 +33,7 @@
       <Row class="margin-top-10" style="text-align: center">
         <Page :current="filter.pageNo" :total="total" show-elevator show-sizer show-total @on-change="pageChangeHandle" @on-page-size-change="pageSizeChangeHandle"/>
       </Row>
-       <Spin fix v-if="loading">
+       <Spin fix v-if="tableLoading">
           <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
           <div>加载中...</div>
       </Spin>
