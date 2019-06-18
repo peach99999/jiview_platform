@@ -48,7 +48,7 @@
       <FormItem>
         <Row>
           <Col span="12" offset="10">
-            <Button type="primary" @click="handleSubmit('partsObj')">提交</Button>
+            <Button type="primary" :loading="submitLoading" @click="handleSubmit('partsObj')">提交</Button>
             <Button @click="handleReset('partsObj')" style="margin-left: 8px">重置</Button>
           </Col>
         </Row>
@@ -71,7 +71,8 @@ export default {
         partsList: []
       },
       partTypeList: [],
-      sameId: ''
+      sameId: '',
+      submitLoading: false
     }
   },
   computed: {},
@@ -119,8 +120,10 @@ export default {
     },
     saveOrUpdateMenuPart (param) {
       const self = this
+      self.submitLoading = true
       partsManagementApi.saveOrUpdateMenuPart(param)
         .then(function (response) {
+          self.submitLoading = false
           self.getMenuPartDetail(self.menuId)
         })
         .catch(function (error) {
