@@ -18,15 +18,15 @@
             <div class="search-button-group">
               <!--<Button @click="searchDepartmentInfo" type="success">查询</Button>-->
               <!--<Button @click="refreshDepartmentInfo" type="info">重置</Button>-->
-              <button-custom :buttonStyle="searchObj.type" :buttonText="searchObj.text" :partType="searchObj.partType" @click.native="searchDepartmentInfo" />
-              <button-custom :buttonStyle="resetObj.type" :buttonText="resetObj.text" :partType="resetObj.partType" @click.native="refreshDepartmentInfo" />
+              <button-custom :buttonStyle="searchObj.type" :btnLoading="searchLoading" :buttonText="searchObj.text" :partType="searchObj.partType" @click.native="searchDepartmentInfo" />
+              <button-custom :buttonStyle="resetObj.type" :btnLoading="resetLoading" :buttonText="resetObj.text" :partType="resetObj.partType" @click.native="refreshDepartmentInfo" />
             </div>
           </Card>
           <Card>
             <div class="table-button-group">
-              <button-custom :buttonStyle="addObj.type" :buttonText="addObj.text" :partType="addObj.partType" @click.native="addSelectedInfo" />
-              <button-custom :buttonStyle="changeObj.type" :buttonText="changeObj.text" :partType="changeObj.partType" @click.native="changeSelectedInfo" />
-              <button-custom :buttonStyle="deleteObj.type" :buttonText="deleteObj.text" :partType="deleteObj.partType" @click.native="deleteSelectedInfo" />
+              <button-custom :buttonStyle="addObj.type" :btnLoading="addLoading" :buttonText="addObj.text" :partType="addObj.partType" @click.native="addSelectedInfo" />
+              <button-custom :buttonStyle="changeObj.type" :btnLoading="changeLoading" :buttonText="changeObj.text" :partType="changeObj.partType" @click.native="changeSelectedInfo" />
+              <button-custom :buttonStyle="deleteObj.type" :btnLoading="deleteLoading" :buttonText="deleteObj.text" :partType="deleteObj.partType" @click.native="deleteSelectedInfo" />
               <!--<Button @click="addSelectedInfo" type="primary">新增</Button>-->
               <!--<Button @click="changeSelectedInfo" type="warning">修改</Button>-->
               <!--<Button @click="deleteSelectedInfo" type="error">删除</Button>-->
@@ -175,7 +175,12 @@ export default {
         text: '删除',
         partType: 4,
         partId: 'organizationa_delete'
-      }
+      },
+      searchLoading: false,
+      resetLoading: false,
+      addLoading: false,
+      changeLoading: false,
+      deleteLoading: false
     }
   },
   mounted () {
@@ -226,6 +231,8 @@ export default {
       getDepartmentList(param).then(res => {
         let list = [...res.data.rows] || []
         self.loading = false
+        self.searchLoading = false
+        self.resetLoading = false
         // if (!param || flag) {
         // self.handleDepartmentList(list)
         // }
@@ -333,6 +340,7 @@ export default {
       const self = this
       self.filter.pageNo = 1
       self.filter.pageSize = 10
+      self.searchLoading = true
       const param = {
         deptId: self.nodeDeptId,
         pageNo: self.filter.pageNo,
@@ -355,6 +363,7 @@ export default {
         pageSize: self.filter.pageSize,
         deptName: self.searchValue
       }
+      self.resetLoading = true
       self.getDepartmentList(param, flag)
       self.getSelectDepartmentList()
     },
@@ -389,11 +398,14 @@ export default {
     },
     deleteModalCancel () {
       const self = this
+      self.loading = false
       self.deleteModal = false
+      self.deleteLoading = false
     },
     // 调用删除部门Api
     deleteEnsureSelectedInfo () {
       const self = this
+      self.deleteLoading = true
       const param = {
         deptIdList: self.deleteSeletionList
       }
@@ -401,6 +413,7 @@ export default {
         self.refreshDepartmentInfo(true)
         self.loading = false
         self.deleteModal = false
+        self.deleteLoading = false
       }).catch(err => {
         console.log('err', err)
         self.loading = false
@@ -453,6 +466,7 @@ export default {
     // 新增弹框
     addSelectedInfo () {
       const self = this
+      self.addLoading = true
       self.$refs['formValidate'].resetFields()
       self.formValidate.parentId = ''
       self.formValidate.deptId = ''
@@ -460,6 +474,7 @@ export default {
         self.formValidate.parentId = self.nodeDeptId
       }
       self.modelVisible = true
+      self.addLoading = false
     },
     // 新增（修改）弹出框 获取上级部门下拉框
     getSelectDepartmentList () {
@@ -520,6 +535,7 @@ export default {
         })
       }
       if (self.selectedList.length === 1) {
+        self.changeLoading = true
         self.getSelectDepartmentList()
         self.getDepartmentInfoDetail(self.selectedList[0])
       }
@@ -535,6 +551,7 @@ export default {
         self.formValidate.sortno = String(data.sortno)
         self.formValidate.remark = data.remark
         self.modelVisible = true
+        self.changeLoading = false
       }).catch(err => {
         console.log('err', err)
       })
