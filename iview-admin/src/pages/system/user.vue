@@ -17,8 +17,8 @@
             </Form>
           </Row>
           <Row>
-            <Button type="primary" :loading="loading" @click="doQuery">查询</Button>
-            <Button type="default" @click="reset" >重置</Button>
+            <Button type="primary" :loading="searchLoading" @click="doQuery">查询</Button>
+            <Button type="default" :loading="resetLoading" @click="reset" >重置</Button>
           </Row>
         </Row>
       </Panel>
@@ -507,7 +507,9 @@ export default {
       partsAuthList: [],
       showUpdatePartAuthorizationFlg: false,
       partAuthLoading: false,
-      partAuthTypeList: []
+      partAuthTypeList: [],
+      searchLoading: false,
+      resetLoading: false
     }
   },
   mounted () {
@@ -683,6 +685,8 @@ export default {
         self.total = res.data.count
         self.tableData = res.data.rows || []
         self.loading = false
+        self.resetLoading = false
+        self.searchLoading = false
       }).catch(err => {
         console.log('err', err)
         self.loading = false
@@ -693,6 +697,7 @@ export default {
     doQuery () {
       const self = this
       self.filter.pageNo = 1
+      self.searchLoading = true
       self.listForInit()
     },
     // 重置
@@ -702,7 +707,9 @@ export default {
       self.filter.deptId = []
       self.filter.account = ''
       self.filter.userName = ''
-      self.doQuery()
+      self.resetLoading = true
+      self.filter.pageNo = 1
+      self.listForInit()
     },
     // 新增或更新保存
     saveOrUpdateConfirmHandle () {

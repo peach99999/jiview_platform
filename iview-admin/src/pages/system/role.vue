@@ -14,8 +14,8 @@
             </Form>
           </Row>
           <Row>
-            <Button type="primary" :loading="loading" @click="doQuery">查询</Button>
-            <Button class="margin-left-10" type="default" @click="reset" >重置</Button>
+            <Button type="primary" :loading="searchLoading" @click="doQuery">查询</Button>
+            <Button class="margin-left-10" :loading="resetLoading" type="default" @click="reset" >重置</Button>
           </Row>
         </Row>
       </Panel>
@@ -349,7 +349,9 @@ export default {
         text: '菜单权限',
         partType: 4,
         partId: 'role_menu_auth'
-      }
+      },
+      resetLoading: false,
+      searchLoading: false
     }
   },
   mounted () {
@@ -479,6 +481,8 @@ export default {
         self.total = res.data.count
         self.tableData = res.data.rows || []
         self.loading = false
+        self.resetLoading = false
+        self.searchLoading = false
       }).catch(err => {
         console.log('err', err)
         self.loading = false
@@ -489,6 +493,7 @@ export default {
     doQuery () {
       const self = this
       self.filter.pageNo = 1
+      self.searchLoading = true
       self.listForInit()
     },
     // 重置
@@ -496,7 +501,9 @@ export default {
       const self = this
       self.filter.roleName = ''
       self.filter.deptId = []
-      self.doQuery()
+      self.resetLoading = true
+      self.filter.pageNo = 1
+      self.listForInit()
       // if (!self.regionCompanyFlag) {
       // self.$refs.companyObj.clearSingleSelect();
       // }
