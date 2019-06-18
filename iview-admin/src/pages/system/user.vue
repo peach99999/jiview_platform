@@ -28,7 +28,7 @@
         <ButtonGroup class="margin-bottom-10">
           <!--<Button type="success" @click="addOrEditRoleFlg = true;showPassword=true">新增</Button>-->
           <!--<Button type="warning" @click="deleteBatch">删除</Button>-->
-          <button-custom :buttonStyle="addObj.type" :buttonText="addObj.text" :partType="addObj.partType" @click.native="addOrEditRoleFlg = true;showPassword=true;" />
+          <button-custom :buttonStyle="addObj.type" :buttonText="addObj.text" :partType="addObj.partType" @click.native="addUserAccount" />
           <button-custom :buttonStyle="deleteObj.type" :buttonText="deleteObj.text" :partType="deleteObj.partType" @click.native="deleteBatch" />
         </ButtonGroup>
         <Table :columns="tableTitle" :loading="tableLoading" :data="tableData" @on-selection-change="changeSelect"></Table>
@@ -1236,6 +1236,13 @@ export default {
         .catch(function (error) {
           console.log('sysUserManagementApi.updateMenuPartAuth→error:', error)
         })
+    },
+    addUserAccount () {
+      const self = this
+      self.addOrEditRoleFlg = true
+      self.showPassword = true
+      self.user.locked = 0
+      self.user.enabled = 1
     }
   }
 }
