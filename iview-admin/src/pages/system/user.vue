@@ -276,7 +276,7 @@ export default {
           { required: true, message: '请输入E-mail', trigger: 'blur' }
         ],
         mobile: [
-          { required: true, message: '请输入手机号', trigger: 'blur' }
+          { required: true, message: '请输入正确的手机号', trigger: 'blur', pattern: /^[1][0-9]{10}$/ }
         ],
         userName: [
           { required: true, message: '请输入用户名', trigger: 'blur' }
