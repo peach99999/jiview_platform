@@ -433,14 +433,12 @@ export default {
       if (getMenuId(list, name)) {
         localStorage.setItem('menuId', getMenuId(list, name))
       }
-      console.log('menuId:', localStorage.getItem('menuId'))
       const menuId = localStorage.getItem('menuId')
       this.getPagePartAuth(menuId)
     },
     // 获取页面部件权限
     getPagePartAuth (menuId) {
       getMenuPartAuth(menuId).then(res => {
-        console.log('getMenuPartDetail res:', res)
         const partAuthList = res.data.rows || []
         for (const value of partAuthList) {
           if (value.cmpId === this.addObj.partId) {
@@ -476,7 +474,6 @@ export default {
       if (self.filter.roleName) {
         param.roleName = self.filter.roleName
       }
-      console.log('Query Param:', param)
       roleManagementApi.getRoleList(param).then(res => {
         self.total = res.data.count
         self.tableData = res.data.rows || []
@@ -520,7 +517,6 @@ export default {
     saveOrUpdateRole () {
       const self = this
       self.save_loading = true
-      console.log('saveOrUpdateRole role', self.role)
       let index = self.role.deptId.length - 1
       let param = {
         deptId: self.role.deptId[index],
@@ -623,7 +619,6 @@ export default {
           menuItem.authorizeLevel = 0
           for (const roleMenuItem of roleMenuTree) {
             if (menuItem.menuId === roleMenuItem.menuId) {
-              console.log('roleMenuItem.menuName', roleMenuItem.menuName)
               menuItem.authorizeLevel = roleMenuItem.authorizeLevel
             }
           }
@@ -645,7 +640,6 @@ export default {
         self.$Message.warning('请勾选要删除的角色')
         return
       }
-      console.log('self.selected:', self.selected)
       self.$Modal.confirm({
         title: '提示',
         content: '是否确认删除?',
@@ -688,7 +682,6 @@ export default {
       this.showUpdateRoleMenuAuthorizationFlg = false
     },
     menuCfgConfirmHandle () {
-      console.log('menuCfgConfirmHandle', this.menuTree)
       const self = this
       self.saveLoading = true
       let sysRoleUpdateMenuAuthParam = {}
@@ -727,10 +720,8 @@ export default {
           }
         }
       }
-      console.log('sysRoleUpdateMenuAuthParam', sysRoleUpdateMenuAuthParam)
       roleManagementApi.updateMenuAuthorize(sysRoleUpdateMenuAuthParam)
         .then(function (response) {
-          console.log('getMenuPartAuthDetail response:', response)
           self.saveLoading = false
           self.showUpdateRoleMenuAuthorizationFlg = false
         })
@@ -860,12 +851,10 @@ export default {
       }
     },
     changeVisitInfo (item) {
-      console.log('changeVisitInfo', item)
       this.currentInfo = item
     },
     // 搜索菜单并修改权限
     searchAndChangeMenuAuthority (menuTree, menuId, authority) {
-      console.log('authority', authority)
       const self = this
       for (const value of menuTree) {
         if (value.menuId === menuId) {
@@ -876,16 +865,13 @@ export default {
         }
       }
       self.menuTree = [...self.menuTree]
-      console.log('self.menuTree', self.menuTree)
     },
     // 部件权限详情
     getMenuPartAuthDetail (menuId) {
-      console.log('getMenuPartAuthDetail menuId:', menuId)
       const self = this
       self.partsAuthList = []
       partsManagementApi.getMenuPartDetail(menuId)
         .then(function (response) {
-          console.log('getMenuPartAuthDetail response:', response)
           const partAuthList = response.data.rows || []
           self.matchMenuPartAuthDetail(partAuthList, menuId)
         })
@@ -895,7 +881,6 @@ export default {
     },
     // 匹配菜单部件权限
     matchMenuPartAuthDetail (partAuthList, menuId) {
-      console.log('partAuthList:', partAuthList)
       const self = this
       let param = {
         menuId: menuId,
@@ -926,8 +911,6 @@ export default {
           }
           self.partsAuthList.push(param)
         }
-        console.log('self.partsAuthList', self.partsAuthList)
-        console.log('matchMenuPartAuthDetail res', res)
       }).catch(err => {
         console.log('err', err)
         // self.$Message.error(message['1001']);
@@ -943,12 +926,10 @@ export default {
     submitPartAuthorization () {
       const self = this
       self.partAuthLoading = true
-      console.log('self.partsAuthList', self.partsAuthList)
       let SysRoleMenuPartSaveParam = {}
       if (self.partsAuthList && self.partsAuthList.length > 0) {
         SysRoleMenuPartSaveParam.menuId = self.partsAuthList[0].menuId
       }
-      console.log('self.role.roleId', self.role.roleId)
       if (self.role.roleId) {
         SysRoleMenuPartSaveParam.roleId = self.role.roleId
       }

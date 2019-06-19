@@ -343,7 +343,6 @@ export default {
                 },
                 nativeOn: {
                   click: () => {
-                    console.log('params:', params)
                     this.account = {
                       account: params.row.account,
                       newPwd: '',
@@ -633,14 +632,12 @@ export default {
       if (getMenuId(list, name)) {
         localStorage.setItem('menuId', getMenuId(list, name))
       }
-      console.log('menuId:', localStorage.getItem('menuId'))
       const menuId = localStorage.getItem('menuId')
       this.getPagePartAuth(menuId)
     },
     // 获取页面部件权限
     getPagePartAuth (menuId) {
       sysUserManagementApi.getMenuPartAuth(menuId).then(res => {
-        console.log('getMenuPartDetail res:', res)
         const partAuthList = res.data.rows || []
         for (const value of partAuthList) {
           if (value.cmpId === this.addObj.partId) {
@@ -855,7 +852,6 @@ export default {
         self.$Message.warning('请勾选要删除的用户')
         return
       }
-      console.log('self.selected:', self.selected)
       self.$Modal.confirm({
         title: '提示',
         content: '是否确认删除?',
@@ -1017,13 +1013,11 @@ export default {
       self.listMenuTree()
       sysUserManagementApi.getListUserMenu(id).then(res => {
         self.tableLoading = false
-        console.log('getListUserMenu res', res)
         if (res.data.rows) {
           self.menuAuthList = res.data.rows
         }
         self.showUpdateRoleMenuAuthorizationFlg = true
         self.matchMenuPermissions(self.menuTree, self.menuAuthList)
-        console.log('self.menuTree', self.menuTree)
       }).catch(err => {
         console.log('err', err)
         // self.$Message.error(message['1001']);
@@ -1085,7 +1079,6 @@ export default {
     },
     // 搜索菜单并修改权限
     searchAndChangeMenuAuthority (menuTree, menuId, authority) {
-      console.log('authority', authority)
       const self = this
       for (const value of menuTree) {
         if (value.menuId === menuId) {
@@ -1151,7 +1144,6 @@ export default {
     },
     // 部件权限详情
     getMenuPartAuthDetail (menuId) {
-      console.log('getMenuPartAuthDetail menuId:', menuId)
       const self = this
       self.partsAuthList = []
       partsManagementApi.getMenuPartDetail(menuId)

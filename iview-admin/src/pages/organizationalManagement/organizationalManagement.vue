@@ -195,14 +195,12 @@ export default {
       if (getMenuId(list, name)) {
         localStorage.setItem('menuId', getMenuId(list, name))
       }
-      console.log('menuId:', localStorage.getItem('menuId'))
       const menuId = localStorage.getItem('menuId')
       this.getPagePartAuth(menuId)
     },
     // 获取页面部件权限
     getPagePartAuth (menuId) {
       getMenuPartAuth(menuId).then(res => {
-        console.log('getMenuPartDetail res:', res)
         const partAuthList = res.data.rows || []
         for (const value of partAuthList) {
           if (value.cmpId === this.resetObj.partId) {
@@ -352,7 +350,6 @@ export default {
     },
     // 刷新按钮
     refreshDepartmentInfo (flag) {
-      console.log('重置')
       const self = this
       self.filter.pageNo = 1
       self.filter.pageSize = 10

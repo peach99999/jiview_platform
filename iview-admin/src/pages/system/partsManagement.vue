@@ -88,7 +88,6 @@ export default {
       self.partTypeList = []
       codeManagementApi.getCodeList(constData.SYS_MENU_PART_CMP_TYPE)
         .then(function (response) {
-          console.log('getPartTypeList response', response)
           if (response.data.rows && response.data.rows.length > 0) {
             const list = response.data.rows
             for (const item of list) {
@@ -108,7 +107,6 @@ export default {
       const self = this
       partsManagementApi.getMenuPartDetail(menuid)
         .then(function (response) {
-          console.log('getMenuPartDetail response', response)
           self.partsObj.partsList = response.data.rows
         })
         .catch(function (error) {
@@ -134,7 +132,6 @@ export default {
       this.judgeIsExistSameId()
       if (!this.sameId) {
         if (this.partsObj.partsList && this.partsObj.partsList.length === 0) {
-          console.log('partsList:', this.partsObj.partsList)
           let menuPartList = []
           let param = {
             menuId: this.menuId
@@ -165,7 +162,6 @@ export default {
             menuPartList: list
           }
           this.$refs[name].validate((valid) => {
-            console.log('valid:', valid)
             if (valid) {
               this.$Message.success('提交成功!')
               this.saveOrUpdateMenuPart(sysMenuPartSaveOrupdateParam)

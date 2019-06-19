@@ -133,12 +133,10 @@ export default {
       }
       const menuId = localStorage.getItem('menuId')
       this.getPagePartAuth(menuId)
-      console.log('menuId:', localStorage.getItem('menuId'))
     },
     // 获取页面部件权限
     getPagePartAuth (menuId) {
       getMenuPartAuth(menuId).then(res => {
-        console.log('getMenuPartDetail res:', res)
         const partAuthList = res.data.rows || []
         for (const value of partAuthList) {
           if (value.cmpId === this.addObj.partId) {
@@ -449,7 +447,6 @@ export default {
         Object.assign(self.menu, selectedNodes.node)
         self.menu.parentPkids = self.getParentIdHierarchy(self.menu.menuId)
       }
-      console.log('点击查看菜单详情：', this.menu)
     },
     treeOnToggleExpandHandle (expandMenuTreeByIds) {
       console.log('treeOnToggleExpandHandle→expandMenuTreeByIds:', expandMenuTreeByIds)
@@ -499,7 +496,6 @@ export default {
       }
       for (let i = 0; i < checkedMenuList.length; i++) {
         let row = checkedMenuList[i]
-        console.log('checkedMenuList row:', row)
         menuPkidsToRemove.push(row.menuId)
         menuPkidsToExpand.push(row.parentId)
       }
