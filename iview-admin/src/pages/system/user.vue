@@ -208,7 +208,7 @@
         </div>
         <div slot="footer">
           <Button type="text" @click="cancelPartAuthorization">取消</Button>
-          <Button type="primary" :loading="partAuthLoading" @click="submitPartAuthorization">确定</Button>
+          <Button type="primary" :disabled="!partsAuthList || partsAuthList.length === 0" :loading="partAuthLoading" @click="submitPartAuthorization">确定</Button>
         </div>
       </Modal>
     </Card>
