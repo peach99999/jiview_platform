@@ -11,7 +11,7 @@ import tk.mybatis.mapper.entity.Example;
 import java.util.List;
 
 /**
- * @author licm on 2018-11-13.
+ * @author xiagf on 2018-11-13.
  */
 @Service
 public class SysUserRoleManagerImpl implements SysUserRoleManager {

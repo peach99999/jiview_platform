@@ -7,8 +7,8 @@ import com.smaller.jiview.core.pojo.bo.ResultBO;
 /**
  * SysRoleService
  *
- * @author licm
- * @date 2018/11/10
+ * @author xiagf
+ * @date 2019/05/28
  */
 public interface SysRoleService {
 
