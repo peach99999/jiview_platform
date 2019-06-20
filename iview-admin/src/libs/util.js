@@ -1,17 +1,19 @@
-import Cookies from 'js-cookie'
+// import Cookies from 'js-cookie'
 // cookie保存的天数
 import config from '@/config'
 import { forEach, hasOneOf, objEqual } from '@/libs/tools'
-const { title, cookieExpires, useI18n } = config
-
+// const { title, cookieExpires, useI18n } = config
+const { title, useI18n } = config
 export const TOKEN_KEY = 'token'
 
 export const setToken = (token) => {
-  Cookies.set(TOKEN_KEY, token, { expires: cookieExpires || 1 })
+  // Cookies.set(TOKEN_KEY, token, { expires: cookieExpires || 1 })
+  localStorage.setItem('TOKEN_KEY', token)
 }
 
 export const getToken = () => {
-  const token = Cookies.get(TOKEN_KEY)
+  // const token = Cookies.get(TOKEN_KEY)
+  const token = localStorage.getItem('TOKEN_KEY')
   if (token) return token
   else return false
 }
@@ -31,8 +33,6 @@ const showThisMenuEle = (item, access) => {
  * @returns {Array}
  */
 export const getMenuByRouter = (list, access) => {
-  console.log('getMenuByRouter list:', list)
-  console.log('getMenuByRouter access:', access)
   let res = []
   forEach(list, item => {
     if (!item.meta || (item.meta && !item.meta.hideInMenu)) {

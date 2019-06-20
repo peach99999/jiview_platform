@@ -1,14 +1,16 @@
 import axios from 'axios'
 import store from '@/store'
+import router from '@/router/index'
+// import { Message } from 'iview'
 // import { Spin } from 'iview'
 const addErrorLog = errorInfo => {
-  const { statusText, status, request: { responseURL } } = errorInfo
-  let info = {
-    type: 'ajax',
-    code: status,
-    mes: statusText,
-    url: responseURL
-  }
+  // const { statusText, status, request: { responseURL } } = errorInfo
+  // let info = {
+  //   type: 'ajax',
+  //   code: status,
+  //   mes: statusText,
+  //   url: responseURL
+  // }
   // if (!responseURL.includes('save_error_logger')) store.dispatch('addErrorLog', info)
 }
 
@@ -24,7 +26,7 @@ class HttpRequest {
         //
       }
     }
-    if(url!== 'login'){
+    if (url !== 'login') {
       config.headers['Authorization'] = store.state.user.token
     }
     return config
@@ -61,6 +63,17 @@ class HttpRequest {
           statusText,
           status,
           request: { responseURL: config.url }
+        }
+      }
+      if (errorInfo) {
+        switch (error.response.status) {
+          case 401:
+            // 401 清除登录信息并跳转到登录页面
+            localStorage.clear()
+            router.replace({
+              path: 'login',
+              query: { redirect: router.currentRoute.fullPath }
+            })
         }
       }
       addErrorLog(errorInfo)

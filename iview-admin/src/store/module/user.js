@@ -90,7 +90,7 @@ export default {
           password
         }).then(res => {
           const data = res.data && res.data.row ? res.data.row : null
-          sessionStorage.setItem('user', data.userName)
+          localStorage.setItem('user', data.userName)
           commit('setToken', data.Authorization)
           commit('setLoginPkid', data.loginPkid)
           commit('setUserLogin', data.userLogin)

@@ -150,7 +150,7 @@ export default {
       this.turnToPage(item)
     },
     init () {
-      this.userName = sessionStorage.getItem('user')
+      this.userName = localStorage.getItem('user')
     }
   },
   watch: {
