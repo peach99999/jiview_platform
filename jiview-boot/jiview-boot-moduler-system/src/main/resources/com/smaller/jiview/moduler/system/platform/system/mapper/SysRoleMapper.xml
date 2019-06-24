@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smaller.jiview.moduler.system.platform.system.mapper.SysRoleMapper">
+  <resultMap id="BaseResultMap" type="com.smaller.jiview.moduler.system.platform.system.model.SysRole">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <result column="role_id" jdbcType="BIGINT" property="roleId" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
+    <result column="roletype" jdbcType="TINYINT" property="roletype" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="locked" jdbcType="BIT" property="locked" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+  </resultMap>
+
+  <sql id="list_where">
+    where 1 = 1
+    <if test="roleName != null and roleName != ''" >
+      AND sr.role_name LIKE CONCAT('%',#{roleName},'%')
+    </if>
+    <!--<if test="deptId != null and deptId != ''" >-->
+      <foreach collection="subDeptIds" item="deptId" index="index"
+               open="AND sr.dept_id IN (" close=")" separator=",">
+        #{deptId}
+      </foreach>
+    <!--</if>-->
+  </sql>
+  <select id="list" resultType="com.smaller.jiview.moduler.system.pojo.model.ext.SysRoleExt">
+    SELECT
+    sr.role_id,
+    sr.role_name,
+    sr.dept_id,
+    sr.roletype,
+    sr.remark,
+    sr.locked,
+    sr.create_time,
+    sd.dept_name as deptName,
+    sc.code_value as statusName
+    FROM
+    sys_role sr
+    JOIN sys_dept sd ON sd.dept_id = sr.dept_id
+    left join sys_code sc
+    on sc.code_key = sr.locked
+    and sc.code_type = '${@com.smaller.jiview.core.constant.CodeConstants@SYS_ROLE_LOCKED}'
+    <include refid="list_where" />
+  </select>
+
+  <select id="get" resultType="com.smaller.jiview.moduler.system.pojo.model.ext.SysRoleExt">
+    SELECT
+    sr.role_id,
+    sr.role_name,
+    sr.dept_id,
+    sr.roletype,
+    sr.remark,
+    sr.locked,
+    sr.create_time
+    FROM
+    sys_role sr
+    where 1=1
+    and sr.role_id = #{roleId}
+  </select>
+
+  <select id="listAllRoles" resultType="com.smaller.jiview.moduler.system.platform.system.model.SysRole">
+    SELECT
+    sr.role_id,
+    sr.role_name,
+    sr.dept_id,
+    sr.roletype,
+    sr.remark,
+    sr.locked,
+    sr.create_time
+    FROM
+    sys_role sr
+    JOIN sys_dept sd ON sd.dept_id = sr.dept_id
+    where 1=1
+    and sr.locked = '${@com.smaller.jiview.core.constant.CodeConstants@SYS_ROLE_LOCKED_0}'
+  </select>
+</mapper>

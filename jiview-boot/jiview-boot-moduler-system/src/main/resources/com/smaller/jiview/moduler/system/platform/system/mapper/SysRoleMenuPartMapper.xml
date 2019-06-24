@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smaller.jiview.moduler.system.platform.system.mapper.SysRoleMenuPartMapper">
+    <resultMap id="BaseResultMap" type="com.smaller.jiview.moduler.system.platform.system.model.SysRoleMenuPart">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <result column="authorize_id" jdbcType="BIGINT" property="authorizeId"/>
+        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
+        <result column="menu_id" jdbcType="BIGINT" property="menuId"/>
+        <result column="part_id" jdbcType="BIGINT" property="partId"/>
+        <result column="part_auth_type" jdbcType="TINYINT" property="partAuthType"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user_id" jdbcType="BIGINT" property="createUserId"/>
+    </resultMap>
+
+    <delete id="remove">
+        delete from
+        sys_role_menu_part
+        WHERE role_id = #{roleId}
+        <foreach collection="menuIds" item="menuId" index="index" open="and menu_id in ( " close=")" separator=",">
+            #{menuId}
+        </foreach>
+    </delete>
+    <select id="listUserRoleMenuPart" resultType="com.smaller.jiview.moduler.system.pojo.model.ext.SysRoleMenuPartExt">
+      SELECT
+          srmp.menu_id,
+          srmp.part_id,
+          min(srmp.part_auth_type) as partAuthType,
+          smp.cmp_id as cmpId
+      FROM
+      sys_role_menu_part srmp
+      LEFT JOIN sys_menu_part smp
+      ON srmp.part_id = smp.part_id
+      LEFT JOIN sys_role_menu srm
+      ON srmp.role_id = srm.role_id
+      AND srmp.menu_id = srm.menu_id
+      WHERE
+      1 = 1
+      AND srmp.role_id IN (
+        SELECT
+          sur.role_id
+          FROM sys_user_role sur
+          JOIN sys_role sr
+          on sur.role_id = sr.role_id
+          where sur.user_id = #{userId}
+        )
+      AND srmp.menu_id = #{menuId}
+      AND srm.authorize_level = '${@com.smaller.jiview.core.constant.CodeConstants@SYS_ROLE_MENU_AUTHORIZE_LEVEL_2}'
+      GROUP BY srmp.menu_id,srmp.part_id
+  </select>
+
+  <select id="listRoleMenuPart" resultType="com.smaller.jiview.moduler.system.platform.system.model.SysRoleMenuPart">
+      SELECT
+          srmp.menu_id,
+          srmp.part_id,
+          srmp.part_auth_type
+      FROM
+      sys_role_menu_part srmp
+      WHERE
+      1 = 1
+      AND role_id = #{roleId}
+      AND menu_id = #{menuId}
+  </select>
+</mapper>

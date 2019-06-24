@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smaller.jiview.moduler.system.platform.system.mapper.SysUserMenuMapMapper">
+    <resultMap id="BaseResultMap" type="com.smaller.jiview.moduler.system.platform.system.model.SysUserMenuMap">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <result column="authorize_id" jdbcType="BIGINT" property="authorizeId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="menu_id" jdbcType="BIGINT" property="menuId"/>
+        <result column="authorize_level" jdbcType="TINYINT" property="authorizeLevel"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user_id" jdbcType="BIGINT" property="createUserId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		sm.menu_id,
+		sm.parent_id,
+		sm.menu_name,
+		sm.url,
+		sm.expanded,
+		sm.leaf,
+		sm.iconcls,
+		sm.sortno
+  	</sql>
+
+    <select id="listForUserMenu" resultType="com.smaller.jiview.moduler.system.pojo.model.ext.SysMenuExt">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_menu sm
+        WHERE 1 = 1
+        AND EXISTS(
+        select
+        1
+        FROM sys_user_menu_map summ
+        WHERE 1=1
+        AND summ.user_id = #{userId}
+        AND summ.menu_id = sm.menu_id
+        )
+    </select>
+
+    <select id="listForUserMenuMap" resultType="com.smaller.jiview.moduler.system.pojo.model.ext.SysMenuExt">
+        SELECT
+        DISTINCT
+        sm.menu_id,
+		sm.parent_id,
+		sm.menu_name,
+		sm.url,
+		sm.expanded,
+		sm.leaf,
+		sm.iconcls,
+		sm.sortno,
+		summ.authorize_level as authorizeLevel
+        FROM sys_menu sm
+        join sys_user_menu_map summ
+        ON summ.menu_id = sm.menu_id
+        WHERE 1=1
+        AND summ.user_id = #{userId}
+    </select>
+    <delete id="remove">
+        delete from
+        sys_user_menu_map
+        WHERE user_id = #{userId}
+        <foreach collection="menuIds" item="menuId" index="index" open="and menu_id in ( " close=")" separator=",">
+            #{menuId}
+        </foreach>
+    </delete>
+</mapper>

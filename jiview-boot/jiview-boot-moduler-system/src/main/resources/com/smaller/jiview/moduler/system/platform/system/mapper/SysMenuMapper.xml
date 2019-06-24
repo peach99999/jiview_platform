@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smaller.jiview.moduler.system.platform.system.mapper.SysMenuMapper">
+  <resultMap id="BaseResultMap" type="com.smaller.jiview.moduler.system.platform.system.model.SysMenu">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <result column="menu_id" jdbcType="BIGINT" property="menuId" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+    <result column="iconcls" jdbcType="VARCHAR" property="iconcls" />
+    <result column="expanded" jdbcType="BIT" property="expanded" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="leaf" jdbcType="BIT" property="leaf" />
+    <result column="sortno" jdbcType="INTEGER" property="sortno" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+		sm.menu_id,
+		sm.parent_id,
+		sm.menu_name,
+		sm.url,
+		sm.expanded,
+		sm.leaf,
+		sm.iconcls,
+		sm.sortno
+  	</sql>
+  <select id="list" parameterType="java.util.Map" resultType="com.smaller.jiview.moduler.system.pojo.model.ext.SysMenuExt">
+    select
+    <include refid="Base_Column_List"/>
+    from sys_menu sm
+    where 1 = 1
+  </select>
+
+  <select id="listForUser" parameterType="java.util.Map" resultType="com.smaller.jiview.moduler.system.pojo.model.ext.SysMenuExt">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sys_menu sm
+    WHERE 1 = 1
+    AND EXISTS(
+    select
+    1
+    FROM sys_user_role aur
+    JOIN sys_role_menu ama ON ama.role_id = aur.role_id
+    JOIN sys_role sr ON aur.role_id = sr.role_id
+    JOIN sys_dept sd ON sd.dept_id = sr.dept_id
+    AND sr.locked = '${@com.smaller.jiview.core.constant.CodeConstants@SYS_ROLE_LOCKED_0}'
+    WHERE 1 = 1
+    AND aur.user_id = #{userId}
+    AND ama.menu_id = sm.menu_id
+    )
+  </select>
+
+  <select id="listMenuIdByRole" resultType="java.lang.Long">
+		SELECT
+		sm.menu_id
+		FROM sys_menu sm
+		JOIN sys_role_menu ama ON ama.menu_id = sm.menu_id AND ama.role_id = #{roleId}
+		WHERE 1 = 1
+	</select>
+</mapper>
