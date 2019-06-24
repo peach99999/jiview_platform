@@ -10,8 +10,8 @@
     <version>1.0</version>
 
     <modules>
-        <module>core</module>
-        <module>admin</module>
+        <module>jiview-boot-admin</module>
+        <module>jiview-boot-core</module>
     </modules>
 
     <properties>
