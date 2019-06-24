@@ -14,7 +14,7 @@ JiView-Boot 系统基础平台
 
 - 日志打印：logback
 
-- 分页查询：PageHelper
+- 分页查询：PageHelper(设置完分页大小应立即紧跟数据库查询语句)
 
 - 其他：fastjson，Swagger-ui，quartz, lombok（简化代码）等。
 
@@ -46,3 +46,13 @@ JiView-Boot 系统基础平台
 
 ## 代码检测（sonar扫描）
 -  插件名称：sonarLint
+
+## 开发说明
+-  jiview-boot-core目录下的pojo里目录的解释如下：
+-  bo:接口查询返回结果对象  
+-  dto:数据传输对象  
+-  param:就是接口查询参数继承对象 BaseParam--就是一般查询  BaseListParam--列表查询
+
+-  其他说明：
+-  manager:是提取出的一些可复用的公共方法(提高代码的复用性)
+
