@@ -10,12 +10,12 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>admin</artifactId>
+    <artifactId>jiview-boot-admin</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.smaller.jiview</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>jiview-boot-core</artifactId>
             <version>1.0</version>
         </dependency>
     </dependencies>

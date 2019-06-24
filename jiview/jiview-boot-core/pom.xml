@@ -30,7 +30,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>core</artifactId>
+    <artifactId>jiview-boot-core</artifactId>
 
     <properties>
         <targetJavaProject>admin/src/main/java</targetJavaProject>
